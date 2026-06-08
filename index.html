@@ -733,41 +733,4 @@
         campoPix("00", "01") +
         campoPix("01", "12") +
         campoPix("26", dadosPix) +
-        campoPix("52", "0000") +
-        campoPix("53", "986") +
-        campoPix("54", produto.preco.toFixed(2)) +
-        campoPix("58", "BR") +
-        campoPix("59", PIX_NOME_RECEBEDOR.slice(0, 25)) +
-        campoPix("60", PIX_CIDADE.slice(0, 15)) +
-        campoPix("62", campoPix("05", txid)) +
-        "6304";
-
-      return payloadSemCrc + calcularCrc16(payloadSemCrc);
-    }
-
-    function campoPix(id, valor){
-      const tamanho = String(valor.length).padStart(2, "0");
-      return id + tamanho + valor;
-    }
-
-    function calcularCrc16(payload){
-      let crc = 0xFFFF;
-      for(let i = 0; i < payload.length; i++){
-        crc ^= payload.charCodeAt(i) << 8;
-        for(let j = 0; j < 8; j++){
-          crc = crc << 1;
-          if(crc & 0x10000) crc = (crc ^ 0x1021) & 0xFFFF;
-        }
-      }
-      return crc.toString(16).toUpperCase().padStart(4, "0");
-    }
-
-    window.onclick = function(event){
-      const modal = document.getElementById("pixModal");
-      if(event.target === modal){
-        modal.style.display = "none";
-      }
-    }
-  </script>
-</body>
-</html>
+        campoPix("5
