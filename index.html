@@ -16,8 +16,9 @@
       box-sizing:border-box;
       font-family:Arial, sans-serif;
     }
-    a{background: #d81b60;
-}
+    a{
+      background: transparent;
+    }
 
     body{
       background:#ffd1e0;
@@ -60,7 +61,7 @@
     }
 
     header h1{
-      font-family:Georgia, 'Times New Roman', Times, serif, 'Times New Roman', Times, serif;
+      font-family:Georgia, 'Times New Roman', Times, serif;
       font-size:45px;
       animation:topo 1s ease;
     }
@@ -94,6 +95,7 @@
 
     nav button:hover,
     nav button.aba-ativa{
+      background:#fd73a1;
       color:white;
       transform:scale(1.08);
     }
@@ -171,10 +173,10 @@
       font-weight:bold;
       cursor:pointer;
       transition:0.3s;
+      margin:5px 5px;
     }
 
     .btn-pedido{
-      margin-top:10px;
       background:linear-gradient(45deg,#ff4081,#fd73a1);
     }
 
@@ -183,30 +185,34 @@
       box-shadow:0 0 20px rgba(43,224,109,0.7);
     }
 
+    .btn-pedido:hover{
+      box-shadow:0 0 20px rgba(255,64,129,0.7);
+    }
+
     .contato-card{
       width:500px;
       max-width:90%;
     }
 
     .contato-info a{
-  color:#d81b60;
-  font-weight:bold;
-  text-decoration:none;
-}
+      color:#d81b60;
+      font-weight:bold;
+      text-decoration:none;
+    }
 
-.contato-info a:hover{
-  text-decoration:underline;
-}
+    .contato-info a:hover{
+      text-decoration:underline;
+    }
 
-.suporte-site a{
-  color:#d81b60;
-  font-weight:bold;
-  text-decoration:none;
-}
+    .suporte-site a{
+      color:#d81b60;
+      font-weight:bold;
+      text-decoration:none;
+    }
 
-.suporte-site a:hover{
-  text-decoration:underline;
-}
+    .suporte-site a:hover{
+      text-decoration:underline;
+    }
 
     .suporte-site{
       margin-top:22px;
@@ -215,8 +221,6 @@
       font-size:16px;
       line-height:1.5;
     }
-
-    
 
     .pix-modal{
       position:fixed;
@@ -544,16 +548,16 @@
     <div class="container">
       <div class="card contato-card">
         <div class="card-content">
-          <h3>&#127856; Fa&ccedil;a seu pedido</h3>
+          <h3>&#127856; Faça seu pedido</h3>
 
           <p class="contato-info">
-            Chame a Val no WhatsApp para encomendas, d&uacute;vidas e confirma&ccedil;&atilde;o de pagamento.
+            Chame a Val no WhatsApp para encomendas, dúvidas e confirmação de pagamento.
           </p>
 
           <p class="contato-info">
             📱WhatsApp: <center><a href="https://wa.me/5583982168114?text=Ola%2C%20vim%20pelo%20site%20Caseirinhos%20da%20Val." target="_blank">+55 83 98216-8114 (Val)</a></center><br>
             Email: <center><a href="https://mail.google.com/mail/?view=cm&fs=1&to=caseirinhosdaval2026@gmail.com" target="_blank">caseirinhosdaval2026@gmail.com</a></center><br>
-            📍Atendimento: Picu&iacute; - PB
+            📍Atendimento: Picuí - PB
           </p>
 
           <p class="suporte-site">
@@ -693,6 +697,10 @@
         "https://wa.me/5583982168114?text=" + encodeURIComponent(mensagem);
     }
 
+    function fecharPix(){
+      document.getElementById("pixModal").style.display = "none";
+    }
+
     function formatarMoeda(valor){
       return valor.toLocaleString("pt-BR", {
         style: "currency",
@@ -707,6 +715,13 @@
       const link = "https://wa.me/5583982168114?text=" + encodeURIComponent(mensagem);
 
       window.open(link, "_blank");
+    }
+
+    function copiarPix(){
+      const pixCopiaCola = document.getElementById("pixCopiaCola");
+      pixCopiaCola.select();
+      document.execCommand("copy");
+      document.getElementById("pixStatus").textContent = "✓ Chave PIX copiada!";
     }
 
     function montarPixCopiaECola(produto, codigoProduto){
@@ -731,4 +746,28 @@
     }
 
     function campoPix(id, valor){
-      const tamanho = String(valor.length).padStar
+      const tamanho = String(valor.length).padStart(2, "0");
+      return id + tamanho + valor;
+    }
+
+    function calcularCrc16(payload){
+      let crc = 0xFFFF;
+      for(let i = 0; i < payload.length; i++){
+        crc ^= payload.charCodeAt(i) << 8;
+        for(let j = 0; j < 8; j++){
+          crc = crc << 1;
+          if(crc & 0x10000) crc = (crc ^ 0x1021) & 0xFFFF;
+        }
+      }
+      return crc.toString(16).toUpperCase().padStart(4, "0");
+    }
+
+    window.onclick = function(event){
+      const modal = document.getElementById("pixModal");
+      if(event.target === modal){
+        modal.style.display = "none";
+      }
+    }
+  </script>
+</body>
+</html>
