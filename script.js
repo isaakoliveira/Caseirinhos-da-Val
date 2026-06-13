@@ -3,6 +3,7 @@ const PIX_NOME_RECEBEDOR = "CASEIRINHOS DA VAL";
 const PIX_CIDADE = "PICUI";
 const WHATSAPP_VAL = "5583982168114";
 let produtoPixAtual = null;
+const carrinho = {};
 
 const PRODUTOS = {
   doceLeiteCoco: {
@@ -68,6 +69,7 @@ const PRODUTOS = {
 };
 
 preencherPrecos();
+atualizarCarrinho();
 
 function mostrarAba(aba){
   const secoes = document.querySelectorAll("section");
@@ -129,11 +131,246 @@ function formatarMoeda(valor){
 
 function fazerPedidoWhatsApp(codigoProduto){
   const produto = PRODUTOS[codigoProduto];
+
+  if(!produto){
+    return;
+  }
+
   const precoFormatado = formatarMoeda(produto.preco);
   const mensagem = "Ola, quero fazer um pedido de " + produto.nome + " no valor de " + precoFormatado + ".";
   const link = "https://wa.me/" + WHATSAPP_VAL + "?text=" + encodeURIComponent(mensagem);
 
   window.open(link, "_blank");
+}
+
+function adicionarAoCarrinho(codigoProduto){
+  const produto = PRODUTOS[codigoProduto];
+
+  if(!produto){
+    return;
+  }
+
+  if(!carrinho[codigoProduto]){
+    carrinho[codigoProduto] = 0;
+  }
+
+  carrinho[codigoProduto]++;
+  atualizarCarrinho();
+  mostrarStatusCarrinho(produto.nome + " adicionado ao carrinho.");
+}
+
+function alterarQuantidadeCarrinho(codigoProduto, quantidade){
+  if(!carrinho[codigoProduto]){
+    return;
+  }
+
+  carrinho[codigoProduto] += quantidade;
+
+  if(carrinho[codigoProduto] <= 0){
+    delete carrinho[codigoProduto];
+  }
+
+  atualizarCarrinho();
+}
+
+function removerDoCarrinho(codigoProduto){
+  delete carrinho[codigoProduto];
+  atualizarCarrinho();
+}
+
+function limparCarrinho(){
+  Object.keys(carrinho).forEach(function(codigoProduto){
+    delete carrinho[codigoProduto];
+  });
+
+  atualizarCarrinho();
+  mostrarStatusCarrinho("Carrinho limpo.");
+}
+
+function atualizarCarrinho(){
+  const listaCarrinho = document.getElementById("listaCarrinho");
+  const carrinhoVazio = document.getElementById("carrinhoVazio");
+  const totalCarrinho = document.getElementById("totalCarrinho");
+  const contadorCarrinho = document.getElementById("contadorCarrinho");
+  const linhasCarrinho = montarLinhasCarrinho();
+
+  if(contadorCarrinho){
+    contadorCarrinho.textContent = contarItensCarrinho();
+  }
+
+  if(totalCarrinho){
+    totalCarrinho.textContent = formatarMoeda(calcularTotalCarrinho());
+  }
+
+  if(!listaCarrinho || !carrinhoVazio){
+    return;
+  }
+
+  listaCarrinho.innerHTML = "";
+  carrinhoVazio.style.display = linhasCarrinho.length === 0 ? "block" : "none";
+
+  linhasCarrinho.forEach(function(item){
+    const itemCarrinho = document.createElement("div");
+    itemCarrinho.className = "item-carrinho";
+
+    const info = document.createElement("div");
+    info.className = "item-carrinho-info";
+
+    const nome = document.createElement("strong");
+    nome.textContent = item.produto.nome;
+
+    const preco = document.createElement("span");
+    preco.textContent = item.quantidade + " x " + formatarMoeda(item.produto.preco) +
+      " = " + formatarMoeda(item.subtotal);
+
+    info.appendChild(nome);
+    info.appendChild(preco);
+
+    const controles = document.createElement("div");
+    controles.className = "item-carrinho-controles";
+
+    const diminuir = document.createElement("button");
+    diminuir.className = "btn-quantidade";
+    diminuir.type = "button";
+    diminuir.textContent = "-";
+    diminuir.onclick = function(){
+      alterarQuantidadeCarrinho(item.codigo, -1);
+    };
+
+    const quantidade = document.createElement("span");
+    quantidade.className = "quantidade-carrinho";
+    quantidade.textContent = item.quantidade;
+
+    const aumentar = document.createElement("button");
+    aumentar.className = "btn-quantidade";
+    aumentar.type = "button";
+    aumentar.textContent = "+";
+    aumentar.onclick = function(){
+      alterarQuantidadeCarrinho(item.codigo, 1);
+    };
+
+    const remover = document.createElement("button");
+    remover.className = "btn-remover";
+    remover.type = "button";
+    remover.textContent = "Remover";
+    remover.onclick = function(){
+      removerDoCarrinho(item.codigo);
+    };
+
+    controles.appendChild(diminuir);
+    controles.appendChild(quantidade);
+    controles.appendChild(aumentar);
+    controles.appendChild(remover);
+
+    itemCarrinho.appendChild(info);
+    itemCarrinho.appendChild(controles);
+    listaCarrinho.appendChild(itemCarrinho);
+  });
+}
+
+function montarLinhasCarrinho(){
+  return Object.keys(carrinho).map(function(codigoProduto){
+    const produto = PRODUTOS[codigoProduto];
+    const quantidade = carrinho[codigoProduto];
+
+    if(!produto || quantidade <= 0){
+      return null;
+    }
+
+    return {
+      codigo: codigoProduto,
+      produto: produto,
+      quantidade: quantidade,
+      subtotal: produto.preco * quantidade
+    };
+  }).filter(function(item){
+    return item !== null;
+  });
+}
+
+function contarItensCarrinho(){
+  return montarLinhasCarrinho().reduce(function(total, item){
+    return total + item.quantidade;
+  }, 0);
+}
+
+function calcularTotalCarrinho(){
+  return montarLinhasCarrinho().reduce(function(total, item){
+    return total + item.subtotal;
+  }, 0);
+}
+
+function finalizarCarrinhoWhatsApp(){
+  if(contarItensCarrinho() === 0){
+    mostrarStatusCarrinho("Adicione pelo menos um produto ao carrinho.");
+    return;
+  }
+
+  const mensagem = "Ola, quero fazer este pedido:\n\n" +
+    montarResumoCarrinhoTexto() +
+    "\n\nTotal: " + formatarMoeda(calcularTotalCarrinho()) + ".";
+  const link = "https://wa.me/" + WHATSAPP_VAL + "?text=" + encodeURIComponent(mensagem);
+
+  window.open(link, "_blank");
+}
+
+function abrirPixCarrinho(){
+  const total = calcularTotalCarrinho();
+
+  if(total === 0){
+    mostrarStatusCarrinho("Adicione pelo menos um produto ao carrinho.");
+    return;
+  }
+
+  const precoFormatado = formatarMoeda(total);
+  const produtoCarrinho = {
+    nome: "Pedido do carrinho com " + contarItensCarrinho() + " item(ns)",
+    preco: total
+  };
+  const produtoPix = {
+    nome: "Pedido Caseirinhos",
+    preco: total
+  };
+  const pixCopiaCola = montarPixCopiaECola(produtoPix, "carrinho");
+
+  produtoPixAtual = {
+    produto: produtoCarrinho,
+    precoFormatado: precoFormatado,
+    resumo: montarResumoCarrinhoTexto()
+  };
+
+  document.getElementById("pixModal").style.display = "flex";
+  document.getElementById("produtoPix").innerHTML =
+    "Pedido do carrinho:<br>" + montarResumoCarrinhoHtml() +
+    "<br>Total: <b>" + precoFormatado + "</b>";
+  document.getElementById("pixCopiaCola").value = pixCopiaCola;
+  document.getElementById("pixQrCode").src =
+    "https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=" + encodeURIComponent(pixCopiaCola);
+  document.getElementById("pixStatus").textContent = "PIX gerado para o total do carrinho. Escolha o comprovante para enviar.";
+
+  prepararComprovante();
+}
+
+function montarResumoCarrinhoTexto(){
+  return montarLinhasCarrinho().map(function(item){
+    return "- " + item.quantidade + "x " + item.produto.nome +
+      " = " + formatarMoeda(item.subtotal);
+  }).join("\n");
+}
+
+function montarResumoCarrinhoHtml(){
+  return montarLinhasCarrinho().map(function(item){
+    return item.quantidade + "x " + item.produto.nome +
+      " - <b>" + formatarMoeda(item.subtotal) + "</b>";
+  }).join("<br>");
+}
+
+function mostrarStatusCarrinho(mensagem){
+  const carrinhoStatus = document.getElementById("carrinhoStatus");
+
+  if(carrinhoStatus){
+    carrinhoStatus.textContent = mensagem;
+  }
 }
 
 function prepararComprovante(){
@@ -210,7 +447,8 @@ function enviarComprovanteWhatsApp(){
   const mensagem = montarMensagemComprovante(
     produtoPixAtual.produto,
     produtoPixAtual.precoFormatado,
-    arquivo
+    arquivo,
+    produtoPixAtual.resumo
   );
   const link = "https://wa.me/" + WHATSAPP_VAL + "?text=" + encodeURIComponent(mensagem);
 
@@ -221,11 +459,17 @@ function enviarComprovanteWhatsApp(){
   window.open(link, "_blank");
 }
 
-function montarMensagemComprovante(produto, precoFormatado, arquivo){
-  return "Ola, Val! Ja fiz o pagamento do " + produto.nome +
+function montarMensagemComprovante(produto, precoFormatado, arquivo, resumo){
+  let mensagem = "Ola, Val! Ja fiz o pagamento do " + produto.nome +
     " no valor de " + precoFormatado +
-    ". Meu comprovante esta selecionado: " + arquivo.name +
-    ". Vou enviar o comprovante por aqui.";
+    ". Meu comprovante esta selecionado: " + arquivo.name;
+
+  if(resumo){
+    mensagem += "\n\nPedido:\n" + resumo;
+  }
+
+  return mensagem +
+    "\n\nVou enviar o comprovante por aqui.";
 }
 
 function montarPixCopiaECola(produto, codigoProduto){
