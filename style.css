@@ -13,7 +13,7 @@ body{
 }
 
 header{
-  background:linear-gradient(90deg,rgb(255, 0, 170),rgb(255, 05, 80));
+  background:linear-gradient(90deg,rgb(255, 0, 170),rgb(255, 05, 122));
   color:white;
   padding:22px 20px;
   text-align:left;
@@ -57,7 +57,7 @@ header p{
 }
 
 nav{
-  background:#ff3877;
+  background:rgb(255, 5, 135);
   display:flex;
   justify-content:center;
   gap:20px;
@@ -166,6 +166,22 @@ h2{
 .btn-carrinho{
   margin-top:10px;
   background:linear-gradient(45deg,#7c4dff,#5e35b1);
+}
+
+.btn-carrinho.adicionado{
+  background:linear-gradient(45deg,#2be06d,#1ebe5d);
+  animation:produtoAdicionado 0.75s ease;
+  box-shadow:0 0 0 6px rgba(43,224,109,0.18),0 0 22px rgba(43,224,109,0.75);
+}
+
+.card.produto-adicionado{
+  animation:cardAdicionado 0.8s ease;
+}
+
+#contadorCarrinho.contador-animado{
+  display:inline-block;
+  color:#2be06d;
+  animation:contadorCarrinho 0.75s ease;
 }
 
 .btn:hover{
@@ -478,6 +494,53 @@ footer{
   to{
     opacity:1;
     transform:translateY(0);
+  }
+}
+
+@keyframes produtoAdicionado{
+  0%{
+    transform:scale(1);
+  }
+
+  40%{
+    transform:scale(1.12);
+  }
+
+  70%{
+    transform:scale(0.96);
+  }
+
+  100%{
+    transform:scale(1);
+  }
+}
+
+@keyframes cardAdicionado{
+  0%{
+    box-shadow:0 6px 15px rgba(0,0,0,0.2);
+  }
+
+  45%{
+    transform:translateY(-8px);
+    box-shadow:0 0 0 5px rgba(43,224,109,0.22),0 10px 25px rgba(0,0,0,0.22);
+  }
+
+  100%{
+    box-shadow:0 6px 15px rgba(0,0,0,0.2);
+  }
+}
+
+@keyframes contadorCarrinho{
+  0%{
+    transform:scale(1);
+  }
+
+  45%{
+    transform:scale(1.55);
+  }
+
+  100%{
+    transform:scale(1);
   }
 }
 
