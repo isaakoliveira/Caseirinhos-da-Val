@@ -24,6 +24,7 @@
   <nav>
     <button onclick="mostrarAba('doces')">&#127854; Doces</button>
     <button onclick="mostrarAba('bolos')">&#127874; Bolos</button>
+    <button onclick="mostrarAba('carrinho')">&#128722; Carrinho (<span id="contadorCarrinho">0</span>)</button>
     <button onclick="mostrarAba('contato')">&#128222; Contato</button>
   </nav>
 
@@ -39,6 +40,7 @@
           <p class="preco" id="preco-doce-leite-coco"></p>
           <button class="btn" onclick="abrirPix('doceLeiteCoco')">&#128179; Pagar agora</button>
           <a class="btn btn-pedido" href="#" onclick="fazerPedidoWhatsApp('doceLeiteCoco'); return false;">Fazer pedido pelo WhatsApp</a>
+          <button class="btn btn-carrinho" onclick="adicionarAoCarrinho('doceLeiteCoco')">Adicionar ao carrinho</button>
         </div>
       </div>
 
@@ -50,6 +52,7 @@
           <p class="preco" id="preco-doce-leite-goiabada"></p>
           <button class="btn" onclick="abrirPix('doceLeiteGoiabada')">&#128179; Pagar agora</button>
           <a class="btn btn-pedido" href="#" onclick="fazerPedidoWhatsApp('doceLeiteGoiabada'); return false;">Fazer pedido pelo WhatsApp</a>
+          <button class="btn btn-carrinho" onclick="adicionarAoCarrinho('doceLeiteGoiabada')">Adicionar ao carrinho</button>
         </div>        
       </div>
 
@@ -61,6 +64,7 @@
           <p class="preco" id="preco-doce-leite"></p>
           <button class="btn" onclick="abrirPix('doceLeite')">&#128179; Pagar agora</button>
           <a class="btn btn-pedido" href="#" onclick="fazerPedidoWhatsApp('doceLeite'); return false;">Fazer pedido pelo WhatsApp</a>
+          <button class="btn btn-carrinho" onclick="adicionarAoCarrinho('doceLeite')">Adicionar ao carrinho</button>
         </div>
       </div>
 
@@ -72,6 +76,7 @@
           <p class="preco" id="preco-pudim-18"></p>
           <button class="btn" onclick="abrirPix('pudim18')">&#128179; Pagar agora</button>
           <a class="btn btn-pedido" href="#" onclick="fazerPedidoWhatsApp('pudim18'); return false;">Fazer pedido pelo WhatsApp</a>
+          <button class="btn btn-carrinho" onclick="adicionarAoCarrinho('pudim18')">Adicionar ao carrinho</button>
         </div>
       </div>
 
@@ -83,6 +88,7 @@
           <p class="preco" id="preco-pudim-35"></p>
           <button class="btn" onclick="abrirPix('pudim35')">&#128179; Pagar agora</button>
           <a class="btn btn-pedido" href="#" onclick="fazerPedidoWhatsApp('pudim35'); return false;">Fazer pedido pelo WhatsApp</a>
+          <button class="btn btn-carrinho" onclick="adicionarAoCarrinho('pudim35')">Adicionar ao carrinho</button>
         </div>
       </div>
     </div>
@@ -99,6 +105,7 @@
           <p class="preco" id="preco-bolo-simples"></p>
           <button class="btn" onclick="abrirPix('boloSimples')">&#128179; Pagar agora</button>
           <a class="btn btn-pedido" href="#" onclick="fazerPedidoWhatsApp('boloSimples'); return false;">Fazer pedido pelo WhatsApp</a>
+          <button class="btn btn-carrinho" onclick="adicionarAoCarrinho('boloSimples')">Adicionar ao carrinho</button>
         </div>
       </div>
 
@@ -110,6 +117,7 @@
           <p class="preco" id="preco-bolo-milho-palha"></p>
           <button class="btn" onclick="abrirPix('boloMilhoPalha')">&#128179; Pagar agora</button>
           <a class="btn btn-pedido" href="#" onclick="fazerPedidoWhatsApp('boloMilhoPalha'); return false;">Fazer pedido pelo WhatsApp</a>
+          <button class="btn btn-carrinho" onclick="adicionarAoCarrinho('boloMilhoPalha')">Adicionar ao carrinho</button>
         </div>
       </div>
 
@@ -121,6 +129,7 @@
           <p class="preco" id="preco-bolo-chocolate-50"></p>
           <button class="btn" onclick="abrirPix('boloChocolate50')">&#128179; Pagar agora</button>
           <a class="btn btn-pedido" href="#" onclick="fazerPedidoWhatsApp('boloChocolate50'); return false;">Fazer pedido pelo WhatsApp</a>
+          <button class="btn btn-carrinho" onclick="adicionarAoCarrinho('boloChocolate50')">Adicionar ao carrinho</button>
         </div>
       </div>
 
@@ -132,6 +141,7 @@
           <p class="preco" id="preco-bolo-leite-coco"></p>
           <button class="btn" onclick="abrirPix('boloLeiteCoco')">&#128179; Pagar agora</button>
           <a class="btn btn-pedido" href="#" onclick="fazerPedidoWhatsApp('boloLeiteCoco'); return false;">Fazer pedido pelo WhatsApp</a>
+          <button class="btn btn-carrinho" onclick="adicionarAoCarrinho('boloLeiteCoco')">Adicionar ao carrinho</button>
         </div>
       </div>
 
@@ -143,6 +153,7 @@
           <p class="preco" id="preco-bolo-ovos"></p>
           <button class="btn" onclick="abrirPix('boloOvos')">&#128179; Pagar agora</button>
           <a class="btn btn-pedido" href="#" onclick="fazerPedidoWhatsApp('boloOvos'); return false;">Fazer pedido pelo WhatsApp</a>
+          <button class="btn btn-carrinho" onclick="adicionarAoCarrinho('boloOvos')">Adicionar ao carrinho</button>
         </div>
       </div>
 
@@ -154,6 +165,7 @@
           <p class="preco" id="preco-bolo-formigueiro"></p>
           <button class="btn" onclick="abrirPix('boloFormigueiro')">&#128179; Pagar agora</button>
           <a class="btn btn-pedido" href="#" onclick="fazerPedidoWhatsApp('boloFormigueiro'); return false;">Fazer pedido pelo WhatsApp</a>
+          <button class="btn btn-carrinho" onclick="adicionarAoCarrinho('boloFormigueiro')">Adicionar ao carrinho</button>
         </div>
       </div>
 
@@ -165,6 +177,32 @@
           <p class="preco" id="preco-bolo-mesclado"></p>
           <button class="btn" onclick="abrirPix('boloMesclado')">&#128179; Pagar agora</button>
           <a class="btn btn-pedido" href="#" onclick="fazerPedidoWhatsApp('boloMesclado'); return false;">Fazer pedido pelo WhatsApp</a>
+          <button class="btn btn-carrinho" onclick="adicionarAoCarrinho('boloMesclado')">Adicionar ao carrinho</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="carrinho">
+    <h2>&#128722; Carrinho</h2>
+
+    <div class="container">
+      <div class="card carrinho-card">
+        <div class="card-content">
+          <h3>Seu pedido</h3>
+
+          <p id="carrinhoVazio" class="carrinho-vazio">Seu carrinho esta vazio.</p>
+          <div id="listaCarrinho" class="lista-carrinho"></div>
+
+          <p class="total-carrinho">Total: <span id="totalCarrinho">R$ 0,00</span></p>
+
+          <div class="carrinho-acoes">
+            <button class="btn" onclick="finalizarCarrinhoWhatsApp()">Finalizar pelo WhatsApp</button>
+            <button class="btn btn-secundario" onclick="abrirPixCarrinho()">Pagar total no PIX</button>
+            <button class="btn btn-limpar" onclick="limparCarrinho()">Limpar carrinho</button>
+          </div>
+
+          <p id="carrinhoStatus" class="carrinho-status"></p>
         </div>
       </div>
     </div>
