@@ -18,7 +18,7 @@ const PRODUTOS = {
   },
   doceLeite: {
     nome: "Doce de Leite Comum (pote 350 ml)",
-    preco: 10,
+    preco: 12,
     elementoPreco: "preco-doce-leite"
   },
   pudim18: {
