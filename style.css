@@ -168,6 +168,16 @@ h2{
   box-shadow:0 0 20px rgba(43,224,109,0.7);
 }
 
+.btn:disabled{
+  opacity:0.55;
+  cursor:not-allowed;
+}
+
+.btn:disabled:hover{
+  transform:none;
+  box-shadow:none;
+}
+
 .contato-card{
   width:500px;
   max-width:90%;
@@ -254,6 +264,34 @@ h2{
   color:#333;
   font-size:13px;
   resize:none;
+}
+
+.comprovante-area{
+  margin:0 0 14px;
+  padding:12px;
+  border:1px dashed #fd73a1;
+  border-radius:12px;
+  background:#fff6fa;
+}
+
+.comprovante-input{
+  position:absolute;
+  width:1px;
+  height:1px;
+  opacity:0;
+}
+
+.btn-comprovante{
+  background:linear-gradient(45deg,#ff4081,#fd73a1);
+  width:100%;
+}
+
+.comprovante-nome{
+  margin-top:10px;
+  color:#555;
+  font-size:14px;
+  line-height:1.3;
+  word-break:break-word;
 }
 
 .pix-acoes{
