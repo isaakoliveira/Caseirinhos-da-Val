@@ -143,7 +143,7 @@ function fazerPedidoWhatsApp(codigoProduto){
   window.open(link, "_blank");
 }
 
-function adicionarAoCarrinho(codigoProduto){
+function adicionarAoCarrinho(codigoProduto, botao){
   const produto = PRODUTOS[codigoProduto];
 
   if(!produto){
@@ -156,7 +156,51 @@ function adicionarAoCarrinho(codigoProduto){
 
   carrinho[codigoProduto]++;
   atualizarCarrinho();
+  animarProdutoAdicionado(botao);
   mostrarStatusCarrinho(produto.nome + " adicionado ao carrinho.");
+}
+
+function animarProdutoAdicionado(botao){
+  const contadorCarrinho = document.getElementById("contadorCarrinho");
+
+  if(botao){
+    const textoOriginal = botao.dataset.textoOriginal || botao.textContent;
+    const cardProduto = botao.closest(".card");
+
+    botao.dataset.textoOriginal = textoOriginal;
+    clearTimeout(botao.timerAdicionado);
+    botao.textContent = "Adicionado!";
+    botao.classList.remove("adicionado");
+    void botao.offsetWidth;
+    botao.classList.add("adicionado");
+
+    if(cardProduto){
+      cardProduto.classList.remove("produto-adicionado");
+      void cardProduto.offsetWidth;
+      cardProduto.classList.add("produto-adicionado");
+    }
+
+    botao.timerAdicionado = setTimeout(function(){
+      botao.textContent = textoOriginal;
+      botao.classList.remove("adicionado");
+      delete botao.dataset.textoOriginal;
+
+      if(cardProduto){
+        cardProduto.classList.remove("produto-adicionado");
+      }
+    }, 1200);
+  }
+
+  if(contadorCarrinho){
+    clearTimeout(contadorCarrinho.timerAnimacao);
+    contadorCarrinho.classList.remove("contador-animado");
+    void contadorCarrinho.offsetWidth;
+    contadorCarrinho.classList.add("contador-animado");
+
+    contadorCarrinho.timerAnimacao = setTimeout(function(){
+      contadorCarrinho.classList.remove("contador-animado");
+    }, 800);
+  }
 }
 
 function alterarQuantidadeCarrinho(codigoProduto, quantidade){
