@@ -178,6 +178,7 @@ function animarProdutoAdicionado(botao){
       cardProduto.classList.remove("produto-adicionado");
       void cardProduto.offsetWidth;
       cardProduto.classList.add("produto-adicionado");
+      animarImagemParaCarrinho(cardProduto, contadorCarrinho);
     }
 
     botao.timerAdicionado = setTimeout(function(){
@@ -201,6 +202,39 @@ function animarProdutoAdicionado(botao){
       contadorCarrinho.classList.remove("contador-animado");
     }, 800);
   }
+}
+
+function animarImagemParaCarrinho(cardProduto, contadorCarrinho){
+  const imagemProduto = cardProduto ? cardProduto.querySelector("img") : null;
+  const destinoCarrinho = contadorCarrinho ? contadorCarrinho.closest("button") || contadorCarrinho : null;
+
+  if(!imagemProduto || !destinoCarrinho){
+    return;
+  }
+
+  const inicio = imagemProduto.getBoundingClientRect();
+  const fim = destinoCarrinho.getBoundingClientRect();
+  const imagemVoando = imagemProduto.cloneNode(true);
+  const movimentoX = fim.left + fim.width / 2 - inicio.left - inicio.width / 2;
+  const movimentoY = fim.top + fim.height / 2 - inicio.top - inicio.height / 2;
+
+  imagemVoando.className = "imagem-voando-carrinho";
+  imagemVoando.style.left = inicio.left + "px";
+  imagemVoando.style.top = inicio.top + "px";
+  imagemVoando.style.width = inicio.width + "px";
+  imagemVoando.style.height = inicio.height + "px";
+
+  document.body.appendChild(imagemVoando);
+
+  requestAnimationFrame(function(){
+    imagemVoando.style.transform =
+      "translate(" + movimentoX + "px, " + movimentoY + "px) scale(0.18)";
+    imagemVoando.style.opacity = "0";
+  });
+
+  setTimeout(function(){
+    imagemVoando.remove();
+  }, 900);
 }
 
 function alterarQuantidadeCarrinho(codigoProduto, quantidade){
