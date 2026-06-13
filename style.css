@@ -163,6 +163,11 @@ h2{
   background:linear-gradient(45deg,#ff4081,#fd73a1);
 }
 
+.btn-carrinho{
+  margin-top:10px;
+  background:linear-gradient(45deg,#7c4dff,#5e35b1);
+}
+
 .btn:hover{
   transform:scale(1.08);
   box-shadow:0 0 20px rgba(43,224,109,0.7);
@@ -212,6 +217,117 @@ h2{
   color:#ff4081;
   font-weight:bold;
   text-decoration:none;
+}
+
+.carrinho-card{
+  width:650px;
+  max-width:95%;
+}
+
+.lista-carrinho{
+  margin-top:15px;
+}
+
+.item-carrinho{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  padding:12px 0;
+  border-bottom:1px solid #ffd1e0;
+  text-align:left;
+}
+
+.item-carrinho-info{
+  flex:1;
+}
+
+.item-carrinho-info strong{
+  color:#ff4081;
+  display:block;
+  margin-bottom:4px;
+}
+
+.item-carrinho-info span{
+  color:#555;
+  font-size:14px;
+}
+
+.item-carrinho-controles{
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+
+.btn-quantidade,
+.btn-remover{
+  border:none;
+  color:white;
+  font-weight:bold;
+  cursor:pointer;
+  transition:0.3s;
+}
+
+.btn-quantidade{
+  width:32px;
+  height:32px;
+  border-radius:50%;
+  background:#ff4081;
+  font-size:18px;
+}
+
+.quantidade-carrinho{
+  min-width:24px;
+  text-align:center;
+  font-weight:bold;
+  color:#333;
+}
+
+.btn-remover{
+  padding:8px 10px;
+  border-radius:8px;
+  background:#d81b60;
+}
+
+.btn-quantidade:hover,
+.btn-remover:hover{
+  transform:scale(1.08);
+}
+
+.carrinho-vazio{
+  color:#555;
+  font-size:17px;
+  margin:15px 0;
+}
+
+.total-carrinho{
+  margin:20px 0;
+  font-size:24px;
+  color:#000;
+  font-weight:bold;
+}
+
+.total-carrinho span{
+  color:#d81b60;
+}
+
+.carrinho-acoes{
+  display:flex;
+  justify-content:center;
+  gap:10px;
+  flex-wrap:wrap;
+}
+
+.btn-limpar{
+  background:linear-gradient(45deg,#777,#444);
+}
+
+.carrinho-status{
+  min-height:20px;
+  margin-top:12px;
+  color:#d81b60;
+  font-size:14px;
+  font-weight:bold;
 }
 
 .pix-modal{
@@ -398,5 +514,19 @@ footer{
 
   .card{
     width:90%;
+  }
+
+  .item-carrinho{
+    align-items:flex-start;
+    flex-direction:column;
+  }
+
+  .item-carrinho-controles{
+    width:100%;
+    justify-content:center;
+  }
+
+  .carrinho-acoes .btn{
+    width:100%;
   }
 }
