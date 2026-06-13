@@ -2,6 +2,8 @@ const PIX_CHAVE = "10432316418";
 const PIX_NOME_RECEBEDOR = "CASEIRINHOS DA VAL";
 const PIX_CIDADE = "PICUI";
 const WHATSAPP_VAL = "5583982168114";
+let produtoPixAtual = null;
+
 const PRODUTOS = {
   doceLeiteCoco: {
     nome: "Doce de Leite com Coco (pote 350 ml)",
@@ -65,8 +67,6 @@ const PRODUTOS = {
   }
 };
 
-let produtoAtualSelecionado = null;
-
 preencherPrecos();
 
 function mostrarAba(aba){
@@ -97,15 +97,16 @@ function preencherPrecos(){
 
 function abrirPix(codigoProduto){
   const produto = PRODUTOS[codigoProduto];
+
+  if(!produto){
+    return;
+  }
+
   const precoFormatado = formatarMoeda(produto.preco);
   const pixCopiaCola = montarPixCopiaECola(produto, codigoProduto);
-  const mensagem = "Ola, ja fiz o pagamento do " + produto.nome + " no valor de " + precoFormatado + ".";
-
-  produtoAtualSelecionado = {
-    codigo: codigoProduto,
+  produtoPixAtual = {
     produto: produto,
-    precoFormatado: precoFormatado,
-    mensagem: mensagem
+    precoFormatado: precoFormatado
   };
 
   document.getElementById("pixModal").style.display = "flex";
@@ -114,14 +115,9 @@ function abrirPix(codigoProduto){
   document.getElementById("pixCopiaCola").value = pixCopiaCola;
   document.getElementById("pixQrCode").src =
     "https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=" + encodeURIComponent(pixCopiaCola);
-  document.getElementById("pixStatus").textContent = "";
+  document.getElementById("pixStatus").textContent = "Escolha o comprovante para enviar pelo WhatsApp.";
 
-  document.getElementById("btnWhatsapp").href =
-    "https://wa.me/" + WHATSAPP_VAL + "?text=" + encodeURIComponent(mensagem);
-  
-  document.getElementById("inputComprovante").value = "";
-  document.getElementById("previewComprovante").style.display = "none";
-  document.getElementById("btnEnviarComprovante").style.display = "none";
+  prepararComprovante();
 }
 
 function formatarMoeda(valor){
@@ -138,6 +134,98 @@ function fazerPedidoWhatsApp(codigoProduto){
   const link = "https://wa.me/" + WHATSAPP_VAL + "?text=" + encodeURIComponent(mensagem);
 
   window.open(link, "_blank");
+}
+
+function prepararComprovante(){
+  const campoComprovante = document.getElementById("comprovantePix");
+  const nomeComprovante = document.getElementById("nomeComprovante");
+  const botaoWhatsapp = document.getElementById("btnWhatsapp");
+
+  if(campoComprovante){
+    campoComprovante.value = "";
+  }
+
+  if(nomeComprovante){
+    nomeComprovante.textContent = "Nenhum comprovante selecionado";
+  }
+
+  if(botaoWhatsapp){
+    botaoWhatsapp.disabled = true;
+  }
+}
+
+function atualizarComprovante(){
+  const campoComprovante = document.getElementById("comprovantePix");
+  const nomeComprovante = document.getElementById("nomeComprovante");
+  const botaoWhatsapp = document.getElementById("btnWhatsapp");
+  const status = document.getElementById("pixStatus");
+  const arquivo = campoComprovante && campoComprovante.files ? campoComprovante.files[0] : null;
+
+  if(!arquivo){
+    if(nomeComprovante){
+      nomeComprovante.textContent = "Nenhum comprovante selecionado";
+    }
+
+    if(botaoWhatsapp){
+      botaoWhatsapp.disabled = true;
+    }
+
+    return;
+  }
+
+  if(nomeComprovante){
+    nomeComprovante.textContent = "Selecionado: " + arquivo.name;
+  }
+
+  if(botaoWhatsapp){
+    botaoWhatsapp.disabled = false;
+  }
+
+  if(status){
+    status.textContent = "Comprovante pronto para enviar.";
+  }
+}
+
+function enviarComprovanteWhatsApp(){
+  const campoComprovante = document.getElementById("comprovantePix");
+  const status = document.getElementById("pixStatus");
+  const arquivo = campoComprovante && campoComprovante.files ? campoComprovante.files[0] : null;
+
+  if(!produtoPixAtual){
+    if(status){
+      status.textContent = "Abra o pagamento de um produto primeiro.";
+    }
+
+    return;
+  }
+
+  if(!arquivo){
+    if(status){
+      status.textContent = "Escolha o comprovante antes de enviar.";
+    }
+
+    return;
+  }
+
+  const mensagem = montarMensagemComprovante(
+    produtoPixAtual.produto,
+    produtoPixAtual.precoFormatado,
+    arquivo
+  );
+  const link = "https://wa.me/" + WHATSAPP_VAL + "?text=" + encodeURIComponent(mensagem);
+
+  if(status){
+    status.textContent = "WhatsApp aberto. Anexe o comprovante na conversa antes de enviar.";
+  }
+
+  window.open(link, "_blank");
+}
+
+function montarMensagemComprovante(produto, precoFormatado, arquivo){
+  return "Ola, Val! Ja fiz o pagamento do " + produto.nome +
+    " no valor de " + precoFormatado +
+    ". Meu comprovante esta selecionado: " + arquivo.name +
+    ". Vou enviar o comprovante por aqui.";
 }
 
 function montarPixCopiaECola(produto, codigoProduto){
@@ -212,72 +300,6 @@ function copiarComMetodoAntigo(){
   }
 }
 
-function selecionarComprovante(){
-  document.getElementById("inputComprovante").click();
-}
-
-function procesarComprovante(event){
-  const arquivo = event.target.files[0];
-  
-  if(!arquivo){
-    return;
-  }
-
-  const tiposPermitidos = ["image/jpeg", "image/png", "image/gif", "image/webp"];
-  if(!tiposPermitidos.includes(arquivo.type)){
-    document.getElementById("pixStatus").textContent = "Por favor, envie uma imagem valida (JPEG, PNG, GIF ou WEBP)";
-    return;
-  }
-
-  const leitor = new FileReader();
-  leitor.onload = function(e){
-    const previewImg = document.getElementById("previewComprovante");
-    previewImg.src = e.target.result;
-    previewImg.style.display = "block";
-    document.getElementById("btnEnviarComprovante").style.display = "inline-block";
-    document.getElementById("pixStatus").textContent = "";
-  };
-  leitor.readAsDataURL(arquivo);
-}
-
-function enviarComprovanteWhatsApp(){
-  if(!produtoAtualSelecionado){
-    document.getElementById("pixStatus").textContent = "Erro: produto nao selecionado";
-    return;
-  }
-
-  const produto = produtoAtualSelecionado.produto;
-  const precoFormatado = produtoAtualSelecionado.precoFormatado;
-  
-  const mensagem = "Oi Val! 👋\n\nSegue o comprovante do pagamento PIX:\n\n" +
-    "📦 Produto: " + produto.nome + "\n" +
-    "💰 Valor: " + precoFormatado + "\n" +
-    "✅ Pagamento confirmado!\n\n" +
-    "Pode processar meu pedido? Obrigado!";
-
-  const imagemInput = document.getElementById("inputComprovante");
-  
-  if(imagemInput.files.length === 0){
-    document.getElementById("pixStatus").textContent = "Por favor, selecione uma imagem do comprovante";
-    return;
-  }
-
-  const arquivo = imagemInput.files[0];
-  const leitor = new FileReader();
-  
-  leitor.onload = function(e){
-    const base64 = e.target.result.split(",")[1];
-    
-    const link = "https://wa.me/" + WHATSAPP_VAL + "?text=" + encodeURIComponent(mensagem);
-    window.open(link, "_blank");
-    
-    document.getElementById("pixStatus").textContent = "Mensagem aberta no WhatsApp! 📱 Cole a imagem do comprovante la.";
-  };
-  
-  leitor.readAsDataURL(arquivo);
-}
-
 function fecharPix(){
   document.getElementById("pixModal").style.display = "none";
-  produtoAtualSelecionado = null;
 }
