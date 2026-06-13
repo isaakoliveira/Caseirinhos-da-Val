@@ -57,7 +57,7 @@ header p{
 }
 
 nav{
-  background:rgb(255, 5, 200);
+  background:rgb(255, 5, 160);
   display:flex;
   justify-content:center;
   gap:20px;
