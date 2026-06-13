@@ -210,9 +210,15 @@
 
       <textarea id="pixCopiaCola" class="pix-copia" readonly aria-label="Chave PIX aleatoria copia e cola"></textarea>
 
+      <div class="comprovante-area">
+        <input id="comprovantePix" class="comprovante-input" type="file" accept="image/*,.pdf" onchange="atualizarComprovante()">
+        <label class="btn btn-comprovante" for="comprovantePix">Escolher comprovante</label>
+        <p id="nomeComprovante" class="comprovante-nome">Nenhum comprovante selecionado</p>
+      </div>
+
       <div class="pix-acoes">
         <button class="btn btn-secundario" onclick="copiarPix()">Copiar PIX</button>
-        <a id="btnWhatsapp" class="btn" target="_blank">Enviar comprovante</a>
+        <button id="btnWhatsapp" class="btn" type="button" onclick="enviarComprovanteWhatsApp()" disabled>Enviar comprovante</button>
       </div>
 
       <p id="pixStatus" class="pix-status"></p>
