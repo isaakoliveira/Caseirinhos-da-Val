@@ -13,7 +13,7 @@ body{
 }
 
 header{
- background:linear-gradient(90deg,rgba(255, 25, 197, 0.658),rgb(255, 05, 122));
+  background:linear-gradient(90deg,rgba(255, 0, 140, 0.897),rgb(255, 05, 122));
   color:white;
   padding:22px 20px;
   text-align:left;
