@@ -169,7 +169,7 @@ h2{
 }
 
 .btn-carrinho.adicionado{
-  background:linear-gradient(45deg,#2be06d,#1ebe5d);
+  background: rgb(255, 000, 000);
   animation:produtoAdicionado 0.75s ease;
   box-shadow:0 0 0 6px rgba(43,224,109,0.18),0 0 22px rgba(43,224,109,0.75);
 }
