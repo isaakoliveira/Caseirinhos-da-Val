@@ -22,7 +22,7 @@ const PRODUTOS = {
     elementoPreco: "preco-doce-leite"
   },
   pudim18: {
-    nome: "Pudim Pequeno (600g)",
+    nome: "Pudim Pequeno (500g)",
     preco: 18,
     elementoPreco: "preco-pudim-18"
   },
