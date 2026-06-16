@@ -276,12 +276,12 @@ h2 {
     text-decoration: none;
 }
 
-.carrinho-card {
+<center>.carrinho-card {
     width: 100%;
     max-width: 1200px;
     margin: 0 auto;
-    padding: 28px 20px;
-}
+    padding: 28px 2000px;
+}</center>
 
 .lista-carrinho {
     margin-top: 20px;
