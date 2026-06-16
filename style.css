@@ -103,9 +103,9 @@ h2 {
 .container {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-    gap: 5px;
+    gap: 15px;
     max-width: 1000px;
-    margin: 0 auto;
+    margin: 200px;
 }
 
 .card {
