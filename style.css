@@ -253,10 +253,10 @@ h2 {
 }
 
 .carrinho-card{
-  width:95%;
-  max-width:1000px;
+  width:100%;
+  max-width:1200px;
   margin:0 auto;
-  padding:10px;
+  padding:20px 14px;
 }
 
 .lista-carrinho{
