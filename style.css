@@ -107,26 +107,27 @@ h2 {
     gap: 18px;
 }
 
-/* Only affect product cards (doces and bolos). Do not change cart or contato cards */
+/* Product lists: show products in a grid with 2 columns (2 items per row). Do NOT change cart or contato cards */
 section#doces .container,
 section#bolos .container {
-    /* keep products side-by-side; allow horizontal scroll on small screens */
-    flex-wrap: nowrap;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-    gap: 14px;
+    display: grid;
+    grid-template-columns: repeat(2, 220px);
+    gap: 18px;
+    justify-content: center;
+    align-items: start;
+    max-width: 760px;
+    margin: 0 auto;
     padding-bottom: 8px;
 }
 
 section#doces .card,
 section#bolos .card {
-    width: 160px;
-    min-width: 160px;
+    width: 220px;
 }
 
 section#doces .card>img,
 section#bolos .card>img {
-    height: 120px;
+    height: 140px;
 }
 
 section#doces .card .card-content,
@@ -619,16 +620,22 @@ footer {
     header p {
         font-size: 13px;
     }
-    /* product card sizes on small screens */
+    /* product grid on small screens: keep two columns like marketplace apps */
+    section#doces .container,
+    section#bolos .container {
+        grid-template-columns: repeat(2, 1fr);
+        max-width: 100%;
+        gap: 12px;
+    }
     section#doces .card,
     section#bolos .card {
-        width: 140px;
-        min-width: 140px;
+        width: 100%;
     }
     section#doces .card>img,
     section#bolos .card>img {
-        height: 110px;
+        height: 120px;
     }
+    /* keep other card defaults for non-product cards */
     .card {
         width: 180px;
     }
