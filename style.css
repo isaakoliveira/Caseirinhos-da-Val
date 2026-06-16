@@ -33,9 +33,9 @@ header{
   width:200px;
   height:200px;
   object-fit:contain;
-  border-radius:50%;
+  border-radius:60%;
   background:white;
-  padding:4px;
+  padding:6px;
   box-shadow:0 4px 12px rgba(0,0,0,0.25);
   animation:topo 1s ease;
   flex-shrink:0;
@@ -47,13 +47,13 @@ header{
 
 header h1{
   font-family:Georgia, 'Times New Roman', Times, serif, 'Times New Roman', Times, serif;
-  font-size:32px;
+  font-size:50px;
   animation:topo 1s ease;
 }
 
 header p{
-  margin-top:6px;
-  font-size:14px;
+  margin-top:10px;
+  font-size:20px;
 }
 
 nav{
