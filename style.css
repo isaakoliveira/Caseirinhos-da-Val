@@ -107,6 +107,43 @@ h2 {
     gap: 18px;
 }
 
+/* Only affect product cards (doces and bolos). Do not change cart or contato cards */
+section#doces .container,
+section#bolos .container {
+    /* keep products side-by-side; allow horizontal scroll on small screens */
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    gap: 14px;
+    padding-bottom: 8px;
+}
+
+section#doces .card,
+section#bolos .card {
+    width: 160px;
+    min-width: 160px;
+}
+
+section#doces .card>img,
+section#bolos .card>img {
+    height: 120px;
+}
+
+section#doces .card .card-content,
+section#bolos .card .card-content {
+    padding: 10px;
+}
+
+section#doces .card-content h3,
+section#bolos .card-content h3 {
+    font-size: 16px;
+}
+
+section#doces .preco,
+section#bolos .preco {
+    font-size: 15px;
+}
+
 .card {
     width: 210px;
     background: white;
@@ -581,6 +618,16 @@ footer {
     }
     header p {
         font-size: 13px;
+    }
+    /* product card sizes on small screens */
+    section#doces .card,
+    section#bolos .card {
+        width: 140px;
+        min-width: 140px;
+    }
+    section#doces .card>img,
+    section#bolos .card>img {
+        height: 110px;
     }
     .card {
         width: 180px;
