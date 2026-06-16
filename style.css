@@ -105,12 +105,12 @@ h2 {
     grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
     gap: 15px;
     max-width: 1000px;
-    margin: 200px;
+    margin: 0 auto;
 }
 
 .card {
     width: 100%;
-    max-width: 190px;
+    max-width: 150px;
     background: white;
     border-radius: 12px;
     overflow: hidden;
