@@ -252,23 +252,26 @@ h2 {
     text-decoration: none;
 }
 
-.carrinho-card {
-    width: 500px;
-    max-width: 95%;
+.carrinho-card{
+  width:100%;
+  max-width:1000px;
+  margin:0 auto;
+  padding:20px;
 }
 
-.lista-carrinho {
-    margin-top: 10px;
+.lista-carrinho{
+  margin-top:10px;
+  width:100%;
 }
 
-.item-carrinho {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 8px;
-    padding: 8px 0;
-    border-bottom: 1px solid #ffd1e0;
-    text-align: left;
+.item-carrinho{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:15px;
+  padding:12px 0;
+  border-bottom:1px solid #ffd1e0;
+  text-align:left;
 }
 
 .item-carrinho-info {
