@@ -101,48 +101,46 @@ h2 {
 }
 
 .container {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-    gap: 12px;
-    max-width: 1200px;
-    margin: 0 auto;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 18px;
 }
 
 .card {
-    width: 100%;
-    max-width: 190px;
+    width: 210px;
     background: white;
-    border-radius: 12px;
+    border-radius: 14px;
     overflow: hidden;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-    transition: 0.3s;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    transition: 0.4s;
     animation: subir 0.8s ease;
 }
 
 .card:hover {
-    transform: translateY(-4px) scale(1.02);
+    transform: translateY(-6px) scale(1.02);
 }
 
 .card>img {
     width: 100%;
-    height: 140px;
+    height: 160px;
     object-fit: cover;
 }
 
 .card-content {
-    padding: 10px;
+    padding: 14px;
     text-align: center;
 }
 
 .card-content h3 {
     color: #ff4081;
     margin-bottom: 6px;
-    font-size: 15px;
+    font-size: 18px;
 }
 
 .preco {
-    font-size: 15px;
-    margin-bottom: 8px;
+    font-size: 17px;
+    margin-bottom: 10px;
     color: #000;
     font-weight: bold;
 }
