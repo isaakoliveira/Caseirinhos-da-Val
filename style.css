@@ -207,7 +207,7 @@ section#bolos .preco {
 }
 
 .btn-carrinho.adicionado {
-    background: rgb(255, 000, 000);
+    background: rgb(255, 000, 150);
     animation: produtoAdicionado 0.75s ease;
     box-shadow: 0 0 0 4px rgba(43, 224, 109, 0.18), 0 0 14px rgba(43, 224, 109, 0.75);
 }
