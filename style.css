@@ -643,3 +643,21 @@ footer {
         height: 135px;
     }
 }
+section#contato,
+    section#carrinho {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+    .contato-card,
+    .carrinho-card {
+        width: 100%;
+        max-width: 520px;
+    }
+    .item-carrinho {
+        align-items: flex-start;
+        flex-wrap: wrap;
+    }
+    .item-carrinho-controles {
+        justify-content: flex-end;
+        width: 100%;
+    }
