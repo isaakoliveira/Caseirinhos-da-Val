@@ -385,12 +385,20 @@ function finalizarCarrinhoWhatsApp(){
   }
 
   const mensagem = "Ola, quero fazer este pedido:\n\n" +
-    montarResumoCarrinhoTexto() +
-    "\n\nTotal: " + formatarMoeda(calcularTotalCarrinho()) + ".";
-  const link = "https://wa.me/" + WHATSAPP_VAL + "?text=" + encodeURIComponent(mensagem);
+  montarResumoCarrinhoTexto() +
+  "\n\nTotal: " + formatarMoeda(calcularTotalCarrinho()) + ".";
 
-  window.open(link, "_blank");
-}
+const link = "https://wa.me/" + WHATSAPP_VAL + "?text=" + encodeURIComponent(mensagem);
+
+window.open(link, "_blank");
+
+Object.keys(carrinho).forEach(function(codigoProduto){
+  delete carrinho[codigoProduto];
+});
+
+salvarCarrinho();
+atualizarCarrinho();
+mostrarStatusCarrinho("Pedido enviado! Carrinho limpo.");
 
 function abrirPixCarrinho(){
   const total = calcularTotalCarrinho();
