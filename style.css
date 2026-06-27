@@ -307,6 +307,14 @@ section#bolos .preco {
     text-align: left;
 }
 
+.item-carrinho-imagem {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 8px;
+    flex-shrink: 0;
+}
+
 .item-carrinho-info {
     flex: 1;
 }
