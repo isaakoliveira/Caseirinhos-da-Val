@@ -68,6 +68,7 @@ const PRODUTOS = {
   }
 };
 
+carregarCarrinho();
 preencherPrecos();
 atualizarCarrinho();
 
@@ -155,6 +156,7 @@ function adicionarAoCarrinho(codigoProduto, botao){
   }
 
   carrinho[codigoProduto]++;
+  salvarCarrinho();
   atualizarCarrinho();
   animarProdutoAdicionado(botao);
   mostrarStatusCarrinho(produto.nome + " adicionado ao carrinho.");
@@ -248,11 +250,13 @@ function alterarQuantidadeCarrinho(codigoProduto, quantidade){
     delete carrinho[codigoProduto];
   }
 
+  salvarCarrinho();
   atualizarCarrinho();
 }
 
 function removerDoCarrinho(codigoProduto){
   delete carrinho[codigoProduto];
+  salvarCarrinho();
   atualizarCarrinho();
 }
 
@@ -261,6 +265,7 @@ function limparCarrinho(){
     delete carrinho[codigoProduto];
   });
 
+  salvarCarrinho();
   atualizarCarrinho();
   mostrarStatusCarrinho("Carrinho limpo.");
 }
@@ -399,6 +404,7 @@ Object.keys(carrinho).forEach(function(codigoProduto){
 salvarCarrinho();
 atualizarCarrinho();
 mostrarStatusCarrinho("Pedido enviado! Carrinho limpo.");
+}
 
 function abrirPixCarrinho(){
   const total = calcularTotalCarrinho();
@@ -632,4 +638,24 @@ function copiarComMetodoAntigo(){
 
 function fecharPix(){
   document.getElementById("pixModal").style.display = "none";
+}
+
+function salvarCarrinho(){
+  localStorage.setItem("carrinhoCSV", JSON.stringify(carrinho));
+}
+
+function carregarCarrinho(){
+  const carrinhoSalvo = localStorage.getItem("carrinhoCSV");
+
+  if(carrinhoSalvo){
+    try{
+      const carrinhoCarregado = JSON.parse(carrinhoSalvo);
+
+      Object.keys(carrinhoCarregado).forEach(function(codigoProduto){
+        carrinho[codigoProduto] = carrinhoCarregado[codigoProduto];
+      });
+    }catch(erro){
+      console.error("Erro ao carregar carrinho:", erro);
+    }
+  }
 }
