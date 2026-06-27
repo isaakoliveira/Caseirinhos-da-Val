@@ -5,6 +5,22 @@ const WHATSAPP_VAL = "5583982168114";
 let produtoPixAtual = null;
 const carrinho = {};
 
+// Mapeamento de imagens dos produtos
+const IMAGENS_PRODUTOS = {
+  doceLeiteCoco: "doce-de-leite-com-coco-sem-risco-camera.jpeg",
+  doceLeiteGoiabada: "doce-de-leite-com-goiabada-sem-risco-camera.jpeg",
+  doceLeite: "doce-de-leite-sem-risco-camera-inpaint-wide.jpeg",
+  pudim18: "pudim 18,00$.jpeg",
+  pudim35: "pudim 35,00$.jpeg",
+  boloSimples: "bolo de leite.jpeg",
+  boloMilhoPalha: "Bolo de miho na palha.jpg",
+  boloChocolate50: "bolo de chocolate 50%25.jpeg",
+  boloLeiteCoco: "bolo de leite com coco 2.0.jpeg",
+  boloOvos: "bolo de ovos.jpeg",
+  boloFormigueiro: "bolo formigueiro.jpeg",
+  boloMesclado: "bolo mesclado.jpeg"
+};
+
 const PRODUTOS = {
   doceLeiteCoco: {
     nome: "Doce de Leite com Coco (pote 350 ml)",
@@ -225,6 +241,7 @@ function animarImagemParaCarrinho(cardProduto, contadorCarrinho){
   imagemVoando.style.top = inicio.top + "px";
   imagemVoando.style.width = inicio.width + "px";
   imagemVoando.style.height = inicio.height + "px";
+  imagemVoando.style.transition = "all 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94)";
 
   document.body.appendChild(imagemVoando);
 
@@ -236,7 +253,7 @@ function animarImagemParaCarrinho(cardProduto, contadorCarrinho){
 
   setTimeout(function(){
     imagemVoando.remove();
-  }, 900);
+  }, 1500);
 }
 
 function alterarQuantidadeCarrinho(codigoProduto, quantidade){
@@ -296,6 +313,11 @@ function atualizarCarrinho(){
     const itemCarrinho = document.createElement("div");
     itemCarrinho.className = "item-carrinho";
 
+    const imagemProduto = document.createElement("img");
+    imagemProduto.src = IMAGENS_PRODUTOS[item.codigo] || "";
+    imagemProduto.alt = item.produto.nome;
+    imagemProduto.className = "item-carrinho-imagem";
+
     const info = document.createElement("div");
     info.className = "item-carrinho-info";
 
@@ -345,6 +367,7 @@ function atualizarCarrinho(){
     controles.appendChild(aumentar);
     controles.appendChild(remover);
 
+    itemCarrinho.appendChild(imagemProduto);
     itemCarrinho.appendChild(info);
     itemCarrinho.appendChild(controles);
     listaCarrinho.appendChild(itemCarrinho);
