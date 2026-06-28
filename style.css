@@ -427,7 +427,7 @@ section#bolos .preco {
     border-radius: 10px;
     text-align: center;
     width: 230px;
-    height: 600px;
+    height: 750px;
     max-width: 100%;
     box-shadow: 0 5px 16px rgba(0, 0, 0, 0.2);
 }
@@ -438,8 +438,8 @@ section#bolos .preco {
 }
 
 .pix-qrcode {
-    width: 140px;
-    height: 140px;
+    width: 100px;
+    height: 100px;
     margin: 10px auto;
     display: block;
     border: 1px solid #ffd1e0;
