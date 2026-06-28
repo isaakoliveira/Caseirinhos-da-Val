@@ -423,10 +423,10 @@ section#bolos .preco {
 
 .pix-box {
     background: white;
-    padding: 5px;
+    padding: 50px;
     border-radius: 10px;
     text-align: center;
-    width: 100px;
+    width: 250px;
     max-width: 100%;
     box-shadow: 0 5px 16px rgba(0, 0, 0, 0.2);
 }
