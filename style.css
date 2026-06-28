@@ -427,19 +427,19 @@ section#bolos .preco {
     border-radius: 10px;
     text-align: center;
     width: 230px;
-    height: 750px;
+    height: 700px;
     max-width: 100%;
     box-shadow: 0 5px 16px rgba(0, 0, 0, 0.2);
 }
 
 .pix-box h2 {
-    margin-bottom: 12px;
-    font-size: 22px;
+    margin-bottom: 10px;
+    font-size: 18px;
 }
 
 .pix-qrcode {
-    width: 100px;
-    height: 100px;
+    width: 120px;
+    height: 120px;
     margin: 10px auto;
     display: block;
     border: 1px solid #ffd1e0;
@@ -450,13 +450,13 @@ section#bolos .preco {
 
 .pix-copia {
     width: 100%;
-    min-height: 80px;
+    min-height: 60px;
     margin-bottom: 8px;
     padding: 7px;
     border: 1px solid #ffd1e0;
     border-radius: 7px;
     color: #333;
-    font-size: 11px;
+    font-size: 12px;
     resize: none;
 }
 
