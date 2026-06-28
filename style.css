@@ -444,8 +444,8 @@ section#bolos .preco {
 }
 
 .pix-qrcode {
-    width: 120px;
-    height: 120px;
+    width: 150px;
+    height: 150px;
     margin: 10px auto;
     display: block;
     border: 1px solid #ffd1e0;
