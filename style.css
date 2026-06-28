@@ -425,9 +425,15 @@ section#bolos .preco {
     background: white;
     padding: 50px;
     border-radius: 10px;
+    padding: 24px;
+    border-radius: 14px;
     text-align: center;
     width: 230px;
     height: 700px;
+    width: 340px;
+    min-height: 520px;
+    max-height: 90vh;
+    overflow-y: auto;
     max-width: 100%;
     box-shadow: 0 5px 16px rgba(0, 0, 0, 0.2);
 }
