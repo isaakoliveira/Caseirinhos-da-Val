@@ -31,6 +31,7 @@ header {
 
 .logo-header {
     width: 200px;
+    justify-content: left;
     height: 200px;
     object-fit: contain;
     border-radius: 60%;
