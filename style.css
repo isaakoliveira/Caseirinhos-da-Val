@@ -23,7 +23,7 @@ header {
 .header-content {
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: left;
     gap: 12px;
     max-width: 760px;
     margin: 0 auto;
@@ -43,7 +43,7 @@ header {
 }
 
 .header-text {
-    text-align: left;
+    text-align: center;
 }
 
 header h1 {
