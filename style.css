@@ -426,7 +426,7 @@ section#bolos .preco {
     padding: 5px;
     border-radius: 10px;
     text-align: center;
-    width: 200px;
+    width: 100px;
     max-width: 100%;
     box-shadow: 0 5px 16px rgba(0, 0, 0, 0.2);
 }
