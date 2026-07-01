@@ -76,6 +76,7 @@ a {
     z-index: 1;
     max-width: 1120px;
     margin: 0 auto;
+    padding: 0 18px;
 }
 
 .hero-content {
@@ -155,8 +156,10 @@ header p {
 }
 
 .hero-copy {
-    width: 250px;
-    height: 150px;
+    width: 100%;
+    max-width: 250px;
+    height: auto;
+    min-height: 150px;
     align-self: stretch;
     display: flex;
     flex-direction: column;
@@ -168,6 +171,7 @@ header p {
     background: rgba(255, 255, 255, 0.13);
     box-shadow: 0 16px 40px rgba(91, 22, 64, 0.18);
     backdrop-filter: blur(10px);
+    margin: 0 auto;
 }
 
 .hero-copy p {
@@ -183,7 +187,7 @@ header p {
 
 .hero-highlights {
     display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
     gap: 10px;
     margin-top: 22px;
 }
@@ -243,12 +247,14 @@ nav button.active-nav {
 
 main {
     flex: 1;
+    width: 100%;
 }
 
 section {
     display: none;
     padding: 38px 18px 48px;
     animation: fade 0.45s ease;
+    width: 100%;
 }
 
 .active {
@@ -259,6 +265,7 @@ section {
     max-width: 860px;
     margin: 0 auto 24px;
     text-align: center;
+    padding: 0 18px;
 }
 
 .section-kicker {
@@ -282,7 +289,7 @@ h2 {
 }
 
 .container {
-    width: min(1120px, 100%);
+    width: min(1120px, 100% - 36px);
     margin: 0 auto;
     display: flex;
     flex-wrap: wrap;
@@ -295,10 +302,15 @@ h2 {
     grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
     align-items: stretch;
     gap: 22px;
+    width: 100%;
+    max-width: 1120px;
+    margin: 0 auto;
+    padding: 0 18px;
 }
 
 .card {
-    width: min(100%, 360px);
+    width: 100%;
+    max-width: 360px;
     background: var(--surface-strong);
     border: 1px solid rgba(244, 195, 215, 0.95);
     border-radius: 8px;
@@ -306,6 +318,7 @@ h2 {
     box-shadow: var(--shadow-card);
     transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
     animation: subir 0.58s ease both;
+    margin: 0 auto;
 }
 
 .produto-card {
@@ -502,6 +515,7 @@ h2 {
 .contato-card,
 .carrinho-card {
     width: min(100%, 720px);
+    margin: 0 auto;
 }
 
 .contato-card .card-content,
@@ -677,7 +691,7 @@ h2 {
 
 .carrinho-acoes {
     display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
     gap: 8px;
 }
 
@@ -790,7 +804,7 @@ h2 {
 
 .pix-acoes {
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
     gap: 8px;
 }
 
@@ -825,6 +839,7 @@ h2 {
     background: #fde6ee;
 }
 
+/* BOTÃO WHATSAPP - MELHORADO E CENTRALIZADO */
 .whatsapp-flutuante {
     position: fixed;
     right: 18px;
@@ -832,29 +847,39 @@ h2 {
     z-index: 60;
     display: grid;
     place-items: center;
-    width: 54px;
-    height: 54px;
+    width: 70px;
+    height: 70px;
     border-radius: 50%;
     color: white;
     background: var(--green);
     text-decoration: none;
     box-shadow: 0 14px 30px rgba(18, 132, 77, 0.28);
-    transition: transform 0.2s ease, background 0.2s ease;
-    font-size: 1.8rem;
+    transition: transform 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+    font-size: 2.4rem;
     line-height: 1;
+    padding: 0;
+    border: none;
+}
+
+.whatsapp-flutuante img {
+    width: 48px;
+    height: 48px;
+    object-fit: contain;
+    display: block;
 }
 
 .whatsapp-flutuante:hover,
 .whatsapp-flutuante:focus-visible {
-    transform: translateY(-3px);
+    transform: translateY(-4px) scale(1.08);
     background: var(--green-dark);
+    box-shadow: 0 18px 40px rgba(18, 132, 77, 0.38);
     outline: none;
 }
 
 .toast-site {
     position: fixed;
     left: 50%;
-    bottom: 20px;
+    bottom: 100px;
     z-index: 80;
     width: min(92vw, 420px);
     padding: 12px 16px;
@@ -980,91 +1005,190 @@ footer {
     }
 }
 
-@media (max-width: 860px) {
+/* RESPONSIVIDADE */
+@media (max-width: 1024px) {
     .hero-content {
         grid-template-columns: 1fr;
     }
 
     .hero-copy {
-        padding: 16px;
+        max-width: 100%;
+        padding: 18px;
     }
 
     .hero-highlights {
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
     }
 }
 
-@media (max-width: 680px) {
+@media (max-width: 768px) {
     .hero {
         padding: 22px 14px 14px;
+    }
+
+    .hero-content,
+    .hero-highlights {
+        padding: 0;
     }
 
     .brand-block {
         gap: 16px;
     }
 
-    header h1 {
-        font-size: 2rem;
+    .hero-highlights {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 8px;
     }
 
+    .hero-highlights span {
+        font-size: 0.85rem;
+        min-height: 40px;
+    }
+
+    .product-grid {
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 16px;
+        padding: 0 12px;
+    }
+
+    .card {
+        max-width: 100%;
+    }
+
+    section {
+        padding: 28px 14px 40px;
+    }
+
+    .section-head {
+        padding: 0 14px;
+    }
+
+    .container {
+        width: min(100%, calc(100% - 28px));
+        padding: 0;
+    }
+
+    .carrinho-acoes,
+    .pix-acoes {
+        grid-template-columns: 1fr;
+    }
+
+    .whatsapp-flutuante {
+        width: 64px;
+        height: 64px;
+        right: 14px;
+        bottom: 14px;
+        font-size: 2.2rem;
+    }
+
+    .whatsapp-flutuante img {
+        width: 44px;
+        height: 44px;
+    }
+
+    .toast-site {
+        bottom: 90px;
+    }
+}
+
+@media (max-width: 480px) {
     nav {
         gap: 6px;
-        padding: 8px 12px;
+        padding: 8px 10px;
     }
 
     nav button {
         min-height: 38px;
-        padding: 6px 10px;
-        font-size: 0.85rem;
+        padding: 6px 12px;
+        font-size: 0.88rem;
+    }
+
+    header h1 {
+        font-size: clamp(1.8rem, 5vw, 2.8rem);
+    }
+
+    header p {
+        font-size: clamp(0.9rem, 2vw, 1.1rem);
     }
 
     .hero-copy {
-        width: 100%;
-        height: auto;
-        padding: 14px;
-        margin-top: 12px;
+        min-height: 130px;
+        padding: 16px;
     }
 
-    h2 {
-        font-size: 1.75rem;
+    .brand-block {
+        gap: 14px;
     }
 
-    .section-head p {
-        font-size: 0.9rem;
+    .logo-header,
+    .logo-fallback {
+        width: clamp(80px, 12vw, 120px);
+        height: clamp(80px, 12vw, 120px);
     }
 
     .product-grid {
         grid-template-columns: 1fr;
-        gap: 16px;
+        gap: 14px;
+        padding: 0 10px;
     }
 
     .card {
-        width: 100%;
         max-width: 100%;
     }
 
-    .btn {
-        min-height: 38px;
-        padding: 8px 12px;
+    .card > img,
+    .produto-placeholder {
+        height: 180px;
     }
 
-    .carrinho-acoes {
-        grid-template-columns: 1fr;
-        gap: 6px;
+    .card-content {
+        padding: 14px;
+    }
+
+    .card-content h3 {
+        font-size: 1rem;
+        min-height: 44px;
+    }
+
+    .preco {
+        font-size: 1.15rem;
+    }
+
+    .btn {
+        min-height: 40px;
+        padding: 8px 12px;
+        font-size: 0.95rem;
+    }
+
+    .section-head {
+        padding: 0 10px;
+    }
+
+    h2 {
+        font-size: clamp(1.6rem, 3vw, 2.2rem);
     }
 
     .whatsapp-flutuante {
-        width: 48px;
-        height: 48px;
-        font-size: 1.5rem;
+        width: 60px;
+        height: 60px;
         right: 12px;
         bottom: 12px;
+        font-size: 2rem;
     }
 
-    @supports (padding: max(0px)) {
-        .whatsapp-flutuante {
-            right: max(12px, env(safe-area-inset-right));
-            bottom: max(12px, env(safe-area-inset-bottom));
-        }
+    .whatsapp-flutuante img {
+        width: 40px;
+        height: 40px;
+    }
+
+    .toast-site {
+        bottom: 80px;
+        width: min(90vw, 320px);
+        font-size: 0.9rem;
+    }
+
+    .contato-card,
+    .carrinho-card {
+        max-width: 100%;
     }
 }
