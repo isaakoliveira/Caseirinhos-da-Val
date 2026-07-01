@@ -187,9 +187,25 @@ header p {
 
 .hero-highlights {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    grid-template-columns: repeat(3, 1fr);
     gap: 10px;
     margin-top: 22px;
+    max-width: 1120px;
+}
+
+.metodos-box {
+    display: contents;
+}
+
+.metodos-box h2 {
+    grid-column: 1 / -1;
+    margin: 0;
+    font-size: 1rem;
+    text-align: left;
+    padding: 0;
+    color: rgba(255, 255, 255, 0.88);
+    font-family: "Segoe UI", Arial, sans-serif;
+    font-weight: 700;
 }
 
 .hero-highlights span {
@@ -514,7 +530,7 @@ h2 {
 
 .contato-card,
 .carrinho-card {
-    width: min(100%, 720px);
+    width: min(100%, 900px);
     margin: 0 auto;
 }
 
@@ -691,7 +707,7 @@ h2 {
 
 .carrinho-acoes {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
     gap: 8px;
 }
 
@@ -804,7 +820,7 @@ h2 {
 
 .pix-acoes {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
     gap: 8px;
 }
 
@@ -1017,7 +1033,7 @@ footer {
     }
 
     .hero-highlights {
-        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+        grid-template-columns: repeat(3, 1fr);
     }
 }
 
@@ -1036,8 +1052,12 @@ footer {
     }
 
     .hero-highlights {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
+        grid-template-columns: repeat(3, 1fr);
         gap: 8px;
+    }
+
+    .metodos-box h2 {
+        display: none;
     }
 
     .hero-highlights span {
@@ -1070,7 +1090,7 @@ footer {
 
     .carrinho-acoes,
     .pix-acoes {
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
     }
 
     .whatsapp-flutuante {
@@ -1088,6 +1108,23 @@ footer {
 
     .toast-site {
         bottom: 90px;
+    }
+
+    .contato-card,
+    .carrinho-card {
+        width: min(100%, 95%);
+    }
+}
+
+@media (max-width: 600px) {
+    .hero-highlights {
+        grid-template-columns: 1fr;
+        gap: 6px;
+    }
+
+    .hero-highlights span {
+        font-size: 0.8rem;
+        min-height: 38px;
     }
 }
 
@@ -1190,5 +1227,9 @@ footer {
     .contato-card,
     .carrinho-card {
         max-width: 100%;
+    }
+
+    .hero-highlights {
+        grid-template-columns: 1fr;
     }
 }
