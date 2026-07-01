@@ -12,230 +12,267 @@
 </head>
 
 <body>
-  <header>
-    <div class="header-content">
-      <img class="logo-header" src="logo.png" alt="Logo Caseirinhos da Val">
-      <div class="header-text">
-        <h1>&#127856; Caseirinhos da Val &#127854;</h1>
-        <p>Os melhores doces e bolos da cidade</p>
+  <header class="hero">
+    <div class="hero-content">
+      <div class="brand-block">
+        <img class="logo-header" src="logo.png" alt="Logo Caseirinhos da Val">
+        <div class="header-text">
+          <span class="eyebrow">Doces e bolos caseiros</span>
+          <h1>&#127856; Caseirinhos da Val &#127854;</h1>
+          <p>Os melhores doces e bolos da cidade</p>
+        </div>
       </div>
+
+      <div class="hero-copy">
+        <p>Escolha seu produto, adicione ao carrinho e finalize o pedido pelo WhatsApp ou PIX.</p>
+        <div class="hero-actions">
+          <button class="btn btn-hero" type="button" onclick="mostrarAba('doces')">Ver doces</button>
+          <button class="btn btn-hero btn-hero-secundario" type="button" onclick="mostrarAba('bolos')">Ver bolos</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="hero-highlights" aria-label="Destaques do atendimento">
+      <span>&#128179; PIX direto</span>
+      <span>&#128222; Pedido por WhatsApp</span>
+      <span>&#128205; Picu&iacute; - PB</span>
     </div>
   </header>
-  <nav>
-    <button onclick="mostrarAba('doces')">&#127854; Doces</button>
-    <button onclick="mostrarAba('bolos')">&#127874; Bolos</button>
-    <button onclick="mostrarAba('carrinho')">&#128722; Carrinho (<span id="contadorCarrinho">0</span>)</button>
-    <button onclick="mostrarAba('contato')">&#128222; Contato</button>
+
+  <nav aria-label="Navega&ccedil;&atilde;o principal">
+    <button class="nav-link active-nav" type="button" data-aba="doces" onclick="mostrarAba('doces')">&#127854; Doces</button>
+    <button class="nav-link" type="button" data-aba="bolos" onclick="mostrarAba('bolos')">&#127874; Bolos</button>
+    <button class="nav-link" type="button" data-aba="carrinho" onclick="mostrarAba('carrinho')">&#128722; Carrinho (<span id="contadorCarrinho">0</span>)</button>
+    <button class="nav-link" type="button" data-aba="contato" onclick="mostrarAba('contato')">&#128222; Contato</button>
   </nav>
 
-  <section id="doces" class="active">
-    <h2>&#127854; Doces</h2>
-
-    <div class="container">
-      <div class="card">
-        <img src="doce-de-leite-com-coco-sem-risco-camera.jpeg" alt="Doce de Leite com Coco">
-
-        <div class="card-content">
-          <h3>Doce de Leite com Coco (pote 350 ml)</h3>
-          <p class="preco" id="preco-doce-leite-coco"></p>
-          <button class="btn" onclick="abrirPix('doceLeiteCoco')">&#128179; Pagar agora</button>
-          <a class="btn btn-pedido" href="#" onclick="fazerPedidoWhatsApp('doceLeiteCoco'); return false;">Fazer pedido pelo WhatsApp</a>
-          <button class="btn btn-carrinho" onclick="adicionarAoCarrinho('doceLeiteCoco', this)">Adicionar ao carrinho</button>
-        </div>
+  <main>
+    <section id="doces" class="aba active">
+      <div class="section-head">
+        <span class="section-kicker">Card&aacute;pio</span>
+        <h2>&#127854; Doces</h2>
+        <p>Escolha seu doce favorito e finalize pelo PIX, WhatsApp ou carrinho.</p>
       </div>
 
-      <div class="card">
-        <img src="doce-de-leite-com-goiabada-sem-risco-camera.jpeg" alt="Doce de Leite com Goiabada">
+      <div class="container product-grid">
+        <div class="card produto-card">
+          <img src="doce-de-leite-com-coco-sem-risco-camera.jpeg" alt="Doce de Leite com Coco">
 
-        <div class="card-content">
-          <h3>Doce de Leite com Goiabada (pote 350 ml)</h3>
-          <p class="preco" id="preco-doce-leite-goiabada"></p>
-          <button class="btn" onclick="abrirPix('doceLeiteGoiabada')">&#128179; Pagar agora</button>
-          <a class="btn btn-pedido" href="#" onclick="fazerPedidoWhatsApp('doceLeiteGoiabada'); return false;">Fazer pedido pelo WhatsApp</a>
-          <button class="btn btn-carrinho" onclick="adicionarAoCarrinho('doceLeiteGoiabada', this)">Adicionar ao carrinho</button>
-        </div>        
-      </div>
-
-      <div class="card">
-        <img src="doce-de-leite-sem-risco-camera-inpaint-wide.jpeg" alt="Doce de Leite Comum">
-
-        <div class="card-content">
-          <h3>Doce de Leite Comum (pote 350 ml)</h3>
-          <p class="preco" id="preco-doce-leite">R$ 12,00</p>
-          <button class="btn" onclick="abrirPix('doceLeite')">&#128179; Pagar agora</button>
-          <a class="btn btn-pedido" href="#" onclick="fazerPedidoWhatsApp('doceLeite'); return false;">Fazer pedido pelo WhatsApp</a>
-          <button class="btn btn-carrinho" onclick="adicionarAoCarrinho('doceLeite', this)">Adicionar ao carrinho</button>
-        </div>
-      </div>
-
-      <div class="card">
-        <img src="pudim 18,00$.jpeg" alt="Pudim Pequeno">
-
-        <div class="card-content">
-          <h3>Pudim Pequeno (500g)</h3>
-          <p class="preco" id="preco-pudim-18"></p>
-          <button class="btn" onclick="abrirPix('pudim18')">&#128179; Pagar agora</button>
-          <a class="btn btn-pedido" href="#" onclick="fazerPedidoWhatsApp('pudim18'); return false;">Fazer pedido pelo WhatsApp</a>
-          <button class="btn btn-carrinho" onclick="adicionarAoCarrinho('pudim18', this)">Adicionar ao carrinho</button>
-        </div>
-      </div>
-
-      <div class="card">
-        <img src="pudim 35,00$.jpeg" alt="Pudim Grande">
-
-        <div class="card-content">
-          <h3>Pudim Grande (1kg)</h3>
-          <p class="preco" id="preco-pudim-35"></p>
-          <button class="btn" onclick="abrirPix('pudim35')">&#128179; Pagar agora</button>
-          <a class="btn btn-pedido" href="#" onclick="fazerPedidoWhatsApp('pudim35'); return false;">Fazer pedido pelo WhatsApp</a>
-          <button class="btn btn-carrinho" onclick="adicionarAoCarrinho('pudim35', this)">Adicionar ao carrinho</button>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section id="bolos">
-    <h2>&#127874; Bolos</h2>
-    <div class="container">
-      <div class="card">
-        <img src="bolo de leite.jpeg" alt="Bolo de Leite">
-
-        <div class="card-content">
-          <h3>Bolo de Leite</h3>
-          <p class="preco" id="preco-bolo-simples"></p>
-          <button class="btn" onclick="abrirPix('boloSimples')">&#128179; Pagar agora</button>
-          <a class="btn btn-pedido" href="#" onclick="fazerPedidoWhatsApp('boloSimples'); return false;">Fazer pedido pelo WhatsApp</a>
-          <button class="btn btn-carrinho" onclick="adicionarAoCarrinho('boloSimples', this)">Adicionar ao carrinho</button>
-        </div>
-      </div>
-
-      <div class="card">
-        <img src="Bolo de miho na palha.jpg" alt="Bolo de Milho Verde na Palha">
-
-        <div class="card-content">
-          <h3>Bolo de Milho Verde na Palha</h3>
-          <p class="preco" id="preco-bolo-milho-palha"></p>
-          <button class="btn" onclick="abrirPix('boloMilhoPalha')">&#128179; Pagar agora</button>
-          <a class="btn btn-pedido" href="#" onclick="fazerPedidoWhatsApp('boloMilhoPalha'); return false;">Fazer pedido pelo WhatsApp</a>
-          <button class="btn btn-carrinho" onclick="adicionarAoCarrinho('boloMilhoPalha', this)">Adicionar ao carrinho</button>
-        </div>
-      </div>
-
-      <div class="card">
-        <img src="bolo de chocolate 50%25.jpeg" alt="Bolo de Chocolate 50%">
-
-        <div class="card-content">
-          <h3>Bolo de Chocolate 50%</h3>
-          <p class="preco" id="preco-bolo-chocolate-50"></p>
-          <button class="btn" onclick="abrirPix('boloChocolate50')">&#128179; Pagar agora</button>
-          <a class="btn btn-pedido" href="#" onclick="fazerPedidoWhatsApp('boloChocolate50'); return false;">Fazer pedido pelo WhatsApp</a>
-          <button class="btn btn-carrinho" onclick="adicionarAoCarrinho('boloChocolate50', this)">Adicionar ao carrinho</button>
-        </div>
-      </div>
-
-      <div class="card">
-        <img src="bolo de leite com coco 2.0.jpeg" alt="Bolo de Leite com Coco">
-
-        <div class="card-content">
-          <h3>Bolo de Leite com Coco</h3>
-          <p class="preco" id="preco-bolo-leite-coco"></p>
-          <button class="btn" onclick="abrirPix('boloLeiteCoco')">&#128179; Pagar agora</button>
-          <a class="btn btn-pedido" href="#" onclick="fazerPedidoWhatsApp('boloLeiteCoco'); return false;">Fazer pedido pelo WhatsApp</a>
-          <button class="btn btn-carrinho" onclick="adicionarAoCarrinho('boloLeiteCoco', this)">Adicionar ao carrinho</button>
-        </div>
-      </div>
-
-      <div class="card">
-        <img src="bolo de ovos.jpeg" alt="Bolo de Ovos">
-
-        <div class="card-content">
-          <h3>Bolo de Ovos</h3>
-          <p class="preco" id="preco-bolo-ovos"></p>
-          <button class="btn" onclick="abrirPix('boloOvos')">&#128179; Pagar agora</button>
-          <a class="btn btn-pedido" href="#" onclick="fazerPedidoWhatsApp('boloOvos'); return false;">Fazer pedido pelo WhatsApp</a>
-          <button class="btn btn-carrinho" onclick="adicionarAoCarrinho('boloOvos', this)">Adicionar ao carrinho</button>
-        </div>
-      </div>
-
-      <div class="card">
-        <img src="bolo formigueiro.jpeg" alt="Bolo Formigueiro">
-
-        <div class="card-content">
-          <h3>Bolo Formigueiro</h3>
-          <p class="preco" id="preco-bolo-formigueiro"></p>
-          <button class="btn" onclick="abrirPix('boloFormigueiro')">&#128179; Pagar agora</button>
-          <a class="btn btn-pedido" href="#" onclick="fazerPedidoWhatsApp('boloFormigueiro'); return false;">Fazer pedido pelo WhatsApp</a>
-          <button class="btn btn-carrinho" onclick="adicionarAoCarrinho('boloFormigueiro', this)">Adicionar ao carrinho</button>
-        </div>
-      </div>
-
-      <div class="card">
-        <img src="bolo mesclado.jpeg" alt="Bolo Mesclado">
-
-        <div class="card-content">
-          <h3>Bolo Mesclado</h3>
-          <p class="preco" id="preco-bolo-mesclado"></p>
-          <button class="btn" onclick="abrirPix('boloMesclado')">&#128179; Pagar agora</button>
-          <a class="btn btn-pedido" href="#" onclick="fazerPedidoWhatsApp('boloMesclado'); return false;">Fazer pedido pelo WhatsApp</a>
-          <button class="btn btn-carrinho" onclick="adicionarAoCarrinho('boloMesclado', this)">Adicionar ao carrinho</button>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section id="carrinho">
-    <h2>&#128722; Carrinho</h2>
-
-    <div class="container">
-      <div class="card carrinho-card">
-        <div class="card-content">
-          <h3>Seu pedido</h3>
-
-          <p id="carrinhoVazio" class="carrinho-vazio">Seu carrinho esta vazio.</p>
-          <div id="listaCarrinho" class="lista-carrinho"></div>
-
-          <p class="total-carrinho">Total: <span id="totalCarrinho">R$ 0,00</span></p>
-
-          <div class="carrinho-acoes">
-            <button class="btn" onclick="finalizarCarrinhoWhatsApp()">Finalizar pelo WhatsApp</button>
-            <button class="btn btn-secundario" onclick="abrirPixCarrinho()">Pagar total no PIX</button>
-            <button class="btn btn-limpar" onclick="limparCarrinho()">Limpar carrinho</button>
+          <div class="card-content">
+            <h3>Doce de Leite com Coco (pote 350 ml)</h3>
+            <p class="preco" id="preco-doce-leite-coco"></p>
+            <button class="btn" onclick="abrirPix('doceLeiteCoco')">&#128179; Pagar agora</button>
+            <a class="btn btn-pedido" href="#" onclick="fazerPedidoWhatsApp('doceLeiteCoco'); return false;">Fazer pedido pelo WhatsApp</a>
+            <button class="btn btn-carrinho" onclick="adicionarAoCarrinho('doceLeiteCoco', this)">Adicionar ao carrinho</button>
           </div>
+        </div>
 
-          <p id="carrinhoStatus" class="carrinho-status"></p>
+        <div class="card produto-card">
+          <img src="doce-de-leite-com-goiabada-sem-risco-camera.jpeg" alt="Doce de Leite com Goiabada">
+
+          <div class="card-content">
+            <h3>Doce de Leite com Goiabada (pote 350 ml)</h3>
+            <p class="preco" id="preco-doce-leite-goiabada"></p>
+            <button class="btn" onclick="abrirPix('doceLeiteGoiabada')">&#128179; Pagar agora</button>
+            <a class="btn btn-pedido" href="#" onclick="fazerPedidoWhatsApp('doceLeiteGoiabada'); return false;">Fazer pedido pelo WhatsApp</a>
+            <button class="btn btn-carrinho" onclick="adicionarAoCarrinho('doceLeiteGoiabada', this)">Adicionar ao carrinho</button>
+          </div>
+        </div>
+
+        <div class="card produto-card">
+          <img src="doce-de-leite-sem-risco-camera-inpaint-wide.jpeg" alt="Doce de Leite Comum">
+
+          <div class="card-content">
+            <h3>Doce de Leite Comum (pote 350 ml)</h3>
+            <p class="preco" id="preco-doce-leite">R$ 12,00</p>
+            <button class="btn" onclick="abrirPix('doceLeite')">&#128179; Pagar agora</button>
+            <a class="btn btn-pedido" href="#" onclick="fazerPedidoWhatsApp('doceLeite'); return false;">Fazer pedido pelo WhatsApp</a>
+            <button class="btn btn-carrinho" onclick="adicionarAoCarrinho('doceLeite', this)">Adicionar ao carrinho</button>
+          </div>
+        </div>
+
+        <div class="card produto-card">
+          <img src="pudim 18,00$.jpeg" alt="Pudim Pequeno">
+
+          <div class="card-content">
+            <h3>Pudim Pequeno (500g)</h3>
+            <p class="preco" id="preco-pudim-18"></p>
+            <button class="btn" onclick="abrirPix('pudim18')">&#128179; Pagar agora</button>
+            <a class="btn btn-pedido" href="#" onclick="fazerPedidoWhatsApp('pudim18'); return false;">Fazer pedido pelo WhatsApp</a>
+            <button class="btn btn-carrinho" onclick="adicionarAoCarrinho('pudim18', this)">Adicionar ao carrinho</button>
+          </div>
+        </div>
+
+        <div class="card produto-card">
+          <img src="pudim 35,00$.jpeg" alt="Pudim Grande">
+
+          <div class="card-content">
+            <h3>Pudim Grande (1kg)</h3>
+            <p class="preco" id="preco-pudim-35"></p>
+            <button class="btn" onclick="abrirPix('pudim35')">&#128179; Pagar agora</button>
+            <a class="btn btn-pedido" href="#" onclick="fazerPedidoWhatsApp('pudim35'); return false;">Fazer pedido pelo WhatsApp</a>
+            <button class="btn btn-carrinho" onclick="adicionarAoCarrinho('pudim35', this)">Adicionar ao carrinho</button>
+          </div>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <section id="contato">
-    <h2>&#128222; Contato</h2>
+    <section id="bolos" class="aba">
+      <div class="section-head">
+        <span class="section-kicker">Encomendas</span>
+        <h2>&#127874; Bolos</h2>
+        <p>Veja as op&ccedil;&otilde;es dispon&iacute;veis e monte seu pedido em poucos cliques.</p>
+      </div>
 
-    <div class="container">
-      <div class="card contato-card">
-        <div class="card-content">
-          <h3>&#127856; Fa&ccedil;a seu pedido</h3>
+      <div class="container product-grid">
+        <div class="card produto-card">
+          <img src="bolo de leite.jpeg" alt="Bolo de Leite">
 
-          <p class="contato-info">
-            Chame a Val no WhatsApp para encomendas, d&uacute;vidas e confirma&ccedil;&atilde;o de pagamento.
-          </p>
+          <div class="card-content">
+            <h3>Bolo de Leite</h3>
+            <p class="preco" id="preco-bolo-simples"></p>
+            <button class="btn" onclick="abrirPix('boloSimples')">&#128179; Pagar agora</button>
+            <a class="btn btn-pedido" href="#" onclick="fazerPedidoWhatsApp('boloSimples'); return false;">Fazer pedido pelo WhatsApp</a>
+            <button class="btn btn-carrinho" onclick="adicionarAoCarrinho('boloSimples', this)">Adicionar ao carrinho</button>
+          </div>
+        </div>
 
-          <p class="contato-info">
-          📱WhatsApp: <a href="https://wa.me/5583982168114?text=Ola%2C%20vim%20pelo%20site%20Caseirinhos%20da%20Val." target="_blank">+55 83 98216-8114 (Val)</a><br>
-            ✉️Email: <a href="https://mail.google.com/mail/?view=cm&fs=1&to=caseirinhosdaval2026@gmail.com" target="_blank">caseirinhosdaval2026@gmail.com</a><br>
-            📍Atendimento: Picu&iacute; - PB
-          </p>
+        <div class="card produto-card">
+          <img src="Bolo de miho na palha.jpg" alt="Bolo de Milho Verde na Palha">
 
-          <p class="suporte-site">
-            Erros no site? Fale com <br>
-            <a href="https://wa.me/5583987239748?text=Ola%2C%20encontrei%20um%20erro%20no%20site%20Caseirinhos%20da%20Val." target="_blank">
-              +55 (83) 987239748 (isaac)
-            </a>.
-          </p>
+          <div class="card-content">
+            <h3>Bolo de Milho Verde na Palha</h3>
+            <p class="preco" id="preco-bolo-milho-palha"></p>
+            <button class="btn" onclick="abrirPix('boloMilhoPalha')">&#128179; Pagar agora</button>
+            <a class="btn btn-pedido" href="#" onclick="fazerPedidoWhatsApp('boloMilhoPalha'); return false;">Fazer pedido pelo WhatsApp</a>
+            <button class="btn btn-carrinho" onclick="adicionarAoCarrinho('boloMilhoPalha', this)">Adicionar ao carrinho</button>
+          </div>
+        </div>
+
+        <div class="card produto-card">
+          <img src="bolo de chocolate 50%25.jpeg" alt="Bolo de Chocolate 50%">
+
+          <div class="card-content">
+            <h3>Bolo de Chocolate 50%</h3>
+            <p class="preco" id="preco-bolo-chocolate-50"></p>
+            <button class="btn" onclick="abrirPix('boloChocolate50')">&#128179; Pagar agora</button>
+            <a class="btn btn-pedido" href="#" onclick="fazerPedidoWhatsApp('boloChocolate50'); return false;">Fazer pedido pelo WhatsApp</a>
+            <button class="btn btn-carrinho" onclick="adicionarAoCarrinho('boloChocolate50', this)">Adicionar ao carrinho</button>
+          </div>
+        </div>
+
+        <div class="card produto-card">
+          <img src="bolo de leite com coco 2.0.jpeg" alt="Bolo de Leite com Coco">
+
+          <div class="card-content">
+            <h3>Bolo de Leite com Coco</h3>
+            <p class="preco" id="preco-bolo-leite-coco"></p>
+            <button class="btn" onclick="abrirPix('boloLeiteCoco')">&#128179; Pagar agora</button>
+            <a class="btn btn-pedido" href="#" onclick="fazerPedidoWhatsApp('boloLeiteCoco'); return false;">Fazer pedido pelo WhatsApp</a>
+            <button class="btn btn-carrinho" onclick="adicionarAoCarrinho('boloLeiteCoco', this)">Adicionar ao carrinho</button>
+          </div>
+        </div>
+
+        <div class="card produto-card">
+          <img src="bolo de ovos.jpeg" alt="Bolo de Ovos">
+
+          <div class="card-content">
+            <h3>Bolo de Ovos</h3>
+            <p class="preco" id="preco-bolo-ovos"></p>
+            <button class="btn" onclick="abrirPix('boloOvos')">&#128179; Pagar agora</button>
+            <a class="btn btn-pedido" href="#" onclick="fazerPedidoWhatsApp('boloOvos'); return false;">Fazer pedido pelo WhatsApp</a>
+            <button class="btn btn-carrinho" onclick="adicionarAoCarrinho('boloOvos', this)">Adicionar ao carrinho</button>
+          </div>
+        </div>
+
+        <div class="card produto-card">
+          <img src="bolo formigueiro.jpeg" alt="Bolo Formigueiro">
+
+          <div class="card-content">
+            <h3>Bolo Formigueiro</h3>
+            <p class="preco" id="preco-bolo-formigueiro"></p>
+            <button class="btn" onclick="abrirPix('boloFormigueiro')">&#128179; Pagar agora</button>
+            <a class="btn btn-pedido" href="#" onclick="fazerPedidoWhatsApp('boloFormigueiro'); return false;">Fazer pedido pelo WhatsApp</a>
+            <button class="btn btn-carrinho" onclick="adicionarAoCarrinho('boloFormigueiro', this)">Adicionar ao carrinho</button>
+          </div>
+        </div>
+
+        <div class="card produto-card">
+          <img src="bolo mesclado.jpeg" alt="Bolo Mesclado">
+
+          <div class="card-content">
+            <h3>Bolo Mesclado</h3>
+            <p class="preco" id="preco-bolo-mesclado"></p>
+            <button class="btn" onclick="abrirPix('boloMesclado')">&#128179; Pagar agora</button>
+            <a class="btn btn-pedido" href="#" onclick="fazerPedidoWhatsApp('boloMesclado'); return false;">Fazer pedido pelo WhatsApp</a>
+            <button class="btn btn-carrinho" onclick="adicionarAoCarrinho('boloMesclado', this)">Adicionar ao carrinho</button>
+          </div>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
+
+    <section id="carrinho" class="aba">
+      <div class="section-head">
+        <span class="section-kicker">Pedido</span>
+        <h2>&#128722; Carrinho</h2>
+        <p>Confira os itens antes de enviar seu pedido.</p>
+      </div>
+
+      <div class="container">
+        <div class="card carrinho-card">
+          <div class="card-content">
+            <h3>Seu pedido</h3>
+
+            <p id="carrinhoVazio" class="carrinho-vazio">Seu carrinho esta vazio.</p>
+            <div id="listaCarrinho" class="lista-carrinho"></div>
+
+            <p class="total-carrinho">Total: <span id="totalCarrinho">R$ 0,00</span></p>
+
+            <div class="carrinho-acoes">
+              <button class="btn" onclick="finalizarCarrinhoWhatsApp()">Finalizar pelo WhatsApp</button>
+              <button class="btn btn-secundario" onclick="abrirPixCarrinho()">Pagar total no PIX</button>
+              <button class="btn btn-limpar" onclick="limparCarrinho()">Limpar carrinho</button>
+            </div>
+
+            <p id="carrinhoStatus" class="carrinho-status"></p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="contato" class="aba">
+      <div class="section-head">
+        <span class="section-kicker">Atendimento</span>
+        <h2>&#128222; Contato</h2>
+        <p>Fale direto com a Val para encomendas, d&uacute;vidas e confirma&ccedil;&atilde;o de pagamento.</p>
+      </div>
+
+      <div class="container">
+        <div class="card contato-card">
+          <div class="card-content">
+            <h3>&#127856; Fa&ccedil;a seu pedido</h3>
+
+            <p class="contato-info">
+              Chame a Val no WhatsApp para encomendas, d&uacute;vidas e confirma&ccedil;&atilde;o de pagamento.
+            </p>
+
+            <p class="contato-info contato-linhas">
+              <span>&#128241; WhatsApp: <a href="https://wa.me/5583982168114?text=Ola%2C%20vim%20pelo%20site%20Caseirinhos%20da%20Val." target="_blank">+55 83 98216-8114 (Val)</a></span>
+              <span>&#9993; Email: <a href="https://mail.google.com/mail/?view=cm&fs=1&to=caseirinhosdaval2026@gmail.com" target="_blank">caseirinhosdaval2026@gmail.com</a></span>
+              <span>&#128205; Atendimento: Picu&iacute; - PB</span>
+            </p>
+
+            <p class="suporte-site">
+              Erros no site? Fale com <br>
+              <a href="https://wa.me/5583987239748?text=Ola%2C%20encontrei%20um%20erro%20no%20site%20Caseirinhos%20da%20Val." target="_blank">
+                +55 (83) 987239748 (isaac)
+              </a>.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
 
   <div id="pixModal" class="pix-modal">
     <div class="pix-box">
@@ -262,6 +299,12 @@
       <p id="pixStatus" class="pix-status"></p>
     </div>
   </div>
+
+  <a class="whatsapp-flutuante" href="https://wa.me/5583982168114?text=Ola%2C%20vim%20pelo%20site%20Caseirinhos%20da%20Val." target="_blank" aria-label="Fazer pedido pelo WhatsApp">
+    &#128222;
+  </a>
+
+  <div id="toastSite" class="toast-site" role="status" aria-live="polite"></div>
 
   <footer>
     &copy; 2026 Caseirinhos da Val - Todos os direitos reservados
