@@ -886,17 +886,6 @@ h2 {
     transition: transform 0.3s ease;
 }
 
-.whatsapp-flutuante:hover,
-.whatsapp-flutuante:focus-visible {
-    transform: translateY(-4px) scale(1.08);
-    background: var(--green-dark);
-    box-shadow: 0 18px 40px rgba(18, 132, 77, 0.38);
-    outline: none;
-}
-
-.whatsapp-flutuante:hover img,
-.whatsapp-flutuante:focus-visible img {
-}
 
 .toast-site {
     position: fixed;
