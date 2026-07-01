@@ -530,8 +530,8 @@ h2 {
 
 .contato-card,
 .carrinho-card {
-    width: 750px;
-    heigth: auto;
+    width: min(95vw, 900px);
+    height: auto;
     margin: 0 auto;
 }
 
@@ -883,6 +883,7 @@ h2 {
     height: 48px;
     object-fit: contain;
     display: block;
+    transition: transform 0.3s ease;
 }
 
 .whatsapp-flutuante:hover,
@@ -891,6 +892,11 @@ h2 {
     background: var(--green-dark);
     box-shadow: 0 18px 40px rgba(18, 132, 77, 0.38);
     outline: none;
+}
+
+.whatsapp-flutuante:hover img,
+.whatsapp-flutuante:focus-visible img {
+    transform: scale(1.2);
 }
 
 .toast-site {
@@ -998,239 +1004,14 @@ footer {
     }
 }
 
-@keyframes fotoProdutoSalvo {
-    0% {
-        transform: scale(1);
-    }
-    45% {
-        transform: scale(1.06);
-    }
-    100% {
-        transform: scale(1);
-    }
-}
-
 @keyframes contadorCarrinho {
     0% {
         transform: scale(1);
     }
-    45% {
-        transform: scale(1.45);
+    50% {
+        transform: scale(1.2);
     }
     100% {
         transform: scale(1);
-    }
-}
-
-/* RESPONSIVIDADE */
-@media (max-width: 1024px) {
-    .hero-content {
-        grid-template-columns: 1fr;
-    }
-
-    .hero-copy {
-        max-width: 100%;
-        padding: 18px;
-    }
-
-    .hero-highlights {
-        grid-template-columns: repeat(3, 1fr);
-    }
-}
-
-@media (max-width: 768px) {
-    .hero {
-        padding: 22px 14px 14px;
-    }
-
-    .hero-content,
-    .hero-highlights {
-        padding: 0;
-    }
-
-    .brand-block {
-        gap: 16px;
-    }
-
-    .hero-highlights {
-        grid-template-columns: repeat(3, 1fr);
-        gap: 8px;
-    }
-
-    .metodos-box h2 {
-        display: none;
-    }
-
-    .hero-highlights span {
-        font-size: 0.85rem;
-        min-height: 40px;
-    }
-
-    .product-grid {
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-        gap: 16px;
-        padding: 0 12px;
-    }
-
-    .card {
-        max-width: 100%;
-    }
-
-    section {
-        padding: 28px 14px 40px;
-    }
-
-    .section-head {
-        padding: 0 14px;
-    }
-
-    .container {
-        width: min(100%, calc(100% - 28px));
-        padding: 0;
-    }
-
-    .carrinho-acoes,
-    .pix-acoes {
-        grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
-    }
-
-    .whatsapp-flutuante {
-        width: 64px;
-        height: 64px;
-        right: 14px;
-        bottom: 14px;
-        font-size: 2.2rem;
-    }
-
-    .whatsapp-flutuante img {
-        width: 44px;
-        height: 44px;
-    }
-
-    .toast-site {
-        bottom: 90px;
-    }
-
-    .contato-card,
-    .carrinho-card {
-        width: min(100%, 95%);
-    }
-}
-
-@media (max-width: 600px) {
-    .hero-highlights {
-        grid-template-columns: 1fr;
-        gap: 6px;
-    }
-
-    .hero-highlights span {
-        font-size: 0.8rem;
-        min-height: 38px;
-    }
-}
-
-@media (max-width: 480px) {
-    nav {
-        gap: 6px;
-        padding: 8px 10px;
-    }
-
-    nav button {
-        min-height: 38px;
-        padding: 6px 12px;
-        font-size: 0.88rem;
-    }
-
-    header h1 {
-        font-size: clamp(1.8rem, 5vw, 2.8rem);
-    }
-
-    header p {
-        font-size: clamp(0.9rem, 2vw, 1.1rem);
-    }
-
-    .hero-copy {
-        min-height: 130px;
-        padding: 16px;
-    }
-
-    .brand-block {
-        gap: 14px;
-    }
-
-    .logo-header,
-    .logo-fallback {
-        width: clamp(80px, 12vw, 120px);
-        height: clamp(80px, 12vw, 120px);
-    }
-
-    .product-grid {
-        grid-template-columns: 1fr;
-        gap: 14px;
-        padding: 0 10px;
-    }
-
-    .card {
-        max-width: 100%;
-    }
-
-    .card > img,
-    .produto-placeholder {
-        height: 180px;
-    }
-
-    .card-content {
-        padding: 14px;
-    }
-
-    .card-content h3 {
-        font-size: 1rem;
-        min-height: 44px;
-    }
-
-    .preco {
-        font-size: 1.15rem;
-    }
-
-    .btn {
-        min-height: 40px;
-        padding: 8px 12px;
-        font-size: 0.95rem;
-    }
-
-    .section-head {
-        padding: 0 10px;
-    }
-
-    h2 {
-        font-size: clamp(1.6rem, 3vw, 2.2rem);
-    }
-
-    .whatsapp-flutuante {
-        width: 60px;
-        height: 60px;
-        right: 12px;
-        bottom: 12px;
-        font-size: 2rem;
-    }
-
-    .whatsapp-flutuante img {
-        width: 40px;
-        height: 40px;
-    }
-
-    .toast-site {
-        bottom: 80px;
-        width: min(90vw, 320px);
-        font-size: 0.9rem;
-    }
-
-    .contato-card,
-    .carrinho-card {
-        max-width: 100%;
-    }
-
-    .hero-highlights {
-        grid-template-columns: 1fr;
     }
 }
