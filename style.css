@@ -80,17 +80,17 @@ a {
 }
 
 .hero-content {
-    display: grid;
-    grid-template-columns: minmax(0, 1.35fr) minmax(260px, 0.65fr);
-    gap: 28px;
+    display: flex;
+    justify-content: center;
     align-items: center;
 }
 
 .brand-block {
     display: flex;
     align-items: center;
-    gap: 22px;
+    gap: clamp(14px, 4vw, 22px);
     min-width: 0;
+    width: 100%;
 }
 
 .logo-header,
@@ -187,7 +187,7 @@ header p {
 
 .hero-highlights {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 10px;
     margin-top: 22px;
     max-width: 1120px;
@@ -918,6 +918,106 @@ footer {
     background: var(--berry-dark);
     text-align: center;
     font-size: 0.9rem;
+}
+
+/* ===================== RESPONSIVO ===================== */
+
+/* Tablet e celulares grandes */
+@media (max-width: 720px) {
+    .hero {
+        padding: 24px 16px 14px;
+    }
+
+    .hero-highlights {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .product-grid {
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 16px;
+    }
+}
+
+/* Celulares */
+@media (max-width: 520px) {
+    .brand-block {
+        flex-direction: column;
+        text-align: center;
+        gap: 10px;
+    }
+
+    .header-text {
+        width: 100%;
+    }
+
+    .eyebrow {
+        margin: 0 auto;
+    }
+
+    header p {
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .hero-highlights {
+        grid-template-columns: 1fr;
+    }
+
+    .metodos-box h2 {
+        text-align: center;
+    }
+
+    nav {
+        gap: 6px;
+        padding: 8px 10px;
+    }
+
+    nav button {
+        flex: 1 1 calc(50% - 6px);
+        padding: 8px 10px;
+        font-size: 0.86rem;
+    }
+
+    section {
+        padding: 28px 14px 40px;
+    }
+
+    .card {
+        max-width: 100%;
+    }
+
+    .whatsapp-flutuante {
+        width: 58px;
+        height: 58px;
+        right: 14px;
+        bottom: 14px;
+    }
+
+    .whatsapp-flutuante img {
+        width: 38px;
+        height: 38px;
+    }
+
+    .pix-box {
+        padding: 18px;
+    }
+}
+
+/* Celulares bem pequenos */
+@media (max-width: 360px) {
+    header h1 {
+        font-size: 1.9rem;
+    }
+
+    .logo-header,
+    .logo-fallback {
+        width: 80px;
+        height: 80px;
+    }
+
+    nav button {
+        flex: 1 1 100%;
+    }
 }
 
 @keyframes fade {
