@@ -588,7 +588,7 @@ h2 {
 
 .contato-card,
 .carrinho-card {
-    width: min(95vw, 900px);
+    width: min(95vw, 1200px);
     height: auto;
     margin: 0 auto;
 }
@@ -915,7 +915,7 @@ h2 {
     background: #fde6ee;
 }
 
-/* BOTÃO WHATSAPP - MELHORADO E CENTRALIZADO */
+/* BOTÃO WHATSAPP - ZOOM AUMENTADO */
 .whatsapp-flutuante {
     position: fixed;
     right: 18px;
@@ -923,8 +923,8 @@ h2 {
     z-index: 60;
     display: grid;
     place-items: center;
-    width: 70px;
-    height: 70px;
+    width: 90px;
+    height: 90px;
     border-radius: 50%;
     color: white;
     background: var(--green);
@@ -939,21 +939,21 @@ h2 {
 }
 
 .whatsapp-flutuante:hover {
-    transform: scale(1.12) rotate(-6deg);
+    transform: scale(1.15) rotate(-6deg);
     box-shadow: 0 18px 40px rgba(18, 132, 77, 0.38);
     animation: none;
 }
 
 .whatsapp-flutuante img {
-    width: 48px;
-    height: 48px;
+    width: 56px;
+    height: 56px;
     object-fit: contain;
     display: block;
     transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 .whatsapp-flutuante:hover img {
-    transform: scale(1.1) rotate(6deg);
+    transform: scale(1.15) rotate(6deg);
 }
 
 
@@ -1004,7 +1004,7 @@ footer {
 @keyframes subir {
     from {
         opacity: 0;
-        transform: translateY(24px);
+        transform: translateY(20px);
     }
     to {
         opacity: 1;
@@ -1015,7 +1015,7 @@ footer {
 @keyframes topo {
     from {
         opacity: 0;
-        transform: translateY(-24px);
+        transform: translateY(-12px);
     }
     to {
         opacity: 1;
@@ -1026,11 +1026,35 @@ footer {
 @keyframes modalEntrada {
     from {
         opacity: 0;
-        transform: translateY(16px) scale(0.98);
+        transform: scale(0.85);
     }
     to {
         opacity: 1;
-        transform: translateY(0) scale(1);
+        transform: scale(1);
+    }
+}
+
+@keyframes cardAdicionado {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+@keyframes fotoProdutoSalvo {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.1) rotate(2deg);
+    }
+    100% {
+        transform: scale(1);
     }
 }
 
@@ -1038,27 +1062,11 @@ footer {
     0% {
         transform: scale(1);
     }
-    40% {
-        transform: scale(1.06);
-    }
-    70% {
-        transform: scale(0.98);
+    50% {
+        transform: scale(1.08);
     }
     100% {
         transform: scale(1);
-    }
-}
-
-@keyframes cardAdicionado {
-    0% {
-        box-shadow: var(--shadow-card);
-    }
-    45% {
-        transform: translateY(-5px);
-        box-shadow: 0 0 0 3px rgba(18, 132, 77, 0.18), var(--shadow-soft);
-    }
-    100% {
-        box-shadow: var(--shadow-card);
     }
 }
 
@@ -1075,25 +1083,49 @@ footer {
 }
 
 @keyframes pulseWhatsApp {
-    0%, 100% {
+    0%,
+    100% {
         transform: scale(1);
         box-shadow: 0 14px 30px rgba(18, 132, 77, 0.28);
     }
     50% {
-        transform: scale(1.06);
-        box-shadow: 0 18px 40px rgba(18, 132, 77, 0.38);
+        transform: scale(1.05);
+        box-shadow: 0 14px 40px rgba(18, 132, 77, 0.38);
     }
 }
 
-@media (max-width: 600px) {
-    .product-grid {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 12px;
+@media (max-width: 768px) {
+    .hero-content {
+        grid-template-columns: 1fr;
+    }
+
+    .hero-highlights {
+        grid-template-columns: 1fr;
+        gap: 8px;
+    }
+
+    nav {
+        gap: 6px;
+    }
+
+    nav button {
+        font-size: 0.85rem;
+        padding: 6px 10px;
+        min-height: 38px;
+    }
+
+    section {
+        padding: 28px 14px 40px;
+    }
+
+    .section-head {
         padding: 0 10px;
     }
 
-    .product-grid .card:nth-child(n) {
-        animation-delay: calc(var(--card-index, 0) * 0.04s);
+    .product-grid {
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 16px;
+        padding: 0 10px;
     }
 
     .card {
@@ -1102,73 +1134,22 @@ footer {
 
     .card > img,
     .produto-placeholder {
-        height: 140px;
-    }
-
-    .card-content {
-        padding: 12px;
-    }
-
-    .card-content h3 {
-        min-height: auto;
-        font-size: 0.85rem;
-    }
-
-    .preco {
-        font-size: 1rem;
+        height: 180px;
     }
 
     .btn {
-        min-height: 36px;
-        padding: 8px 10px;
-        font-size: 0.78rem;
-    }
-
-    .btn::after {
-        display: none;
-    }
-
-    .carrinho-card,
-    .contato-card {
-        width: 100%;
-    }
-
-    .carrinho-acoes {
-        grid-template-columns: 1fr;
+        font-size: 0.9rem;
+        min-height: 38px;
     }
 
     .item-carrinho {
-        grid-template-columns: 56px minmax(0, 1fr);
-        gap: 8px;
+        grid-template-columns: 60px minmax(0, 1fr) auto;
+        gap: 10px;
     }
 
     .item-carrinho-imagem,
     .item-carrinho-placeholder {
-        width: 56px;
-        height: 56px;
-    }
-
-    .item-carrinho-controles {
-        grid-column: 1 / -1;
-        justify-content: flex-start;
-    }
-
-    .hero-content {
-        grid-template-columns: 1fr;
-        text-align: center;
-    }
-
-    .brand-block {
-        flex-direction: column;
-        text-align: center;
-    }
-
-    .hero-highlights {
-        grid-template-columns: 1fr 1fr;
-    }
-
-    .hero-highlights span:last-child {
-        grid-column: 1 / -1;
+        width: 60px;
+        height: 60px;
     }
 }
-
