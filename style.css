@@ -418,7 +418,7 @@ h2 {
 .card > img,
 .produto-placeholder {
     width: 100%;
-    height: 170px;
+    height: 220px;
     object-fit: cover;
     display: block;
     background: linear-gradient(135deg, #fff0f7, #ffc1dc 52%, #ff5cab);
@@ -1243,7 +1243,7 @@ footer {
 
     .card > img,
     .produto-placeholder {
-        height: 110px;
+        height: 150px;
     }
 
     .produto-placeholder {
