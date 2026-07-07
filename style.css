@@ -355,11 +355,11 @@ h2 {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     align-items: stretch;
-    gap: 0;
+    gap: 6px;
     width: 100%;
     max-width: 1120px;
     margin: 0 auto;
-    padding: 0;
+    padding: 0 6px;
 }
 
 .product-grid .card:nth-child(1) { --card-index: 1; }
@@ -377,12 +377,10 @@ h2 {
     width: 100%;
     max-width: 360px;
     background: var(--surface-strong);
-    border: none;
-    border-right: 1px solid rgba(244, 195, 215, 0.4);
-    border-bottom: 1px solid rgba(244, 195, 215, 0.4);
-    border-radius: 0;
+    border: 1px solid rgba(244, 195, 215, 0.5);
+    border-radius: 4px;
     overflow: hidden;
-    box-shadow: none;
+    box-shadow: 0 2px 8px rgba(194, 24, 91, 0.08);
     transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.35s ease;
     animation: subir 0.58s ease both;
     animation-delay: calc(var(--card-index, 0) * 0.06s);
@@ -965,7 +963,7 @@ h2 {
     background: #fde6ee;
 }
 
-/* BOTÃO WHATSAPP - SOMENTE LOGO */
+/* BOTÃƒO WHATSAPP - SOMENTE LOGO */
 .whatsapp-flutuante {
     position: fixed;
     right: 18px;
@@ -1228,17 +1226,15 @@ footer {
 
     .product-grid {
         grid-template-columns: repeat(2, 1fr);
-        gap: 0;
-        padding: 0;
+        gap: 4px;
+        padding: 0 4px;
     }
 
     .card {
         max-width: 100%;
-        border: none;
-        border-right: 1px solid rgba(244, 195, 215, 0.4);
-        border-bottom: 1px solid rgba(244, 195, 215, 0.4);
-        border-radius: 0;
-        box-shadow: none;
+        border: 1px solid rgba(244, 195, 215, 0.5);
+        border-radius: 3px;
+        box-shadow: 0 1px 4px rgba(194, 24, 91, 0.08);
     }
 
     .card:hover {
