@@ -635,6 +635,7 @@ h2 {
 .contato-card,
 .carrinho-card {
     width: min(95vw, 1200px);
+    max-width: 1200px;
     height: auto;
     margin: 0 auto;
 }
