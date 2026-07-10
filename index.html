@@ -13,6 +13,10 @@
 
 <body>
   <header class="hero">
+    <button class="header-settings-button" type="button" onclick="abrirConfiguracoes()" aria-label="Abrir configurações" title="Configurações">
+      <span aria-hidden="true">&#9881;&#65039;</span>
+    </button>
+
     <div class="hero-content">
       <div class="brand-block">
         <img class="logo-header" src="logo.png" alt="Logo Caseirinhos da Val">
@@ -48,7 +52,6 @@
     <button class="nav-link" type="button" data-aba="bolos" onclick="mostrarAba('bolos')">&#127874; Bolos</button>
     <button class="nav-link" type="button" data-aba="carrinho" onclick="mostrarAba('carrinho')">&#128722; Carrinho (<span id="contadorCarrinho">0</span>)</button>
     <button class="nav-link" type="button" data-aba="contato" onclick="mostrarAba('contato')">&#128222; Contato</button>
-    <button class="nav-link" type="button" data-aba="configuracoes" onclick="mostrarAba('configuracoes')">&#9881;&#65039; Configura&ccedil;&otilde;es</button>
   </nav>
 
   <main>
@@ -278,10 +281,12 @@
       </div>
     </section>
 
-    <section id="configuracoes" class="aba">
+    <section id="configuracoes" class="aba settings-modal" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="settingsTitle">
+      <div class="settings-dialog">
+        <button class="modal-close" type="button" aria-label="Fechar configurações" onclick="fecharConfiguracoes()">&times;</button>
       <div class="section-head">
         <span class="section-kicker">Sua conta</span>
-        <h2>&#9881;&#65039; Configura&ccedil;&otilde;es</h2>
+        <h2 id="settingsTitle">&#9881;&#65039; Configura&ccedil;&otilde;es</h2>
         <p>Gerencie a apar&ecirc;ncia e a sua sess&atilde;o de compra.</p>
       </div>
 
@@ -326,6 +331,7 @@
           <span aria-hidden="true">&#128274;</span>
           <p><strong>Compra com identifica&ccedil;&atilde;o.</strong> Para iniciar um pedido, &eacute; necess&aacute;rio entrar com e-mail, Google ou telefone.</p>
         </div>
+      </div>
       </div>
     </section>
   </main>

@@ -118,8 +118,47 @@ function inicializarInterface(){
   inicializarImagensFallback();
   inicializarModalPix();
   inicializarAutenticacao();
+  inicializarConfiguracoes();
   atualizarContaNaInterface();
   atualizarOpcoesTema();
+}
+
+function inicializarConfiguracoes(){
+  const configuracoes = document.getElementById("configuracoes");
+
+  if(configuracoes){
+    configuracoes.addEventListener("click", function(evento){
+      if(evento.target === configuracoes){
+        fecharConfiguracoes();
+      }
+    });
+  }
+}
+
+function abrirConfiguracoes(){
+  const configuracoes = document.getElementById("configuracoes");
+
+  if(!configuracoes){
+    return;
+  }
+
+  configuracoes.classList.add("active");
+  configuracoes.setAttribute("aria-hidden", "false");
+  document.body.classList.add("modal-aberto");
+}
+
+function fecharConfiguracoes(){
+  const configuracoes = document.getElementById("configuracoes");
+  const loginAberto = document.getElementById("authModal").classList.contains("aberto");
+
+  if(configuracoes){
+    configuracoes.classList.remove("active");
+    configuracoes.setAttribute("aria-hidden", "true");
+  }
+
+  if(!loginAberto){
+    document.body.classList.remove("modal-aberto");
+  }
 }
 
 function inicializarAutenticacao(){
@@ -219,7 +258,9 @@ function fecharLogin(preservarAcao){
     modal.setAttribute("aria-hidden", "true");
   }
 
-  document.body.classList.remove("modal-aberto");
+  if(!document.getElementById("configuracoes").classList.contains("active")){
+    document.body.classList.remove("modal-aberto");
+  }
 
   if(!preservarAcao){
     acaoAposLogin = null;
@@ -303,6 +344,7 @@ function exigirLogin(acao){
 }
 
 function trocarConta(){
+  fecharConfiguracoes();
   desconectarConta(true);
   abrirLogin();
 }
@@ -332,7 +374,7 @@ function atualizarContaNaInterface(){
 
     if(tituloHero){ tituloHero.textContent = "Olá, " + primeiroNome + "!"; }
     if(descricaoHero){ descricaoHero.textContent = "Conta conectada por " + metodo + "."; }
-    if(botaoHero){ botaoHero.textContent = "Gerenciar conta"; botaoHero.onclick = function(){ mostrarAba("configuracoes"); }; }
+    if(botaoHero){ botaoHero.textContent = "Gerenciar conta"; botaoHero.onclick = abrirConfiguracoes; }
     if(nomeConfiguracoes){ nomeConfiguracoes.textContent = "Olá, " + primeiroNome + "!"; }
     if(infoConfiguracoes){ infoConfiguracoes.textContent = contaAtual.identificador + " \u2022 Login por " + metodo + "."; }
     if(botaoTrocar){ botaoTrocar.textContent = "Trocar de conta"; }
@@ -546,6 +588,10 @@ function inicializarModalPix(){
 
     if(evento.key === "Escape" && document.getElementById("authModal").classList.contains("aberto")){
       fecharLogin();
+    }
+
+    if(evento.key === "Escape" && document.getElementById("configuracoes").classList.contains("active")){
+      fecharConfiguracoes();
     }
   });
 }
