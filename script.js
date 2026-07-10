@@ -4,6 +4,11 @@ const PIX_CIDADE = "PICUI";
 const WHATSAPP_VAL = "5583982168114";
 let produtoPixAtual = null;
 const carrinho = {};
+let contaAtual = null;
+let acaoAposLogin = null;
+let codigoTelefoneEnviado = false;
+const CHAVE_CONTA = "caseirinhosConta";
+const CHAVE_TEMA = "caseirinhosTema";
 
 // Mapeamento de imagens dos produtos
 const IMAGENS_PRODUTOS = {
@@ -85,6 +90,8 @@ const PRODUTOS = {
 };
 
 carregarCarrinho();
+carregarConta();
+carregarTema();
 preencherPrecos();
 atualizarCarrinho();
 inicializarInterface();
@@ -110,6 +117,299 @@ function inicializarInterface(){
   atualizarNavegacao("doces");
   inicializarImagensFallback();
   inicializarModalPix();
+  inicializarAutenticacao();
+  atualizarContaNaInterface();
+  atualizarOpcoesTema();
+}
+
+function inicializarAutenticacao(){
+  const modal = document.getElementById("authModal");
+  const emailForm = document.getElementById("emailLoginForm");
+  const phoneForm = document.getElementById("phoneLoginForm");
+  const phoneInput = document.getElementById("loginPhone");
+
+  if(modal){
+    modal.addEventListener("click", function(evento){
+      if(evento.target === modal){
+        fecharLogin();
+      }
+    });
+  }
+
+  if(emailForm){
+    emailForm.addEventListener("submit", function(evento){
+      evento.preventDefault();
+
+      const nome = document.getElementById("loginName").value.trim();
+      const email = document.getElementById("loginEmail").value.trim();
+
+      if(!validarEmail(email)){
+        mostrarErroAutenticacao("Informe um e-mail válido para continuar.");
+        return;
+      }
+
+      concluirLogin({
+        nome: nome || email.split("@")[0],
+        identificador: email,
+        metodo: "email"
+      });
+    });
+  }
+
+  if(phoneForm){
+    phoneForm.addEventListener("submit", function(evento){
+      evento.preventDefault();
+
+      const telefone = phoneInput ? phoneInput.value.trim() : "";
+      const campoCodigo = document.getElementById("loginCode");
+
+      if(telefone.replace(/\D/g, "").length < 10){
+        mostrarErroAutenticacao("Informe um telefone válido com DDD.");
+        return;
+      }
+
+      if(!codigoTelefoneEnviado){
+        codigoTelefoneEnviado = true;
+        document.getElementById("verificationCodeArea").hidden = false;
+        document.getElementById("phoneLoginButton").textContent = "Confirmar e entrar";
+        document.getElementById("phoneHelp").textContent = "Código enviado. Nesta demonstração, digite qualquer código de 6 dígitos.";
+        campoCodigo.focus();
+        return;
+      }
+
+      if(!campoCodigo || campoCodigo.value.replace(/\D/g, "").length !== 6){
+        mostrarErroAutenticacao("Digite o código de 6 dígitos para confirmar.");
+        return;
+      }
+
+      concluirLogin({
+        nome: "Cliente",
+        identificador: telefone,
+        metodo: "telefone"
+      });
+    });
+  }
+
+  if(phoneInput){
+    phoneInput.addEventListener("input", function(){
+      const numeros = phoneInput.value.replace(/\D/g, "").slice(0, 11);
+      phoneInput.value = formatarTelefone(numeros);
+    });
+  }
+}
+
+function abrirLogin(){
+  const modal = document.getElementById("authModal");
+
+  if(!modal){
+    return;
+  }
+
+  mostrarOpcoesLogin();
+  modal.classList.add("aberto");
+  modal.setAttribute("aria-hidden", "false");
+  document.body.classList.add("modal-aberto");
+}
+
+function fecharLogin(preservarAcao){
+  const modal = document.getElementById("authModal");
+
+  if(modal){
+    modal.classList.remove("aberto");
+    modal.setAttribute("aria-hidden", "true");
+  }
+
+  document.body.classList.remove("modal-aberto");
+
+  if(!preservarAcao){
+    acaoAposLogin = null;
+  }
+}
+
+function mostrarOpcoesLogin(){
+  const opcoes = document.getElementById("authOptions");
+  const emailForm = document.getElementById("emailLoginForm");
+  const phoneForm = document.getElementById("phoneLoginForm");
+
+  if(opcoes){
+    opcoes.hidden = false;
+  }
+
+  if(emailForm){
+    emailForm.hidden = true;
+  }
+
+  if(phoneForm){
+    phoneForm.hidden = true;
+  }
+}
+
+function mostrarFormularioLogin(tipo){
+  const opcoes = document.getElementById("authOptions");
+  const emailForm = document.getElementById("emailLoginForm");
+  const phoneForm = document.getElementById("phoneLoginForm");
+
+  if(opcoes){
+    opcoes.hidden = true;
+  }
+
+  if(emailForm){
+    emailForm.hidden = tipo !== "email";
+  }
+
+  if(phoneForm){
+    phoneForm.hidden = tipo !== "phone";
+  }
+
+  if(tipo === "email"){
+    document.getElementById("loginEmail").focus();
+  }else if(tipo === "phone"){
+    document.getElementById("loginPhone").focus();
+  }
+}
+
+function loginComGoogle(){
+  concluirLogin({
+    nome: "Cliente Google",
+    identificador: "Conta conectada com Google",
+    metodo: "google"
+  });
+}
+
+function concluirLogin(conta){
+  contaAtual = conta;
+  localStorage.setItem(CHAVE_CONTA, JSON.stringify(contaAtual));
+  atualizarContaNaInterface();
+
+  const acao = acaoAposLogin;
+  acaoAposLogin = null;
+  fecharLogin(true);
+  mostrarToastSite("Login realizado. Bom pedido, " + obterPrimeiroNome(contaAtual.nome) + "!");
+
+  if(acao){
+    setTimeout(acao, 120);
+  }
+}
+
+function exigirLogin(acao){
+  if(contaAtual){
+    return true;
+  }
+
+  acaoAposLogin = acao;
+  abrirLogin();
+  mostrarToastSite("Entre para comprar com segurança.");
+  return false;
+}
+
+function trocarConta(){
+  desconectarConta(true);
+  abrirLogin();
+}
+
+function desconectarConta(semMensagem){
+  contaAtual = null;
+  localStorage.removeItem(CHAVE_CONTA);
+  atualizarContaNaInterface();
+
+  if(!semMensagem){
+    mostrarToastSite("Conta desconectada com segurança.");
+  }
+}
+
+function atualizarContaNaInterface(){
+  const tituloHero = document.getElementById("heroAccountTitle");
+  const descricaoHero = document.getElementById("heroAccountDescription");
+  const botaoHero = document.getElementById("heroAccountButton");
+  const nomeConfiguracoes = document.getElementById("settingsAccountName");
+  const infoConfiguracoes = document.getElementById("settingsAccountInfo");
+  const botaoTrocar = document.getElementById("switchAccountButton");
+  const botaoSair = document.getElementById("logoutButton");
+
+  if(contaAtual){
+    const primeiroNome = obterPrimeiroNome(contaAtual.nome);
+    const metodo = contaAtual.metodo === "google" ? "Google" : contaAtual.metodo === "telefone" ? "telefone" : "e-mail";
+
+    if(tituloHero){ tituloHero.textContent = "Olá, " + primeiroNome + "!"; }
+    if(descricaoHero){ descricaoHero.textContent = "Conta conectada por " + metodo + "."; }
+    if(botaoHero){ botaoHero.textContent = "Gerenciar conta"; botaoHero.onclick = function(){ mostrarAba("configuracoes"); }; }
+    if(nomeConfiguracoes){ nomeConfiguracoes.textContent = "Olá, " + primeiroNome + "!"; }
+    if(infoConfiguracoes){ infoConfiguracoes.textContent = contaAtual.identificador + " \u2022 Login por " + metodo + "."; }
+    if(botaoTrocar){ botaoTrocar.textContent = "Trocar de conta"; }
+    if(botaoSair){ botaoSair.hidden = false; }
+  }else{
+    if(tituloHero){ tituloHero.textContent = "Entre para fazer seu pedido"; }
+    if(descricaoHero){ descricaoHero.textContent = "Use seu e-mail, Google ou telefone."; }
+    if(botaoHero){ botaoHero.textContent = "Entrar / criar conta"; botaoHero.onclick = abrirLogin; }
+    if(nomeConfiguracoes){ nomeConfiguracoes.textContent = "Você ainda não entrou"; }
+    if(infoConfiguracoes){ infoConfiguracoes.textContent = "Entre para comprar e acompanhar seu pedido."; }
+    if(botaoTrocar){ botaoTrocar.textContent = "Entrar ou criar conta"; }
+    if(botaoSair){ botaoSair.hidden = true; }
+  }
+}
+
+function carregarConta(){
+  const contaSalva = localStorage.getItem(CHAVE_CONTA);
+
+  if(!contaSalva){
+    return;
+  }
+
+  try{
+    const conta = JSON.parse(contaSalva);
+
+    if(conta && conta.nome && conta.identificador && conta.metodo){
+      contaAtual = conta;
+    }
+  }catch(erro){
+    localStorage.removeItem(CHAVE_CONTA);
+  }
+}
+
+function definirTema(tema){
+  const temaEscolhido = tema === "dark" ? "dark" : "light";
+  document.documentElement.dataset.theme = temaEscolhido;
+  localStorage.setItem(CHAVE_TEMA, temaEscolhido);
+  atualizarOpcoesTema();
+}
+
+function carregarTema(){
+  const temaSalvo = localStorage.getItem(CHAVE_TEMA) || "light";
+  document.documentElement.dataset.theme = temaSalvo === "dark" ? "dark" : "light";
+}
+
+function atualizarOpcoesTema(){
+  const temaAtual = document.documentElement.dataset.theme || "light";
+
+  document.querySelectorAll("[data-theme-option]").forEach(function(botao){
+    const selecionado = botao.dataset.themeOption === temaAtual;
+    botao.classList.toggle("selecionado", selecionado);
+    botao.setAttribute("aria-pressed", String(selecionado));
+  });
+}
+
+function validarEmail(email){
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+}
+
+function formatarTelefone(numeros){
+  if(numeros.length <= 2){ return numeros; }
+  if(numeros.length <= 6){ return "(" + numeros.slice(0, 2) + ") " + numeros.slice(2); }
+  if(numeros.length <= 10){ return "(" + numeros.slice(0, 2) + ") " + numeros.slice(2, 6) + "-" + numeros.slice(6); }
+  return "(" + numeros.slice(0, 2) + ") " + numeros.slice(2, 7) + "-" + numeros.slice(7); }
+
+function obterPrimeiroNome(nome){
+  return String(nome || "cliente").trim().split(/\s+/)[0] || "cliente";
+}
+
+function mostrarErroAutenticacao(mensagem){
+  const ajudaTelefone = document.getElementById("phoneHelp");
+
+  if(ajudaTelefone && !document.getElementById("phoneLoginForm").hidden){
+    ajudaTelefone.textContent = mensagem;
+  }else{
+    mostrarToastSite(mensagem.replace(/&[^;]+;/g, ""));
+  }
 }
 
 function atualizarNavegacao(aba){
@@ -243,6 +543,10 @@ function inicializarModalPix(){
     if(evento.key === "Escape" && modal.style.display === "flex"){
       fecharPix();
     }
+
+    if(evento.key === "Escape" && document.getElementById("authModal").classList.contains("aberto")){
+      fecharLogin();
+    }
   });
 }
 
@@ -274,6 +578,10 @@ function preencherPrecos(){
 }
 
 function abrirPix(codigoProduto){
+  if(!exigirLogin(function(){ abrirPix(codigoProduto); })){
+    return;
+  }
+
   const produto = PRODUTOS[codigoProduto];
 
   if(!produto){
@@ -306,6 +614,10 @@ function formatarMoeda(valor){
 }
 
 function fazerPedidoWhatsApp(codigoProduto){
+  if(!exigirLogin(function(){ fazerPedidoWhatsApp(codigoProduto); })){
+    return;
+  }
+
   const produto = PRODUTOS[codigoProduto];
 
   if(!produto){
@@ -320,6 +632,10 @@ function fazerPedidoWhatsApp(codigoProduto){
 }
 
 function adicionarAoCarrinho(codigoProduto, botao){
+  if(!exigirLogin(function(){ adicionarAoCarrinho(codigoProduto, botao); })){
+    return;
+  }
+
   const produto = PRODUTOS[codigoProduto];
 
   if(!produto){
@@ -576,6 +892,10 @@ function finalizarCarrinhoWhatsApp(){
     return;
   }
 
+  if(!exigirLogin(finalizarCarrinhoWhatsApp)){
+    return;
+  }
+
   const mensagem = "Ola, quero fazer este pedido:\n\n" +
   montarResumoCarrinhoTexto() +
   "\n\nTotal: " + formatarMoeda(calcularTotalCarrinho()) + ".";
@@ -599,6 +919,10 @@ function abrirPixCarrinho(){
 
   if(total === 0){
     mostrarStatusCarrinho("Adicione pelo menos um produto ao carrinho.");
+    return;
+  }
+
+  if(!exigirLogin(abrirPixCarrinho)){
     return;
   }
 
