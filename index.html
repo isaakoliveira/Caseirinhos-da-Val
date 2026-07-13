@@ -382,11 +382,14 @@
 
       <form id="emailLoginForm" class="auth-form" novalidate>
         <button class="auth-back" type="button" onclick="mostrarOpcoesLogin()">&larr; Voltar</button>
-        <label for="loginName">Como podemos chamar voc&ecirc;?</label>
+        <label for="loginName">Nome</label>
         <input id="loginName" type="text" autocomplete="name" placeholder="Seu nome">
-        <label for="loginEmail">Seu melhor e-mail</label>
+        <label for="loginEmail">E-mail</label>
         <input id="loginEmail" type="email" autocomplete="email" placeholder="voce@exemplo.com" required>
-        <button class="btn auth-submit" type="submit">Continuar com e-mail</button>
+        <label for="loginPassword">Senha</label>
+        <input id="loginPassword" type="password" autocomplete="current-password" placeholder="Minimo 4 caracteres" required>
+        <button class="btn auth-submit" type="submit">Entrar / cadastrar</button>
+        <p class="auth-help">Se ja tem conta, entre com seu e-mail e senha. Se e novo, sua conta sera criada.</p>
       </form>
 
       <form id="phoneLoginForm" class="auth-form" novalidate>

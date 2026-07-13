@@ -1796,6 +1796,10 @@ html[data-theme="dark"] .settings-icon {
     line-height: 1.45;
 }
 
+.auth-form label:first-of-type {
+    margin-top: 0;
+}
+
 .auth-privacy {
     margin-top: 18px;
     padding-top: 14px;
