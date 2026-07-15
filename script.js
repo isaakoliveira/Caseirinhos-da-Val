@@ -177,8 +177,10 @@ function fazerPedidoWhatsApp(codigoProduto) {
   if (!exigirLogin(function () { fazerPedidoWhatsApp(codigoProduto); })) return;
   var produto = PRODUTOS[codigoProduto];
   if (!produto) return;
-  var msg = "Ola, quero fazer um pedido de " + produto.nome + " no valor de " + formatarMoeda(produto.preco) + ".";
+  var nome = nomeUsuario || "Cliente";
+  var msg = "Ola, Val! Me chamo " + nome + ". Quero fazer um pedido de " + produto.nome + " no valor de " + formatarMoeda(produto.preco) + ".";
   window.open("https://wa.me/" + WHATSAPP_VAL + "?text=" + encodeURIComponent(msg), "_blank");
+  mostrarToastSite("Obrigado pela preferencia, " + (nomeUsuario ? nomeUsuario.split(" ")[0] : "cliente") + "!");
 }
 
 function adicionarAoCarrinho(codigoProduto, botao) {
@@ -335,13 +337,14 @@ function finalizarCarrinhoWhatsApp() {
   if (contarItensCarrinho() === 0) { mostrarStatusCarrinho("Adicione pelo menos um produto ao carrinho."); return; }
   if (!exigirLogin(finalizarCarrinhoWhatsApp)) return;
 
-  var msg = "Ola, quero fazer este pedido:\n\n" + montarResumoCarrinhoTexto() + "\n\nTotal: " + formatarMoeda(calcularTotalCarrinho()) + ".";
+  var nome = nomeUsuario || "Cliente";
+  var msg = "Ola, Val! Me chamo " + nome + ". Quero fazer este pedido:\n\n" + montarResumoCarrinhoTexto() + "\n\nTotal: " + formatarMoeda(calcularTotalCarrinho()) + ".";
   window.open("https://wa.me/" + WHATSAPP_VAL + "?text=" + encodeURIComponent(msg), "_blank");
   Object.keys(carrinho).forEach(function (k) { delete carrinho[k]; });
   salvarCarrinho();
   atualizarCarrinho();
   mostrarStatusCarrinho("Pedido enviado! Carrinho limpo.");
-  mostrarToastSite("Pedido enviado!");
+  mostrarToastSite("Obrigado pela preferencia, " + (nomeUsuario ? nomeUsuario.split(" ")[0] : "cliente") + "!");
 }
 
 function abrirPixCarrinho() {
@@ -400,11 +403,13 @@ function enviarComprovanteWhatsApp() {
   var arquivo = campo && campo.files ? campo.files[0] : null;
   if (!produtoPixAtual) { if (status) status.textContent = "Abra o pagamento de um produto primeiro."; return; }
   if (!arquivo) { if (status) status.textContent = "Escolha o comprovante antes de enviar."; return; }
-  var msg = "Ola, Val! Ja fiz o pagamento do " + produtoPixAtual.produto.nome + " no valor de " + produtoPixAtual.precoFormatado + ". Meu comprovante esta selecionado: " + arquivo.name;
+  var nome = nomeUsuario || "Cliente";
+  var msg = "Ola, Val! Me chamo " + nome + ". Ja fiz o pagamento do " + produtoPixAtual.produto.nome + " no valor de " + produtoPixAtual.precoFormatado + ". Meu comprovante esta selecionado: " + arquivo.name;
   if (produtoPixAtual.resumo) msg += "\n\nPedido:\n" + produtoPixAtual.resumo;
   msg += "\n\nVou enviar o comprovante por aqui.";
   if (status) status.textContent = "WhatsApp aberto. Anexe o comprovante na conversa antes de enviar.";
   window.open("https://wa.me/" + WHATSAPP_VAL + "?text=" + encodeURIComponent(msg), "_blank");
+  mostrarToastSite("Obrigado pela preferencia, " + (nomeUsuario ? nomeUsuario.split(" ")[0] : "cliente") + "!");
 }
 
 function montarPixCopiaECola(produto, codigoProduto) {
@@ -510,6 +515,7 @@ function atualizarContaNaInterface() {
   var desc = document.getElementById("heroAccountDescription");
   var input = document.getElementById("inputNome");
   var botao = document.getElementById("heroAccountButton");
+  var settingsDisplay = document.getElementById("settingsAccountDisplay");
 
   if (nomeUsuario) {
     var primeiroNome = nomeUsuario.split(" ")[0];
@@ -517,11 +523,13 @@ function atualizarContaNaInterface() {
     if (desc) desc.textContent = "Pronto para fazer seu pedido.";
     if (input) { input.value = nomeUsuario; input.style.display = "none"; }
     if (botao) { botao.textContent = "Trocar nome"; botao.onclick = trocarNome; }
+    if (settingsDisplay) settingsDisplay.textContent = "Logado como: " + nomeUsuario;
   } else {
     if (titulo) titulo.textContent = "Qual seu nome?";
     if (desc) desc.textContent = "Digite seu nome para comecar a comprar.";
     if (input) { input.value = ""; input.style.display = ""; input.focus(); }
     if (botao) { botao.textContent = "Confirmar"; botao.onclick = confirmarNome; }
+    if (settingsDisplay) settingsDisplay.textContent = "Nenhum nome definido.";
   }
 }
 
