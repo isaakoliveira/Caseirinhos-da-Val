@@ -1341,12 +1341,12 @@ footer {
 .hero-account-copy > span:last-child { color: rgba(255, 255, 255, 0.84); font-size: 0.88rem; line-height: 1.45; }
 
 .input-nome {
-    width: 100%; min-height: 42px; padding: 8px 12px; color: var(--ink);
+    width: 100%; min-height: 42px; padding: 8px 12px; color: #341225;
     background: #fff; border: 1px solid rgba(255, 255, 255, 0.5);
     border-radius: 10px; outline: none; font-size: 0.95rem;
 }
 
-.input-nome:focus { border-color: var(--berry); box-shadow: 0 0 0 3px rgba(255, 45, 141, 0.2); }
+.input-nome:focus { border-color: #ff2d8d; box-shadow: 0 0 0 3px rgba(255, 45, 141, 0.2); }
 
 .btn-account {
     width: auto; min-height: 42px; color: var(--berry-dark); background: #fff;
