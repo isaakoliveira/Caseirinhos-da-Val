@@ -13,6 +13,9 @@
 
 <body>
   <header class="hero">
+    <button class="header-settings-button" type="button" onclick="abrirConfiguracoes()" aria-label="Abrir configurações" title="Configurações">
+      <span aria-hidden="true">&#9881;&#65039;</span>
+    </button>
     <div class="hero-content">
       <div class="brand-block">
         <img class="logo-header" src="logo.png" alt="Logo Caseirinhos da Val">
@@ -21,6 +24,15 @@
           <h1>&#127856; Caseirinhos da Val &#127854;</h1>
           <p>Os melhores doces e bolos da cidade</p>
         </div>
+      </div>
+      <div class="hero-account" aria-live="polite">
+        <div class="hero-account-copy">
+          <span class="account-kicker">Compra protegida</span>
+          <strong id="heroAccountTitle">Qual seu nome?</strong>
+          <span id="heroAccountDescription">Digite seu nome para come&ccedil;ar a comprar.</span>
+        </div>
+        <input id="inputNome" class="input-nome" type="text" placeholder="Seu nome" maxlength="30" onkeydown="if(event.key==='Enter')confirmarNome()">
+        <button id="heroAccountButton" class="btn btn-account" type="button" onclick="confirmarNome()">Confirmar</button>
       </div>
     </div>
 
@@ -269,6 +281,34 @@
     </section>
 
 
+    <section id="configuracoes" class="aba settings-modal" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="settingsTitle">
+      <div class="settings-dialog">
+        <button class="modal-close" type="button" aria-label="Fechar configurações" onclick="fecharConfiguracoes()">&times;</button>
+      <div class="section-head">
+        <span class="section-kicker">Configurações</span>
+        <h2 id="settingsTitle">&#9881;&#65039; Configura&ccedil;&otilde;es</h2>
+        <p>Personalize sua experi&ecirc;ncia.</p>
+      </div>
+      <div class="container">
+        <div class="card settings-card">
+          <div class="card-content">
+            <div class="settings-heading">
+              <span class="settings-icon" aria-hidden="true">&#127769;</span>
+              <div>
+                <span class="settings-label">Apar&ecirc;ncia</span>
+                <h3>Tema do site</h3>
+                <p>Escolha a visualiza&ccedil;&atilde;o mais confort&aacute;vel.</p>
+              </div>
+            </div>
+            <div class="theme-selector" role="group" aria-label="Escolher tema">
+              <button class="theme-option" type="button" data-theme-option="light" onclick="definirTema('light')"><span>&#9728;&#65039;</span> Claro</button>
+              <button class="theme-option" type="button" data-theme-option="dark" onclick="definirTema('dark')"><span>&#127769;</span> Escuro</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      </div>
+    </section>
   </main>
 
   <div id="pixModal" class="pix-modal">

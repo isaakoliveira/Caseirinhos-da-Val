@@ -55,6 +55,8 @@ function inicializarInterface() {
   atualizarNavegacao("doces");
   inicializarImagensFallback();
   inicializarModalPix();
+  inicializarConfiguracoes();
+  inicializarTema();
 }
 
 
@@ -131,9 +133,7 @@ function inicializarModalPix() {
   if (!modal) return;
   modal.addEventListener("click", function (e) { if (e.target === modal) fecharPix(); });
   document.addEventListener("keydown", function (e) {
-    if (e.key === "Escape") {
-      if (modal.style.display === "flex") fecharPix();
-    }
+    if (e.key === "Escape" && modal.style.display === "flex") fecharPix();
   });
 }
 
@@ -155,6 +155,7 @@ function preencherPrecos() {
 }
 
 function abrirPix(codigoProduto) {
+  if (!exigirLogin(function () { abrirPix(codigoProduto); })) return;
   var produto = PRODUTOS[codigoProduto];
   if (!produto) return;
   var preco = formatarMoeda(produto.preco);
@@ -173,6 +174,7 @@ function formatarMoeda(valor) {
 }
 
 function fazerPedidoWhatsApp(codigoProduto) {
+  if (!exigirLogin(function () { fazerPedidoWhatsApp(codigoProduto); })) return;
   var produto = PRODUTOS[codigoProduto];
   if (!produto) return;
   var msg = "Ola, quero fazer um pedido de " + produto.nome + " no valor de " + formatarMoeda(produto.preco) + ".";
@@ -180,6 +182,7 @@ function fazerPedidoWhatsApp(codigoProduto) {
 }
 
 function adicionarAoCarrinho(codigoProduto, botao) {
+  if (!exigirLogin(function () { adicionarAoCarrinho(codigoProduto, botao); })) return;
   var produto = PRODUTOS[codigoProduto];
   if (!produto) return;
   if (!carrinho[codigoProduto]) carrinho[codigoProduto] = 0;
@@ -330,6 +333,7 @@ function calcularTotalCarrinho() {
 
 function finalizarCarrinhoWhatsApp() {
   if (contarItensCarrinho() === 0) { mostrarStatusCarrinho("Adicione pelo menos um produto ao carrinho."); return; }
+  if (!exigirLogin(finalizarCarrinhoWhatsApp)) return;
 
   var msg = "Ola, quero fazer este pedido:\n\n" + montarResumoCarrinhoTexto() + "\n\nTotal: " + formatarMoeda(calcularTotalCarrinho()) + ".";
   window.open("https://wa.me/" + WHATSAPP_VAL + "?text=" + encodeURIComponent(msg), "_blank");
@@ -343,6 +347,7 @@ function finalizarCarrinhoWhatsApp() {
 function abrirPixCarrinho() {
   var total = calcularTotalCarrinho();
   if (total === 0) { mostrarStatusCarrinho("Adicione pelo menos um produto ao carrinho."); return; }
+  if (!exigirLogin(abrirPixCarrinho)) return;
   var preco = formatarMoeda(total);
   var prod = { nome: "Pedido Caseirinhos", preco: total };
   var pix = montarPixCopiaECola(prod, "carrinho");
@@ -459,4 +464,107 @@ function carregarCarrinho() {
       Object.keys(dados).forEach(function (k) { carrinho[k] = dados[k]; });
     } catch (e) { console.error("Erro ao carregar carrinho:", e); }
   }
+}
+
+// ===== NOME DO USUARIO =====
+var nomeUsuario = localStorage.getItem("nomeUsuario") || null;
+var acaoAposLogin = null;
+
+if (nomeUsuario) atualizarContaNaInterface();
+
+function confirmarNome() {
+  var input = document.getElementById("inputNome");
+  var nome = input ? input.value.trim() : "";
+  if (!nome || nome.length < 2) {
+    mostrarToastSite("Digite seu nome.");
+    input?.focus();
+    return;
+  }
+  nomeUsuario = nome;
+  localStorage.setItem("nomeUsuario", nome);
+  atualizarContaNaInterface();
+  var acao = acaoAposLogin;
+  acaoAposLogin = null;
+  mostrarToastSite("Bem-vindo, " + nome.split(" ")[0] + "!");
+  if (acao) setTimeout(acao, 120);
+}
+
+function trocarNome() {
+  nomeUsuario = null;
+  localStorage.removeItem("nomeUsuario");
+  atualizarContaNaInterface();
+  document.getElementById("inputNome")?.focus();
+  mostrarToastSite("Nome removido.");
+}
+
+function exigirLogin(acao) {
+  if (nomeUsuario) return true;
+  acaoAposLogin = acao;
+  document.getElementById("inputNome")?.focus();
+  mostrarToastSite("Digite seu nome para continuar.");
+  return false;
+}
+
+function atualizarContaNaInterface() {
+  var titulo = document.getElementById("heroAccountTitle");
+  var desc = document.getElementById("heroAccountDescription");
+  var input = document.getElementById("inputNome");
+  var botao = document.getElementById("heroAccountButton");
+
+  if (nomeUsuario) {
+    var primeiroNome = nomeUsuario.split(" ")[0];
+    if (titulo) titulo.textContent = "Ola, " + primeiroNome + "!";
+    if (desc) desc.textContent = "Pronto para fazer seu pedido.";
+    if (input) { input.value = nomeUsuario; input.style.display = "none"; }
+    if (botao) { botao.textContent = "Trocar nome"; botao.onclick = trocarNome; }
+  } else {
+    if (titulo) titulo.textContent = "Qual seu nome?";
+    if (desc) desc.textContent = "Digite seu nome para comecar a comprar.";
+    if (input) { input.value = ""; input.style.display = ""; input.focus(); }
+    if (botao) { botao.textContent = "Confirmar"; botao.onclick = confirmarNome; }
+  }
+}
+
+// ===== CONFIGURACOES / TEMA =====
+function inicializarConfiguracoes() {
+  var el = document.getElementById("configuracoes");
+  if (el) {
+    el.addEventListener("click", function (e) {
+      if (e.target === el) fecharConfiguracoes();
+    });
+  }
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "Escape") {
+      if (el?.classList.contains("active")) fecharConfiguracoes();
+    }
+  });
+}
+
+function abrirConfiguracoes() {
+  var el = document.getElementById("configuracoes");
+  if (!el) return;
+  el.classList.add("active");
+  el.setAttribute("aria-hidden", "false");
+}
+
+function fecharConfiguracoes() {
+  var el = document.getElementById("configuracoes");
+  if (el) {
+    el.classList.remove("active");
+    el.setAttribute("aria-hidden", "true");
+  }
+}
+
+function inicializarTema() {
+  var salvo = localStorage.getItem("temaSite") || "light";
+  definirTema(salvo, true);
+}
+
+function definirTema(tema, silencioso) {
+  document.documentElement.setAttribute("data-tema", tema);
+  localStorage.setItem("temaSite", tema);
+  document.querySelectorAll(".theme-option").forEach(function (b) {
+    b.classList.toggle("ativo", b.dataset.themeOption === tema);
+  });
+  if (!silencioso) mostrarToastSite("Tema " + (tema === "dark" ? "escuro" : "claro") + " ativado.");
 }
