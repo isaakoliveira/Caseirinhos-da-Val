@@ -14,6 +14,7 @@
     --shadow-soft: 0 18px 46px rgba(194, 24, 91, 0.16);
     --shadow-card: 0 10px 28px rgba(194, 24, 91, 0.12);
     --bg-site: linear-gradient(180deg, rgba(255,240,247,0.98) 0%, rgba(255,255,255,0.95) 44%, rgba(255,232,242,0.92) 100%), repeating-linear-gradient(135deg, rgba(255,45,141,0.055) 0 12px, transparent 12px 34px);
+    --nav-bg: rgba(255, 250, 253, 0.94);
 }
 
 [data-tema="dark"] {
@@ -30,6 +31,7 @@
     --shadow-soft: 0 18px 46px rgba(0, 0, 0, 0.4);
     --shadow-card: 0 10px 28px rgba(0, 0, 0, 0.35);
     --bg-site: linear-gradient(180deg, #1a0e16 0%, #261521 44%, #1f0f1a 100%);
+    --nav-bg: rgba(38, 21, 33, 0.96);
 }
 
 * {
@@ -265,7 +267,7 @@ nav {
     gap: 8px;
     padding: 10px 14px;
     flex-wrap: wrap;
-    background: rgba(255, 250, 253, 0.94);
+    background: var(--nav-bg);
     border-bottom: 1px solid var(--line);
     box-shadow: 0 10px 22px rgba(194, 24, 91, 0.10);
     backdrop-filter: blur(12px);
