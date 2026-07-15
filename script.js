@@ -1,17 +1,9 @@
-const API_BASE = window.location.origin + "/api";
 const PIX_CHAVE = "10432316418";
 const PIX_NOME_RECEBEDOR = "CASEIRINHOS DA VAL";
 const PIX_CIDADE = "PICUI";
 const WHATSAPP_VAL = "5583982168114";
 let produtoPixAtual = null;
 const carrinho = {};
-let contaAtual = null;
-let tokenAtual = null;
-let acaoAposLogin = null;
-let codigoTelefoneEnviado = false;
-const CHAVE_TOKEN = "caseirinhosToken";
-const CHAVE_CONTA = "caseirinhosConta";
-const CHAVE_TEMA = "caseirinhosTema";
 
 const IMAGENS_PRODUTOS = {
   doceLeiteCoco: "doce-de-leite-com-coco-sem-risco-camera.jpeg",
@@ -44,36 +36,9 @@ const PRODUTOS = {
 };
 
 carregarCarrinho();
-carregarConta();
-carregarTema();
 preencherPrecos();
 atualizarCarrinho();
 inicializarInterface();
-
-function api(path, options) {
-  const config = options || {};
-  const headers = { "Content-Type": "application/json", ...(config.headers || {}) };
-
-  if (tokenAtual) {
-    headers["Authorization"] = "Bearer " + tokenAtual;
-  }
-
-  const url = API_BASE + path;
-  const body = config.body ? JSON.stringify(config.body) : undefined;
-
-  return fetch(url, {
-    method: config.method || "GET",
-    headers: headers,
-    body: body
-  }).then(function (res) {
-    return res.json().then(function (data) {
-      if (!res.ok) {
-        throw new Error(data.error || "Erro na requisicao");
-      }
-      return data;
-    });
-  });
-}
 
 function mostrarAba(aba) {
   const secoes = document.querySelectorAll("section");
@@ -90,311 +55,9 @@ function inicializarInterface() {
   atualizarNavegacao("doces");
   inicializarImagensFallback();
   inicializarModalPix();
-  inicializarAutenticacao();
-  inicializarConfiguracoes();
-  atualizarContaNaInterface();
-  atualizarOpcoesTema();
 }
 
-function inicializarConfiguracoes() {
-  var el = document.getElementById("configuracoes");
-  if (el) {
-    el.addEventListener("click", function (e) {
-      if (e.target === el) fecharConfiguracoes();
-    });
-  }
-}
 
-function abrirConfiguracoes() {
-  var el = document.getElementById("configuracoes");
-  if (!el) return;
-  el.classList.add("active");
-  el.setAttribute("aria-hidden", "false");
-  document.body.classList.add("modal-aberto");
-}
-
-function fecharConfiguracoes() {
-  var el = document.getElementById("configuracoes");
-  if (el) {
-    el.classList.remove("active");
-    el.setAttribute("aria-hidden", "true");
-  }
-  if (!document.getElementById("authModal").classList.contains("aberto")) {
-    document.body.classList.remove("modal-aberto");
-  }
-}
-
-function inicializarAutenticacao() {
-  var modal = document.getElementById("authModal");
-  var emailForm = document.getElementById("emailLoginForm");
-  var phoneForm = document.getElementById("phoneLoginForm");
-  var phoneInput = document.getElementById("loginPhone");
-
-  if (modal) {
-    modal.addEventListener("click", function (e) {
-      if (e.target === modal) fecharLogin();
-    });
-  }
-
-  if (emailForm) {
-    emailForm.addEventListener("submit", function (e) {
-      e.preventDefault();
-      var nome = document.getElementById("loginName").value.trim();
-      var email = document.getElementById("loginEmail").value.trim();
-      var senha = document.getElementById("loginPassword").value;
-
-      if (!validarEmail(email)) {
-        mostrarToastSite("Informe um e-mail valido.");
-        return;
-      }
-      if (!senha || senha.length < 4) {
-        mostrarToastSite("A senha deve ter pelo menos 4 caracteres.");
-        return;
-      }
-
-      api("/auth/login", { method: "POST", body: { email: email, password: senha } })
-        .then(function (data) { concluirLogin(data.user, data.token); })
-        .catch(function (err) {
-          if (err.message.indexOf("nao encontrada") > -1) {
-            api("/auth/register", { method: "POST", body: { name: nome || email.split("@")[0], email: email, password: senha } })
-              .then(function (data) { concluirLogin(data.user, data.token); })
-              .catch(function (err2) { mostrarToastSite(err2.message); });
-          } else {
-            mostrarToastSite(err.message);
-          }
-        });
-    });
-  }
-
-  if (phoneForm) {
-    phoneForm.addEventListener("submit", function (e) {
-      e.preventDefault();
-      var telefone = phoneInput ? phoneInput.value.trim() : "";
-      var codigo = document.getElementById("loginCode");
-
-      if (telefone.replace(/\D/g, "").length < 10) {
-        mostrarToastSite("Informe um telefone valido com DDD.");
-        return;
-      }
-
-      if (!codigoTelefoneEnviado) {
-        api("/auth/phone/send-code", { method: "POST", body: { phone: telefone } })
-          .then(function () {
-            codigoTelefoneEnviado = true;
-            document.getElementById("verificationCodeArea").hidden = false;
-            document.getElementById("phoneLoginButton").textContent = "Confirmar e entrar";
-            document.getElementById("phoneHelp").textContent = "Codigo enviado! Digite o codigo de 6 digitos.";
-            if (codigo) codigo.focus();
-          })
-          .catch(function (err) { mostrarToastSite(err.message); });
-        return;
-      }
-
-      if (!codigo || codigo.value.replace(/\D/g, "").length !== 6) {
-        mostrarToastSite("Digite o codigo de 6 digitos.");
-        return;
-      }
-
-      api("/auth/login", { method: "POST", body: { phone: telefone, password: "" } })
-        .then(function (data) { concluirLogin(data.user, data.token); })
-        .catch(function (err) {
-          api("/auth/register", { method: "POST", body: { name: "Cliente", phone: telefone, password: "" } })
-            .then(function (data) { concluirLogin(data.user, data.token); })
-            .catch(function (err2) { mostrarToastSite(err2.message); });
-        });
-    });
-  }
-
-  if (phoneInput) {
-    phoneInput.addEventListener("input", function () {
-      var nums = phoneInput.value.replace(/\D/g, "").slice(0, 11);
-      phoneInput.value = formatarTelefone(nums);
-    });
-  }
-}
-
-function abrirLogin() {
-  var modal = document.getElementById("authModal");
-  if (!modal) return;
-  codigoTelefoneEnviado = false;
-  document.getElementById("verificationCodeArea").hidden = true;
-  document.getElementById("phoneLoginButton").textContent = "Enviar codigo";
-  document.getElementById("phoneHelp").textContent = "Enviaremos um codigo para confirmar seu numero.";
-  mostrarOpcoesLogin();
-  modal.classList.add("aberto");
-  modal.setAttribute("aria-hidden", "false");
-  document.body.classList.add("modal-aberto");
-}
-
-function fecharLogin(preservarAcao) {
-  var modal = document.getElementById("authModal");
-  if (modal) {
-    modal.classList.remove("aberto");
-    modal.setAttribute("aria-hidden", "true");
-  }
-  if (!document.getElementById("configuracoes").classList.contains("active")) {
-    document.body.classList.remove("modal-aberto");
-  }
-  if (!preservarAcao) acaoAposLogin = null;
-}
-
-function mostrarOpcoesLogin() {
-  document.getElementById("authOptions").hidden = false;
-  document.getElementById("emailLoginForm").hidden = true;
-  document.getElementById("phoneLoginForm").hidden = true;
-}
-
-function mostrarFormularioLogin(tipo) {
-  document.getElementById("authOptions").hidden = true;
-  document.getElementById("emailLoginForm").hidden = tipo !== "email";
-  document.getElementById("phoneLoginForm").hidden = tipo !== "phone";
-  if (tipo === "email") {
-    document.getElementById("loginEmail").focus();
-  } else if (tipo === "phone") {
-    document.getElementById("loginPhone").focus();
-  }
-}
-
-function loginComGoogle() {
-  api("/auth/register", { method: "POST", body: { name: "Cliente Google", email: "google_" + Date.now() + "@conta.google", password: "google_" + Date.now() } })
-    .then(function (data) { concluirLogin(data.user, data.token); })
-    .catch(function (err) { mostrarToastSite(err.message); });
-}
-
-function concluirLogin(user, token) {
-  contaAtual = user;
-  tokenAtual = token;
-  localStorage.setItem(CHAVE_TOKEN, token);
-  localStorage.setItem(CHAVE_CONTA, JSON.stringify(user));
-  atualizarContaNaInterface();
-  var acao = acaoAposLogin;
-  acaoAposLogin = null;
-  fecharLogin(true);
-  mostrarToastSite("Login realizado. Bem-vindo, " + obterPrimeiroNome(user.name) + "!");
-  if (acao) setTimeout(acao, 120);
-}
-
-function exigirLogin(acao) {
-  if (contaAtual) return true;
-  acaoAposLogin = acao;
-  abrirLogin();
-  mostrarToastSite("Entre para comprar com seguranca.");
-  return false;
-}
-
-function trocarConta() {
-  fecharConfiguracoes();
-  desconectarConta(true);
-  abrirLogin();
-}
-
-function desconectarConta(semMensagem) {
-  if (tokenAtual) {
-    api("/auth/logout", { method: "POST" }).catch(function () { });
-  }
-  contaAtual = null;
-  tokenAtual = null;
-  localStorage.removeItem(CHAVE_TOKEN);
-  localStorage.removeItem(CHAVE_CONTA);
-  atualizarContaNaInterface();
-  if (!semMensagem) mostrarToastSite("Conta desconectada com seguranca.");
-}
-
-function atualizarContaNaInterface() {
-  var titulo = document.getElementById("heroAccountTitle");
-  var desc = document.getElementById("heroAccountDescription");
-  var botao = document.getElementById("heroAccountButton");
-  var nomeConf = document.getElementById("settingsAccountName");
-  var infoConf = document.getElementById("settingsAccountInfo");
-  var btnTrocar = document.getElementById("switchAccountButton");
-  var btnSair = document.getElementById("logoutButton");
-
-  if (contaAtual) {
-    var primeiroNome = obterPrimeiroNome(contaAtual.name);
-    var metodo = contaAtual.method === "google" ? "Google" : contaAtual.method === "phone" ? "telefone" : "e-mail";
-
-    if (titulo) titulo.textContent = "Ola, " + primeiroNome + "!";
-    if (desc) desc.textContent = "Conta conectada por " + metodo + ".";
-    if (botao) { botao.textContent = "Gerenciar conta"; botao.onclick = abrirConfiguracoes; }
-    if (nomeConf) nomeConf.textContent = "Ola, " + primeiroNome + "!";
-    if (infoConf) infoConf.textContent = (contaAtual.email || contaAtual.phone) + " \u2022 Login por " + metodo + ".";
-    if (btnTrocar) btnTrocar.textContent = "Trocar de conta";
-    if (btnSair) btnSair.hidden = false;
-  } else {
-    if (titulo) titulo.textContent = "Entre para fazer seu pedido";
-    if (desc) desc.textContent = "Use seu e-mail, Google ou telefone.";
-    if (botao) { botao.textContent = "Entrar / criar conta"; botao.onclick = abrirLogin; }
-    if (nomeConf) nomeConf.textContent = "Voce ainda nao entrou";
-    if (infoConf) infoConf.textContent = "Entre para comprar e acompanhar seu pedido.";
-    if (btnTrocar) btnTrocar.textContent = "Entrar ou criar conta";
-    if (btnSair) btnSair.hidden = true;
-  }
-}
-
-function carregarConta() {
-  var tokenSalvo = localStorage.getItem(CHAVE_TOKEN);
-  var contaSalva = localStorage.getItem(CHAVE_CONTA);
-
-  if (tokenSalvo && contaSalva) {
-    try {
-      var conta = JSON.parse(contaSalva);
-      if (conta && conta.name) {
-        tokenAtual = tokenSalvo;
-        contaAtual = conta;
-        api("/auth/me").then(function (data) {
-          contaAtual = data.user;
-          localStorage.setItem(CHAVE_CONTA, JSON.stringify(data.user));
-          atualizarContaNaInterface();
-        }).catch(function () {
-          tokenAtual = null;
-          contaAtual = null;
-          localStorage.removeItem(CHAVE_TOKEN);
-          localStorage.removeItem(CHAVE_CONTA);
-          atualizarContaNaInterface();
-        });
-      }
-    } catch (e) {
-      localStorage.removeItem(CHAVE_TOKEN);
-      localStorage.removeItem(CHAVE_CONTA);
-    }
-  }
-}
-
-function definirTema(tema) {
-  var escolhido = tema === "dark" ? "dark" : "light";
-  document.documentElement.dataset.theme = escolhido;
-  localStorage.setItem(CHAVE_TEMA, escolhido);
-  atualizarOpcoesTema();
-}
-
-function carregarTema() {
-  var salvo = localStorage.getItem(CHAVE_TEMA) || "light";
-  document.documentElement.dataset.theme = salvo === "dark" ? "dark" : "light";
-}
-
-function atualizarOpcoesTema() {
-  var atual = document.documentElement.dataset.theme || "light";
-  document.querySelectorAll("[data-theme-option]").forEach(function (b) {
-    var sel = b.dataset.themeOption === atual;
-    b.classList.toggle("selecionado", sel);
-    b.setAttribute("aria-pressed", String(sel));
-  });
-}
-
-function validarEmail(email) {
-  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-}
-
-function formatarTelefone(n) {
-  if (n.length <= 2) return n;
-  if (n.length <= 6) return "(" + n.slice(0, 2) + ") " + n.slice(2);
-  if (n.length <= 10) return "(" + n.slice(0, 2) + ") " + n.slice(2, 6) + "-" + n.slice(6);
-  return "(" + n.slice(0, 2) + ") " + n.slice(2, 7) + "-" + n.slice(7);
-}
-
-function obterPrimeiroNome(nome) {
-  return String(nome || "cliente").trim().split(/\s+/)[0] || "cliente";
-}
 
 function atualizarNavegacao(aba) {
   document.querySelectorAll("[data-aba]").forEach(function (b) {
@@ -470,8 +133,6 @@ function inicializarModalPix() {
   document.addEventListener("keydown", function (e) {
     if (e.key === "Escape") {
       if (modal.style.display === "flex") fecharPix();
-      if (document.getElementById("authModal").classList.contains("aberto")) fecharLogin();
-      if (document.getElementById("configuracoes").classList.contains("active")) fecharConfiguracoes();
     }
   });
 }
@@ -494,7 +155,6 @@ function preencherPrecos() {
 }
 
 function abrirPix(codigoProduto) {
-  if (!exigirLogin(function () { abrirPix(codigoProduto); })) return;
   var produto = PRODUTOS[codigoProduto];
   if (!produto) return;
   var preco = formatarMoeda(produto.preco);
@@ -513,7 +173,6 @@ function formatarMoeda(valor) {
 }
 
 function fazerPedidoWhatsApp(codigoProduto) {
-  if (!exigirLogin(function () { fazerPedidoWhatsApp(codigoProduto); })) return;
   var produto = PRODUTOS[codigoProduto];
   if (!produto) return;
   var msg = "Ola, quero fazer um pedido de " + produto.nome + " no valor de " + formatarMoeda(produto.preco) + ".";
@@ -521,7 +180,6 @@ function fazerPedidoWhatsApp(codigoProduto) {
 }
 
 function adicionarAoCarrinho(codigoProduto, botao) {
-  if (!exigirLogin(function () { adicionarAoCarrinho(codigoProduto, botao); })) return;
   var produto = PRODUTOS[codigoProduto];
   if (!produto) return;
   if (!carrinho[codigoProduto]) carrinho[codigoProduto] = 0;
@@ -672,24 +330,19 @@ function calcularTotalCarrinho() {
 
 function finalizarCarrinhoWhatsApp() {
   if (contarItensCarrinho() === 0) { mostrarStatusCarrinho("Adicione pelo menos um produto ao carrinho."); return; }
-  if (!exigirLogin(finalizarCarrinhoWhatsApp)) return;
 
-  var items = montarLinhasCarrinho().map(function (i) { return { code: i.codigo, quantity: i.quantidade }; });
-  api("/orders", { method: "POST", body: { items: items } }).then(function () {
-    var msg = "Ola, quero fazer este pedido:\n\n" + montarResumoCarrinhoTexto() + "\n\nTotal: " + formatarMoeda(calcularTotalCarrinho()) + ".";
-    window.open("https://wa.me/" + WHATSAPP_VAL + "?text=" + encodeURIComponent(msg), "_blank");
-    Object.keys(carrinho).forEach(function (k) { delete carrinho[k]; });
-    salvarCarrinho();
-    atualizarCarrinho();
-    mostrarStatusCarrinho("Pedido registrado e enviado! Carrinho limpo.");
-    mostrarToastSite("Pedido registrado e enviado!");
-  }).catch(function (err) { mostrarToastSite(err.message); });
+  var msg = "Ola, quero fazer este pedido:\n\n" + montarResumoCarrinhoTexto() + "\n\nTotal: " + formatarMoeda(calcularTotalCarrinho()) + ".";
+  window.open("https://wa.me/" + WHATSAPP_VAL + "?text=" + encodeURIComponent(msg), "_blank");
+  Object.keys(carrinho).forEach(function (k) { delete carrinho[k]; });
+  salvarCarrinho();
+  atualizarCarrinho();
+  mostrarStatusCarrinho("Pedido enviado! Carrinho limpo.");
+  mostrarToastSite("Pedido enviado!");
 }
 
 function abrirPixCarrinho() {
   var total = calcularTotalCarrinho();
   if (total === 0) { mostrarStatusCarrinho("Adicione pelo menos um produto ao carrinho."); return; }
-  if (!exigirLogin(abrirPixCarrinho)) return;
   var preco = formatarMoeda(total);
   var prod = { nome: "Pedido Caseirinhos", preco: total };
   var pix = montarPixCopiaECola(prod, "carrinho");

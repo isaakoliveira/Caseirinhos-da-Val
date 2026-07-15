@@ -13,10 +13,6 @@
 
 <body>
   <header class="hero">
-    <button class="header-settings-button" type="button" onclick="abrirConfiguracoes()" aria-label="Abrir configurações" title="Configurações">
-      <span aria-hidden="true">&#9881;&#65039;</span>
-    </button>
-
     <div class="hero-content">
       <div class="brand-block">
         <img class="logo-header" src="logo.png" alt="Logo Caseirinhos da Val">
@@ -25,15 +21,6 @@
           <h1>&#127856; Caseirinhos da Val &#127854;</h1>
           <p>Os melhores doces e bolos da cidade</p>
         </div>
-      </div>
-
-      <div class="hero-account" aria-live="polite">
-        <div class="hero-account-copy">
-          <span class="account-kicker">Compra protegida</span>
-          <strong id="heroAccountTitle">Entre para fazer seu pedido</strong>
-          <span id="heroAccountDescription">Use seu e-mail, Google ou telefone.</span>
-        </div>
-        <button id="heroAccountButton" class="btn btn-account" type="button" onclick="abrirLogin()">Entrar / criar conta</button>
       </div>
     </div>
 
@@ -281,59 +268,7 @@
       </div>
     </section>
 
-    <section id="configuracoes" class="aba settings-modal" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="settingsTitle">
-      <div class="settings-dialog">
-        <button class="modal-close" type="button" aria-label="Fechar configurações" onclick="fecharConfiguracoes()">&times;</button>
-      <div class="section-head">
-        <span class="section-kicker">Sua conta</span>
-        <h2 id="settingsTitle">&#9881;&#65039; Configura&ccedil;&otilde;es</h2>
-        <p>Gerencie a apar&ecirc;ncia e a sua sess&atilde;o de compra.</p>
-      </div>
 
-      <div class="container">
-        <div class="card settings-card">
-          <div class="card-content">
-            <div class="settings-heading">
-              <span class="settings-icon" aria-hidden="true">&#128100;</span>
-              <div>
-                <span class="settings-label">Conta</span>
-                <h3 id="settingsAccountName">Voc&ecirc; ainda n&atilde;o entrou</h3>
-                <p id="settingsAccountInfo">Entre para comprar e acompanhar seu pedido.</p>
-              </div>
-            </div>
-
-            <div class="settings-actions">
-              <button id="switchAccountButton" class="btn btn-settings-primary" type="button" onclick="trocarConta()">Entrar ou trocar de conta</button>
-              <button id="logoutButton" class="btn btn-outline" type="button" onclick="desconectarConta()">Desconectar</button>
-            </div>
-          </div>
-        </div>
-
-        <div class="card settings-card">
-          <div class="card-content">
-            <div class="settings-heading">
-              <span class="settings-icon" aria-hidden="true">&#127769;</span>
-              <div>
-                <span class="settings-label">Apar&ecirc;ncia</span>
-                <h3>Tema do site</h3>
-                <p>Escolha a visualiza&ccedil;&atilde;o mais confort&aacute;vel para voc&ecirc;.</p>
-              </div>
-            </div>
-
-            <div class="theme-selector" role="group" aria-label="Escolher tema">
-              <button class="theme-option" type="button" data-theme-option="light" onclick="definirTema('light')"><span>&#9728;&#65039;</span> Claro</button>
-              <button class="theme-option" type="button" data-theme-option="dark" onclick="definirTema('dark')"><span>&#127769;</span> Escuro</button>
-            </div>
-          </div>
-        </div>
-
-        <div class="security-note" role="note">
-          <span aria-hidden="true">&#128274;</span>
-          <p><strong>Compra com identifica&ccedil;&atilde;o.</strong> Para iniciar um pedido, &eacute; necess&aacute;rio entrar com e-mail, Google ou telefone.</p>
-        </div>
-      </div>
-      </div>
-    </section>
   </main>
 
   <div id="pixModal" class="pix-modal">
@@ -362,51 +297,7 @@
     </div>
   </div>
 
-  <div id="authModal" class="app-modal" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="authTitle">
-    <div class="auth-box">
-      <button class="modal-close" type="button" aria-label="Fechar login" onclick="fecharLogin()">&times;</button>
-      <div class="auth-brand">
-        <img class="auth-logo" src="logo.png" alt="Logo Caseirinhos da Val">
-        <div>
-          <span class="auth-overline">Caseirinhos da Val</span>
-          <h2 id="authTitle">Entre para continuar</h2>
-        </div>
-      </div>
-      <p class="auth-intro">Para realizar compras, identifique-se com o m&eacute;todo que preferir.</p>
 
-      <div id="authOptions" class="auth-options">
-        <button class="auth-provider google-provider" type="button" onclick="loginComGoogle()"><span class="google-mark">G</span> Continuar com Google</button>
-        <button class="auth-provider" type="button" onclick="mostrarFormularioLogin('email')"><span aria-hidden="true">&#9993;&#65039;</span> Continuar com e-mail</button>
-        <button class="auth-provider" type="button" onclick="mostrarFormularioLogin('phone')"><span aria-hidden="true">&#128241;</span> Continuar com telefone</button>
-      </div>
-
-      <form id="emailLoginForm" class="auth-form" novalidate>
-        <button class="auth-back" type="button" onclick="mostrarOpcoesLogin()">&larr; Voltar</button>
-        <label for="loginName">Nome</label>
-        <input id="loginName" type="text" autocomplete="name" placeholder="Seu nome">
-        <label for="loginEmail">E-mail</label>
-        <input id="loginEmail" type="email" autocomplete="email" placeholder="voce@exemplo.com" required>
-        <label for="loginPassword">Senha</label>
-        <input id="loginPassword" type="password" autocomplete="current-password" placeholder="Minimo 4 caracteres" required>
-        <button class="btn auth-submit" type="submit">Entrar / cadastrar</button>
-        <p class="auth-help">Se ja tem conta, entre com seu e-mail e senha. Se e novo, sua conta sera criada.</p>
-      </form>
-
-      <form id="phoneLoginForm" class="auth-form" novalidate>
-        <button class="auth-back" type="button" onclick="mostrarOpcoesLogin()">&larr; Voltar</button>
-        <label for="loginPhone">Seu n&uacute;mero de telefone</label>
-        <input id="loginPhone" type="tel" inputmode="tel" autocomplete="tel" placeholder="(83) 99999-9999" required>
-        <div id="verificationCodeArea" class="verification-code-area" hidden>
-          <label for="loginCode">C&oacute;digo de verifica&ccedil;&atilde;o</label>
-          <input id="loginCode" type="text" inputmode="numeric" maxlength="6" placeholder="000000">
-        </div>
-        <button id="phoneLoginButton" class="btn auth-submit" type="submit">Enviar c&oacute;digo</button>
-        <p id="phoneHelp" class="auth-help">Enviaremos um c&oacute;digo para confirmar o seu n&uacute;mero.</p>
-      </form>
-
-      <p class="auth-privacy">Ambiente demonstrativo: seus dados ficam somente neste navegador.</p>
-    </div>
-  </div>
 
   <a class="whatsapp-flutuante" href="https://wa.me/5583982168114?text=Olá%2C%20vim%20pelo%20site%20Caseirinhos%20da%20Val." target="_blank" aria-label="Fazer pedido pelo WhatsApp">
     <img src="https://cdn-icons-png.flaticon.com/512/124/124034.png" alt="WhatsApp">
