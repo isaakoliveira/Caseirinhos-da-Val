@@ -2,6 +2,13 @@ const PIX_CHAVE = "10432316418";
 const PIX_NOME_RECEBEDOR = "CASEIRINHOS DA VAL";
 const PIX_CIDADE = "PICUI";
 const WHATSAPP_VAL = "5583982168114";
+
+// ===== API / LOGIN =====
+const API_BASE = location.protocol === "file:" ? "http://localhost:5000/api" : "/api";
+// Preencha com o Client ID do Google Cloud Console:
+// https://console.cloud.google.com/apis/credentials
+const GOOGLE_CLIENT_ID = "COLE_AQUI_SEU_CLIENT_ID_GOOGLE";
+
 let produtoPixAtual = null;
 const carrinho = {};
 
@@ -57,6 +64,8 @@ function inicializarInterface() {
   inicializarModalPix();
   inicializarConfiguracoes();
   inicializarTema();
+  inicializarLoginModal();
+  inicializarSessao();
 }
 
 
@@ -471,66 +480,328 @@ function carregarCarrinho() {
   }
 }
 
-// ===== NOME DO USUARIO =====
-var nomeUsuario = localStorage.getItem("nomeUsuario") || null;
+// ===== CONTA / LOGIN =====
+var tokenSessao = localStorage.getItem("tokenSessao") || null;
+var usuarioAtual = null;
+var nomeUsuario = null;
 var acaoAposLogin = null;
 
-if (nomeUsuario) atualizarContaNaInterface();
+try { usuarioAtual = JSON.parse(localStorage.getItem("usuarioSessao") || "null"); } catch (e) { usuarioAtual = null; }
+if (usuarioAtual) nomeUsuario = usuarioAtual.username;
 
-function confirmarNome() {
-  var input = document.getElementById("inputNome");
-  var nome = input ? input.value.trim() : "";
-  if (!nome || nome.length < 2) {
-    mostrarToastSite("Digite seu nome.");
-    input?.focus();
-    return;
-  }
-  nomeUsuario = nome;
-  localStorage.setItem("nomeUsuario", nome);
+function chamarApi(caminho, opcoes) {
+  opcoes = opcoes || {};
+  var headers = { "Content-Type": "application/json" };
+  if (tokenSessao) headers["Authorization"] = "Bearer " + tokenSessao;
+  var init = { method: opcoes.method || "GET", headers: headers };
+  if (opcoes.body) init.body = JSON.stringify(opcoes.body);
+  return fetch(API_BASE + caminho, init).then(function (resp) {
+    return resp.json().then(function (dados) {
+      return { ok: resp.ok, dados: dados };
+    });
+  });
+}
+
+function inicializarSessao() {
+  if (!tokenSessao) { atualizarContaNaInterface(); return; }
+  chamarApi("/me").then(function (r) {
+    if (r.ok) {
+      usuarioAtual = r.dados.user;
+      nomeUsuario = usuarioAtual.username;
+      localStorage.setItem("usuarioSessao", JSON.stringify(usuarioAtual));
+    } else {
+      encerrarSessaoLocal();
+    }
+    atualizarContaNaInterface();
+  }).catch(function () {
+    atualizarContaNaInterface();
+  });
+}
+
+function aplicarSessao(dados) {
+  tokenSessao = dados.token;
+  usuarioAtual = dados.user;
+  nomeUsuario = dados.user.username;
+  localStorage.setItem("tokenSessao", tokenSessao);
+  localStorage.setItem("usuarioSessao", JSON.stringify(usuarioAtual));
   atualizarContaNaInterface();
   var acao = acaoAposLogin;
   acaoAposLogin = null;
-  mostrarToastSite("Bem-vindo, " + nome.split(" ")[0] + "!");
-  if (acao) setTimeout(acao, 120);
+  mostrarToastSite("Bem-vindo, " + nomeUsuario.split(" ")[0] + "!");
+  if (acao) setTimeout(acao, 150);
 }
 
-function trocarNome() {
+function encerrarSessaoLocal() {
+  tokenSessao = null;
+  usuarioAtual = null;
   nomeUsuario = null;
-  localStorage.removeItem("nomeUsuario");
+  localStorage.removeItem("tokenSessao");
+  localStorage.removeItem("usuarioSessao");
+}
+
+function sairDaConta() {
+  chamarApi("/logout", { method: "POST" }).catch(function () {});
+  encerrarSessaoLocal();
   atualizarContaNaInterface();
-  document.getElementById("inputNome")?.focus();
-  mostrarToastSite("Nome removido.");
+  mostrarToastSite("Voce saiu da conta.");
 }
 
 function exigirLogin(acao) {
-  if (nomeUsuario) return true;
+  if (usuarioAtual) return true;
   acaoAposLogin = acao;
-  document.getElementById("inputNome")?.focus();
-  mostrarToastSite("Digite seu nome para continuar.");
+  abrirLogin();
   return false;
 }
 
 function atualizarContaNaInterface() {
   var titulo = document.getElementById("heroAccountTitle");
   var desc = document.getElementById("heroAccountDescription");
-  var input = document.getElementById("inputNome");
   var botao = document.getElementById("heroAccountButton");
   var settingsDisplay = document.getElementById("settingsAccountDisplay");
 
-  if (nomeUsuario) {
-    var primeiroNome = nomeUsuario.split(" ")[0];
-    if (titulo) titulo.textContent = "Ola, " + primeiroNome + "!";
-    if (desc) desc.textContent = "Pronto para fazer seu pedido.";
-    if (input) { input.value = nomeUsuario; input.style.display = "none"; }
-    if (botao) { botao.textContent = "Trocar nome"; botao.onclick = trocarNome; }
-    if (settingsDisplay) settingsDisplay.textContent = "Logado como: " + nomeUsuario;
+  if (usuarioAtual) {
+    var primeiro = nomeUsuario.split(" ")[0];
+    if (titulo) titulo.textContent = "Ola, " + primeiro + "!";
+    if (desc) desc.textContent = "Voce esta logado. Pronto para fazer seu pedido.";
+    if (botao) { botao.textContent = "Sair"; botao.onclick = sairDaConta; }
+    if (settingsDisplay) {
+      var contatos = [usuarioAtual.email, usuarioAtual.phone].filter(Boolean).join(" | ");
+      settingsDisplay.innerHTML = "Logado como: <b>" + nomeUsuario + "</b>" +
+        (contatos ? "<br><span class=\"settings-account-contatos\">" + contatos + "</span>" : "");
+    }
   } else {
-    if (titulo) titulo.textContent = "Qual seu nome?";
-    if (desc) desc.textContent = "Digite seu nome para comecar a comprar.";
-    if (input) { input.value = ""; input.style.display = ""; input.focus(); }
-    if (botao) { botao.textContent = "Confirmar"; botao.onclick = confirmarNome; }
-    if (settingsDisplay) settingsDisplay.textContent = "Nenhum nome definido.";
+    if (titulo) titulo.textContent = "Entrar para comprar";
+    if (desc) desc.textContent = "Faca login com e-mail, telefone ou Google.";
+    if (botao) { botao.textContent = "Entrar"; botao.onclick = abrirLogin; }
+    if (settingsDisplay) settingsDisplay.textContent = "Voce nao esta logado.";
   }
+}
+
+// ===== MODAL DE LOGIN =====
+function inicializarLoginModal() {
+  var el = document.getElementById("loginModal");
+  if (!el) return;
+  el.addEventListener("click", function (e) { if (e.target === el) fecharLogin(); });
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "Escape") fecharLogin();
+    if (e.key === "Enter") {
+      var visivel = el.classList.contains("active");
+      if (!visivel || !e.target || !e.target.classList) return;
+      if (!e.target.classList.contains("login-input")) return;
+      e.preventDefault();
+      var tab = document.querySelector(".login-tab.active");
+      var modo = tab ? tab.dataset.loginTab : "email";
+      if (modo === "email") loginComEmail();
+      else if (modo === "telefone") loginComTelefone();
+      else if (modo === "cadastro") cadastrarUsuario();
+    }
+  });
+}
+
+function abrirLogin() {
+  var el = document.getElementById("loginModal");
+  if (!el) return;
+  el.classList.add("active");
+  el.setAttribute("aria-hidden", "false");
+  mostrarLoginStatus("");
+  carregarBotaoGoogle();
+  setTimeout(function () {
+    var i = document.getElementById("loginEmail");
+    if (i) i.focus();
+  }, 120);
+}
+
+function fecharLogin() {
+  var el = document.getElementById("loginModal");
+  if (!el) return;
+  el.classList.remove("active");
+  el.setAttribute("aria-hidden", "true");
+}
+
+function mostrarLoginStatus(msg, tipo) {
+  var s = document.getElementById("loginStatus");
+  if (!s) return;
+  s.textContent = msg;
+  s.className = "login-status" + (tipo ? " " + tipo : "");
+}
+
+function trocarLoginTab(modo) {
+  ["email", "telefone", "cadastro"].forEach(function (m) {
+    var painel = document.getElementById("loginTab" + m.charAt(0).toUpperCase() + m.slice(1));
+    if (painel) painel.style.display = m === modo ? "" : "none";
+    var tab = document.querySelector('.login-tab[data-login-tab="' + m + '"]');
+    if (tab) tab.classList.toggle("active", m === modo);
+  });
+  mostrarLoginStatus("");
+}
+
+function normalizarTelefone(v) {
+  return (v || "").replace(/[^\d+]/g, "");
+}
+
+function desabilitarBotoesLogin(desabilitar) {
+  ["btnLoginEmail", "btnLoginTelefone", "btnCadastrar"].forEach(function (id) {
+    var b = document.getElementById(id);
+    if (b) b.disabled = desabilitar;
+  });
+}
+
+function loginComEmail() {
+  var email = (document.getElementById("loginEmail").value || "").trim().toLowerCase();
+  var senha = document.getElementById("loginSenha").value || "";
+  if (!email || !senha) { mostrarLoginStatus("Preencha e-mail e senha.", "erro"); return; }
+  desabilitarBotoesLogin(true);
+  mostrarLoginStatus("Entrando...");
+  chamarApi("/login", { method: "POST", body: { email: email, password: senha } }).then(function (r) {
+    desabilitarBotoesLogin(false);
+    if (r.ok) {
+      aplicarSessao(r.dados);
+      fecharLogin();
+    } else {
+      mostrarLoginStatus((r.dados && r.dados.erro) || "Nao foi possivel entrar.", "erro");
+    }
+  }).catch(function () {
+    desabilitarBotoesLogin(false);
+    mostrarLoginStatus("Servidor offline. Rode o comando: python app.py", "erro");
+  });
+}
+
+function loginComTelefone() {
+  var phone = normalizarTelefone(document.getElementById("loginTelefone").value);
+  var senha = document.getElementById("loginTelefoneSenha").value || "";
+  if (!phone || !senha) { mostrarLoginStatus("Preencha telefone e senha.", "erro"); return; }
+  desabilitarBotoesLogin(true);
+  mostrarLoginStatus("Entrando...");
+  chamarApi("/login-phone", { method: "POST", body: { phone: phone, password: senha } }).then(function (r) {
+    desabilitarBotoesLogin(false);
+    if (r.ok) {
+      aplicarSessao(r.dados);
+      fecharLogin();
+    } else {
+      mostrarLoginStatus((r.dados && r.dados.erro) || "Nao foi possivel entrar.", "erro");
+    }
+  }).catch(function () {
+    desabilitarBotoesLogin(false);
+    mostrarLoginStatus("Servidor offline. Rode o comando: python app.py", "erro");
+  });
+}
+
+function cadastrarUsuario() {
+  var username = (document.getElementById("cadUsername").value || "").trim();
+  var email = (document.getElementById("cadEmail").value || "").trim().toLowerCase();
+  var phone = normalizarTelefone(document.getElementById("cadTelefone").value);
+  var senha = document.getElementById("cadSenha").value || "";
+
+  if (username.length < 2) { mostrarLoginStatus("Escolha um nome de usuario.", "erro"); return; }
+  if (!email && !phone) { mostrarLoginStatus("Informe e-mail ou telefone.", "erro"); return; }
+  if (senha.length < 6) { mostrarLoginStatus("A senha precisa de pelo menos 6 caracteres.", "erro"); return; }
+
+  desabilitarBotoesLogin(true);
+  mostrarLoginStatus("Criando conta...");
+  chamarApi("/register", {
+    method: "POST",
+    body: { username: username, email: email, phone: phone, password: senha }
+  }).then(function (r) {
+    desabilitarBotoesLogin(false);
+    if (r.ok) {
+      aplicarSessao(r.dados);
+      fecharLogin();
+    } else {
+      mostrarLoginStatus((r.dados && r.dados.erro) || "Nao foi possivel criar a conta.", "erro");
+    }
+  }).catch(function () {
+    desabilitarBotoesLogin(false);
+    mostrarLoginStatus("Servidor offline. Rode o comando: python app.py", "erro");
+  });
+}
+
+// ===== GOOGLE =====
+function carregarBotaoGoogle() {
+  var area = document.getElementById("loginGoogle");
+  if (!area) return;
+  if (!GOOGLE_CLIENT_ID || GOOGLE_CLIENT_ID.indexOf("COLE_AQUI") === 0) {
+    area.innerHTML = "<p class=\"google-aviso\">Login com Google precisa de um Client ID. Veja o topo do script.js.</p>";
+    return;
+  }
+  if (typeof google === "undefined") {
+    var s = document.createElement("script");
+    s.src = "https://accounts.google.com/gsi/client";
+    s.onload = iniciarBotaoGoogle;
+    s.onerror = function () {
+      area.innerHTML = "<p class=\"google-aviso\">Nao foi possivel carregar o Google.</p>";
+    };
+    document.head.appendChild(s);
+  } else {
+    iniciarBotaoGoogle();
+  }
+}
+
+function iniciarBotaoGoogle() {
+  var area = document.getElementById("loginGoogle");
+  if (!area) return;
+  area.innerHTML = "";
+  google.accounts.id.initialize({
+    client_id: GOOGLE_CLIENT_ID,
+    callback: respostaGoogle,
+    auto_select: false,
+    cancel_on_tap_outside: true
+  });
+  google.accounts.id.renderButton(area, {
+    theme: "outline",
+    size: "large",
+    text: "continue_with",
+    shape: "pill",
+    width: 280
+  });
+}
+
+function respostaGoogle(resposta) {
+  if (!resposta || !resposta.credential) { mostrarLoginStatus("Falha no login com o Google.", "erro"); return; }
+  mostrarLoginStatus("Entrando com o Google...");
+  chamarApi("/google-login", { method: "POST", body: { credential: resposta.credential } }).then(function (r) {
+    if (r.ok) {
+      aplicarSessao(r.dados);
+      fecharLogin();
+    } else {
+      mostrarLoginStatus((r.dados && r.dados.erro) || "Nao foi possivel entrar com o Google.", "erro");
+    }
+  }).catch(function () {
+    mostrarLoginStatus("Servidor offline. Rode o comando: python app.py", "erro");
+  });
+}
+
+// ===== TROCAR NOME DE USUARIO =====
+function trocarNomeUsuario() {
+  var area = document.getElementById("renomearArea");
+  var input = document.getElementById("inputNovoUsuario");
+  if (!area || !input) return;
+  var aberto = area.style.display !== "none";
+  area.style.display = aberto ? "none" : "block";
+  if (!aberto) {
+    input.value = usuarioAtual ? usuarioAtual.username : "";
+    input.focus();
+  }
+}
+
+function confirmarNovoUsuario() {
+  if (!usuarioAtual) { mostrarToastSite("Faca login primeiro."); return; }
+  var novo = (document.getElementById("inputNovoUsuario").value || "").trim();
+  if (novo.length < 2) { mostrarToastSite("Nome de usuario muito curto."); return; }
+  chamarApi("/update-username", { method: "POST", body: { username: novo } }).then(function (r) {
+    if (r.ok) {
+      usuarioAtual = r.dados.user;
+      nomeUsuario = usuarioAtual.username;
+      localStorage.setItem("usuarioSessao", JSON.stringify(usuarioAtual));
+      atualizarContaNaInterface();
+      var area = document.getElementById("renomearArea");
+      if (area) area.style.display = "none";
+      mostrarToastSite("Nome de usuario atualizado.");
+    } else {
+      mostrarToastSite((r.dados && r.dados.erro) || "Nao foi possivel atualizar.");
+    }
+  }).catch(function () {
+    mostrarToastSite("Servidor offline. Rode o comando: python app.py");
+  });
 }
 
 // ===== CONFIGURACOES / TEMA =====

@@ -1,0 +1,5 @@
+__pycache__/
+*.pyc
+usuarios.db
+*.log
+.env

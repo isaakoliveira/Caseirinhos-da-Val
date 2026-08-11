@@ -1,383 +1,299 @@
-import sqlite3
 import os
-import hashlib
-import secrets
 import re
-from datetime import datetime, timedelta
-from functools import wraps
-from flask import Flask, request, jsonify, send_from_directory
+import secrets
+import sqlite3
+from datetime import datetime, timezone
 
-app = Flask(__name__, static_url_path="")
-DB_PATH = os.path.join(os.path.dirname(__file__), "caseirinhos.db")
-SECRET_KEY = secrets.token_hex(32)
-TOKENS = {}
+from flask import Flask, g, jsonify, request, send_from_directory
+from werkzeug.security import check_password_hash, generate_password_hash
+
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+DB_PATH = os.path.join(BASE_DIR, "usuarios.db")
+
+app = Flask(__name__)
+
+GOOGLE_CLIENT_IDS = [
+    cid.strip()
+    for cid in os.environ.get("GOOGLE_CLIENT_ID", "").split(",")
+    if cid.strip()
+]
+
+JWT_IS_AVAILABLE = False
+_jwks_client = None
+try:
+    import jwt
+    from jwt import PyJWKClient
+
+    GOOGLE_JWKS = "https://www.googleapis.com/oauth2/v3/certs"
+    _jwks_client = PyJWKClient(GOOGLE_JWKS, cache_keys=True)
+    JWT_IS_AVAILABLE = True
+except Exception:
+    _jwks_client = None
+
+EMAIL_RE = re.compile(r"^[^@\s]+@[^@\s]+\.[^@\s]+$")
+PHONE_RE = re.compile(r"^\+?[0-9]{10,13}$")
+USERNAME_RE = re.compile(r"^[A-Za-z0-9\u00C0-\u00FF _.\-]{2,30}$")
+
+
+def normalizar_phone(valor):
+    return re.sub(r"[^0-9]", "", valor or "")
+
 
 def get_db():
-    conn = sqlite3.connect(DB_PATH)
-    conn.row_factory = sqlite3.Row
-    conn.execute("PRAGMA journal_mode=WAL")
-    conn.execute("PRAGMA foreign_keys=ON")
-    return conn
+    db = getattr(g, "_db", None)
+    if db is None:
+        db = g._db = sqlite3.connect(DB_PATH)
+        db.row_factory = sqlite3.Row
+        db.execute("PRAGMA foreign_keys = ON")
+    return db
+
 
 def init_db():
-    conn = get_db()
-    conn.executescript("""
+    db = sqlite3.connect(DB_PATH)
+    db.executescript(
+        """
         CREATE TABLE IF NOT EXISTS users (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
-            name TEXT NOT NULL,
+            username TEXT NOT NULL,
             email TEXT UNIQUE,
             phone TEXT UNIQUE,
             password_hash TEXT,
-            auth_method TEXT NOT NULL DEFAULT 'email',
-            created_at TEXT NOT NULL DEFAULT (datetime('now'))
+            provider TEXT NOT NULL DEFAULT 'email',
+            google_sub TEXT UNIQUE,
+            created_at TEXT NOT NULL
         );
-
-        CREATE TABLE IF NOT EXISTS products (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            code TEXT UNIQUE NOT NULL,
-            name TEXT NOT NULL,
-            price REAL NOT NULL,
-            image TEXT,
-            category TEXT NOT NULL DEFAULT 'doces',
-            created_at TEXT NOT NULL DEFAULT (datetime('now'))
+        CREATE TABLE IF NOT EXISTS sessions (
+            token TEXT PRIMARY KEY,
+            user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+            created_at TEXT NOT NULL
         );
-
-        CREATE TABLE IF NOT EXISTS orders (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            user_id INTEGER NOT NULL,
-            total REAL NOT NULL,
-            status TEXT NOT NULL DEFAULT 'pending',
-            created_at TEXT NOT NULL DEFAULT (datetime('now')),
-            FOREIGN KEY (user_id) REFERENCES users(id)
-        );
-
-        CREATE TABLE IF NOT EXISTS order_items (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            order_id INTEGER NOT NULL,
-            product_code TEXT NOT NULL,
-            product_name TEXT NOT NULL,
-            quantity INTEGER NOT NULL,
-            unit_price REAL NOT NULL,
-            FOREIGN KEY (order_id) REFERENCES orders(id)
-        );
-    """)
-    conn.commit()
-
-    cursor = conn.execute("SELECT COUNT(*) as c FROM products")
-    if cursor.fetchone()["c"] == 0:
-        seed_products(conn)
-
-    conn.close()
-
-def seed_products(conn):
-    products = [
-        ("doceLeiteCoco", "Doce de Leite com Coco (pote 350 ml)", 12.00, "doce-de-leite-com-coco-sem-risco-camera.jpeg", "doces"),
-        ("doceLeiteGoiabada", "Doce de Leite com Goiabada (pote 350 ml)", 12.00, "doce-de-leite-com-goiabada-sem-risco-camera.jpeg", "doces"),
-        ("doceLeite", "Doce de Leite Comum (pote 350 ml)", 12.00, "doce-de-leite-sem-risco-camera-inpaint-wide.jpeg", "doces"),
-        ("pudim18", "Pudim Pequeno (500g)", 18.00, "pudim 18,00$.jpeg", "doces"),
-        ("pudim35", "Pudim Grande (1kg)", 35.00, "pudim 35,00$.jpeg", "doces"),
-        ("boloSimples", "Bolo de Leite", 12.00, "bolo de leite.jpeg", "bolos"),
-        ("boloMilhoPalha", "Bolo de Milho Verde na Palha", 12.00, "Bolo de miho na palha.jpg", "bolos"),
-        ("boloChocolate50", "Bolo de Chocolate 50%", 12.00, "bolo de chocolate 50%25.jpeg", "bolos"),
-        ("boloLeiteCoco", "Bolo de Leite com Coco", 12.00, "bolo de leite com coco 2.0.jpeg", "bolos"),
-        ("boloOvos", "Bolo de Ovos", 12.00, "bolo de ovos.jpeg", "bolos"),
-        ("boloFormigueiro", "Bolo Formigueiro", 12.00, "bolo formigueiro.jpeg", "bolos"),
-        ("boloMesclado", "Bolo Mesclado", 12.00, "bolo mesclado.jpeg", "bolos"),
-    ]
-    conn.executemany(
-        "INSERT INTO products (code, name, price, image, category) VALUES (?, ?, ?, ?, ?)",
-        products
+        """
     )
-    conn.commit()
+    db.commit()
+    db.close()
 
-def hash_password(password):
-    return hashlib.sha256((password + SECRET_KEY).encode()).hexdigest()
 
-def generate_token(user_id):
+@app.teardown_appcontext
+def fechar_db(_exc):
+    db = getattr(g, "_db", None)
+    if db is not None:
+        db.close()
+
+
+def serializar_usuario(row):
+    return {
+        "id": row["id"],
+        "username": row["username"],
+        "email": row["email"],
+        "phone": row["phone"],
+        "provider": row["provider"],
+    }
+
+
+def criar_sessao(db, user_id):
     token = secrets.token_hex(32)
-    TOKENS[token] = {"user_id": user_id, "expires": datetime.now() + timedelta(days=7)}
+    db.execute(
+        "INSERT INTO sessions (token, user_id, created_at) VALUES (?, ?, ?)",
+        (token, user_id, datetime.now(timezone.utc).isoformat()),
+    )
+    db.commit()
     return token
 
-def require_auth(f):
-    @wraps(f)
-    def decorated(*args, **kwargs):
-        auth_header = request.headers.get("Authorization", "")
-        token = auth_header.replace("Bearer ", "") if auth_header else request.cookies.get("token")
 
-        if not token or token not in TOKENS:
-            return jsonify({"error": "Autenticacao necessaria"}), 401
+def usuario_do_token():
+    auth = request.headers.get("Authorization", "")
+    if not auth.startswith("Bearer "):
+        return None
+    token = auth[7:].strip()
+    db = get_db()
+    return db.execute(
+        "SELECT u.* FROM sessions s JOIN users u ON u.id = s.user_id WHERE s.token = ?",
+        (token,),
+    ).fetchone()
 
-        session = TOKENS[token]
-        if session["expires"] < datetime.now():
-            del TOKENS[token]
-            return jsonify({"error": "Sessao expirada"}), 401
 
-        return f(session["user_id"], *args, **kwargs)
-    return decorated
+def verificar_google_token(credential):
+    if not JWT_IS_AVAILABLE or not GOOGLE_CLIENT_IDS or _jwks_client is None:
+        return None
+    try:
+        chave = _jwks_client.get_signing_key_from_jwt(credential)
+        return jwt.decode(
+            credential,
+            chave.key,
+            algorithms=["RS256"],
+            audience=GOOGLE_CLIENT_IDS,
+            options={"verify_exp": True},
+        )
+    except Exception:
+        return None
 
-@app.after_request
-def add_cors(response):
-    response.headers["Access-Control-Allow-Origin"] = "*"
-    response.headers["Access-Control-Allow-Headers"] = "Content-Type,Authorization"
-    response.headers["Access-Control-Allow-Methods"] = "GET,POST,PUT,DELETE,OPTIONS"
-    return response
 
-@app.route("/")
-def serve_index():
-    return send_from_directory(os.path.dirname(__file__), "index.html")
+# ===== PAGINAS =====
+@app.get("/")
+def index():
+    return send_from_directory(BASE_DIR, "index.html")
 
-@app.route("/<path:path>")
-def serve_static(path):
-    return send_from_directory(os.path.dirname(__file__), path)
 
-@app.route("/api/health", methods=["GET"])
+@app.get("/<path:caminho>")
+def arquivos(caminho):
+    if os.path.isfile(os.path.join(BASE_DIR, caminho)):
+        return send_from_directory(BASE_DIR, caminho)
+    return jsonify({"ok": False, "erro": "Arquivo nao encontrado"}), 404
+
+
+# ===== AUTH =====
+@app.get("/api/health")
 def health():
-    return jsonify({"status": "ok", "db": DB_PATH})
+    return jsonify({"ok": True, "servidor": "Caseirinhos da Val"})
 
-@app.route("/api/auth/register", methods=["POST"])
-def register():
-    data = request.get_json() or {}
-    name = (data.get("name") or "").strip()
-    email = (data.get("email") or "").strip().lower()
-    phone = (data.get("phone") or "").strip()
-    password = data.get("password") or ""
 
-    if not name or len(name) < 2:
-        return jsonify({"error": "Nome deve ter pelo menos 2 caracteres"}), 400
+@app.post("/api/register")
+def registrar():
+    dados = request.get_json(silent=True) or {}
+    username = (dados.get("username") or "").strip()
+    email = (dados.get("email") or "").strip().lower()
+    phone = normalizar_phone(dados.get("phone"))
+    senha = dados.get("password") or ""
 
+    if not USERNAME_RE.match(username):
+        return jsonify({"ok": False, "erro": "Nome de usuario invalido (2 a 30 caracteres)."}), 400
+    if email and not EMAIL_RE.match(email):
+        return jsonify({"ok": False, "erro": "E-mail invalido."}), 400
+    if phone and not PHONE_RE.match(phone):
+        return jsonify({"ok": False, "erro": "Telefone invalido."}), 400
+    if len(senha) < 6:
+        return jsonify({"ok": False, "erro": "A senha precisa de pelo menos 6 caracteres."}), 400
     if not email and not phone:
-        return jsonify({"error": "Informe email ou telefone"}), 400
+        return jsonify({"ok": False, "erro": "Informe e-mail ou telefone."}), 400
 
-    if email and not re.match(r"[^@]+@[^@]+\.[^@]+", email):
-        return jsonify({"error": "Email invalido"}), 400
-
-    if password and len(password) < 4:
-        return jsonify({"error": "Senha deve ter pelo menos 4 caracteres"}), 400
-
-    conn = get_db()
+    db = get_db()
     try:
-        if email:
-            existing = conn.execute("SELECT id FROM users WHERE email = ?", (email,)).fetchone()
-            if existing:
-                return jsonify({"error": "Este email ja esta cadastrado"}), 409
-
-        if phone:
-            existing = conn.execute("SELECT id FROM users WHERE phone = ?", (phone,)).fetchone()
-            if existing:
-                return jsonify({"error": "Este telefone ja esta cadastrado"}), 409
-
-        hashed = hash_password(password) if password else ""
-        method = "email" if email else "phone"
-
-        cursor = conn.execute(
-            "INSERT INTO users (name, email, phone, password_hash, auth_method) VALUES (?, ?, ?, ?, ?)",
-            (name, email or None, phone or None, hashed, method)
+        cur = db.execute(
+            "INSERT INTO users (username, email, phone, password_hash, provider, created_at) VALUES (?, ?, ?, ?, 'email', ?)",
+            (
+                username,
+                email or None,
+                phone or None,
+                generate_password_hash(senha),
+                datetime.now(timezone.utc).isoformat(),
+            ),
         )
-        conn.commit()
-        user_id = cursor.lastrowid
+        db.commit()
+        user = db.execute("SELECT * FROM users WHERE id = ?", (cur.lastrowid,)).fetchone()
+    except sqlite3.IntegrityError:
+        return jsonify({"ok": False, "erro": "E-mail ou telefone ja cadastrado."}), 409
 
-        token = generate_token(user_id)
-        return jsonify({
-            "token": token,
-            "user": {"id": user_id, "name": name, "email": email or None, "phone": phone or None, "method": method}
-        }), 201
-    except Exception as e:
-        conn.rollback()
-        return jsonify({"error": "Erro ao cadastrar: " + str(e)}), 500
-    finally:
-        conn.close()
+    token = criar_sessao(db, user["id"])
+    return jsonify({"ok": True, "token": token, "user": serializar_usuario(user)})
 
-@app.route("/api/auth/login", methods=["POST"])
-def login():
-    data = request.get_json() or {}
-    email = (data.get("email") or "").strip().lower()
-    phone = (data.get("phone") or "").strip()
-    password = data.get("password") or ""
 
-    if not email and not phone:
-        return jsonify({"error": "Informe email ou telefone"}), 400
+@app.post("/api/login")
+def login_email():
+    dados = request.get_json(silent=True) or {}
+    identificador = (dados.get("identificador") or dados.get("email") or "").strip().lower()
+    senha = dados.get("password") or ""
 
-    conn = get_db()
-    try:
-        user = None
+    db = get_db()
+    user = db.execute(
+        "SELECT * FROM users WHERE lower(email) = ? OR phone = ?",
+        (identificador, normalizar_phone(identificador)),
+    ).fetchone()
+    if not user or not user["password_hash"] or not check_password_hash(user["password_hash"], senha):
+        return jsonify({"ok": False, "erro": "E-mail ou senha invalidos."}), 401
+
+    token = criar_sessao(db, user["id"])
+    return jsonify({"ok": True, "token": token, "user": serializar_usuario(user)})
+
+
+@app.post("/api/login-phone")
+def login_telefone():
+    dados = request.get_json(silent=True) or {}
+    phone = normalizar_phone(dados.get("phone"))
+    senha = dados.get("password") or ""
+
+    db = get_db()
+    user = db.execute("SELECT * FROM users WHERE phone = ?", (phone,)).fetchone()
+    if not user or not user["password_hash"] or not check_password_hash(user["password_hash"], senha):
+        return jsonify({"ok": False, "erro": "Telefone ou senha invalidos."}), 401
+
+    token = criar_sessao(db, user["id"])
+    return jsonify({"ok": True, "token": token, "user": serializar_usuario(user)})
+
+
+@app.post("/api/google-login")
+def login_google():
+    dados = request.get_json(silent=True) or {}
+    credential = dados.get("credential") or ""
+    if not credential:
+        return jsonify({"ok": False, "erro": "Credencial do Google ausente."}), 400
+
+    info = verificar_google_token(credential)
+    if not info:
+        return jsonify({"ok": False, "erro": "Nao foi possivel validar o login com o Google."}), 401
+
+    email = (info.get("email") or "").lower()
+    google_sub = str(info.get("sub") or "")
+    nome_google = (info.get("name") or "").strip() or (email.split("@")[0] if email else "Usuario")
+
+    db = get_db()
+    user = db.execute(
+        "SELECT * FROM users WHERE google_sub = ? OR (email IS NOT NULL AND email = ?)",
+        (google_sub, email),
+    ).fetchone()
+
+    if user is None:
         if email:
-            user = conn.execute("SELECT * FROM users WHERE email = ?", (email,)).fetchone()
-        elif phone:
-            user = conn.execute("SELECT * FROM users WHERE phone = ?", (phone,)).fetchone()
-
-        if not user:
-            return jsonify({"error": "Conta nao encontrada"}), 404
-
-        if user["password_hash"] and hash_password(password) != user["password_hash"]:
-            return jsonify({"error": "Senha incorreta"}), 401
-
-        if not user["password_hash"] and not password:
-            pass
-
-        token = generate_token(user["id"])
-        return jsonify({
-            "token": token,
-            "user": {
-                "id": user["id"],
-                "name": user["name"],
-                "email": user["email"],
-                "phone": user["phone"],
-                "method": user["auth_method"]
-            }
-        })
-    finally:
-        conn.close()
-
-@app.route("/api/auth/me", methods=["GET"])
-@require_auth
-def get_me(user_id):
-    conn = get_db()
-    try:
-        user = conn.execute("SELECT * FROM users WHERE id = ?", (user_id,)).fetchone()
-        if not user:
-            return jsonify({"error": "Usuario nao encontrado"}), 404
-
-        return jsonify({
-            "user": {
-                "id": user["id"],
-                "name": user["name"],
-                "email": user["email"],
-                "phone": user["phone"],
-                "method": user["auth_method"]
-            }
-        })
-    finally:
-        conn.close()
-
-@app.route("/api/auth/logout", methods=["POST"])
-def logout():
-    auth_header = request.headers.get("Authorization", "")
-    token = auth_header.replace("Bearer ", "") if auth_header else request.cookies.get("token")
-
-    if token and token in TOKENS:
-        del TOKENS[token]
-
-    return jsonify({"message": "Desconectado com sucesso"})
-
-@app.route("/api/auth/phone/send-code", methods=["POST"])
-def send_phone_code():
-    data = request.get_json() or {}
-    phone = (data.get("phone") or "").strip()
-
-    if not phone or len(phone.replace(r"\D", "")) < 10:
-        return jsonify({"error": "Telefone invalido"}), 400
-
-    return jsonify({"message": "Codigo enviado", "code": "123456"})
-
-@app.route("/api/products", methods=["GET"])
-def list_products():
-    category = request.args.get("category")
-    conn = get_db()
-    try:
-        if category:
-            products = conn.execute(
-                "SELECT * FROM products WHERE category = ? ORDER BY id", (category,)
-            ).fetchall()
-        else:
-            products = conn.execute("SELECT * FROM products ORDER BY category, id").fetchall()
-
-        return jsonify({
-            "products": [{
-                "code": p["code"],
-                "name": p["name"],
-                "price": p["price"],
-                "image": p["image"],
-                "category": p["category"]
-            } for p in products]
-        })
-    finally:
-        conn.close()
-
-@app.route("/api/orders", methods=["GET"])
-@require_auth
-def list_orders(user_id):
-    conn = get_db()
-    try:
-        orders = conn.execute(
-            "SELECT * FROM orders WHERE user_id = ? ORDER BY created_at DESC", (user_id,)
-        ).fetchall()
-
-        result = []
-        for o in orders:
-            items = conn.execute(
-                "SELECT * FROM order_items WHERE order_id = ?", (o["id"],)
-            ).fetchall()
-
-            result.append({
-                "id": o["id"],
-                "total": o["total"],
-                "status": o["status"],
-                "created_at": o["created_at"],
-                "items": [{
-                    "product_code": i["product_code"],
-                    "product_name": i["product_name"],
-                    "quantity": i["quantity"],
-                    "unit_price": i["unit_price"]
-                } for i in items]
-            })
-
-        return jsonify({"orders": result})
-    finally:
-        conn.close()
-
-@app.route("/api/orders", methods=["POST"])
-@require_auth
-def create_order(user_id):
-    data = request.get_json() or {}
-    items_data = data.get("items", [])
-
-    if not items_data:
-        return jsonify({"error": "Carrinho vazio"}), 400
-
-    conn = get_db()
-    try:
-        total = 0
-        items = []
-
-        for item in items_data:
-            code = item.get("code")
-            quantity = int(item.get("quantity", 1))
-
-            product = conn.execute("SELECT * FROM products WHERE code = ?", (code,)).fetchone()
-            if not product:
-                return jsonify({"error": f"Produto {code} nao encontrado"}), 404
-
-            unit_price = product["price"]
-            total += unit_price * quantity
-            items.append({
-                "product_code": code,
-                "product_name": product["name"],
-                "quantity": quantity,
-                "unit_price": unit_price
-            })
-
-        cursor = conn.execute(
-            "INSERT INTO orders (user_id, total, status) VALUES (?, ?, 'pending')",
-            (user_id, total)
-        )
-        order_id = cursor.lastrowid
-
-        for item in items:
-            conn.execute(
-                "INSERT INTO order_items (order_id, product_code, product_name, quantity, unit_price) VALUES (?, ?, ?, ?, ?)",
-                (order_id, item["product_code"], item["product_name"], item["quantity"], item["unit_price"])
+            user = db.execute("SELECT * FROM users WHERE email = ?", (email,)).fetchone()
+            if user:
+                db.execute("UPDATE users SET google_sub = ? WHERE id = ?", (google_sub, user["id"]))
+        if user is None:
+            cur = db.execute(
+                "INSERT INTO users (username, email, phone, password_hash, provider, google_sub, created_at) VALUES (?, ?, NULL, NULL, 'google', ?, ?)",
+                (nome_google, email or None, google_sub, datetime.now(timezone.utc).isoformat()),
             )
+            user = db.execute("SELECT * FROM users WHERE id = ?", (cur.lastrowid,)).fetchone()
+        db.commit()
 
-        conn.commit()
-        return jsonify({"order_id": order_id, "total": total, "status": "pending"}), 201
-    except Exception as e:
-        conn.rollback()
-        return jsonify({"error": "Erro ao criar pedido: " + str(e)}), 500
-    finally:
-        conn.close()
+    token = criar_sessao(db, user["id"])
+    return jsonify({"ok": True, "token": token, "user": serializar_usuario(user)})
+
+
+@app.get("/api/me")
+def me():
+    user = usuario_do_token()
+    if not user:
+        return jsonify({"ok": False, "erro": "Nao autenticado."}), 401
+    return jsonify({"ok": True, "user": serializar_usuario(user)})
+
+
+@app.post("/api/logout")
+def logout():
+    auth = request.headers.get("Authorization", "")
+    if auth.startswith("Bearer "):
+        db = get_db()
+        db.execute("DELETE FROM sessions WHERE token = ?", (auth[7:].strip(),))
+        db.commit()
+    return jsonify({"ok": True})
+
+
+@app.post("/api/update-username")
+def atualizar_username():
+    user = usuario_do_token()
+    if not user:
+        return jsonify({"ok": False, "erro": "Nao autenticado."}), 401
+
+    dados = request.get_json(silent=True) or {}
+    novo = (dados.get("username") or "").strip()
+    if not USERNAME_RE.match(novo):
+        return jsonify({"ok": False, "erro": "Nome de usuario invalido (2 a 30 caracteres)."}), 400
+
+    db = get_db()
+    db.execute("UPDATE users SET username = ? WHERE id = ?", (novo, user["id"]))
+    db.commit()
+    return jsonify({"ok": True, "user": serializar_usuario(db.execute("SELECT * FROM users WHERE id = ?", (user["id"],)).fetchone())})
+
+
+init_db()
 
 if __name__ == "__main__":
-    init_db()
-    port = int(os.environ.get("PORT", 5000))
-    print(f"Servidor rodando em http://localhost:{port}")
-    app.run(host="0.0.0.0", port=port, debug=True)
+    app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)), debug=False)

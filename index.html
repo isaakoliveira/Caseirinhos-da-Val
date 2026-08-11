@@ -27,12 +27,11 @@
       </div>
       <div class="hero-account" aria-live="polite">
         <div class="hero-account-copy">
-          <span class="account-kicker">Compra protegida</span>
-          <strong id="heroAccountTitle">Qual seu nome?</strong>
-          <span id="heroAccountDescription">Digite seu nome para come&ccedil;ar a comprar.</span>
+          <span class="account-kicker">Conta</span>
+          <strong id="heroAccountTitle">Entrar para comprar</strong>
+          <span id="heroAccountDescription">Fa&ccedil;a login com e-mail, telefone ou Google.</span>
         </div>
-        <input id="inputNome" class="input-nome" type="text" placeholder="Seu nome" maxlength="30" onkeydown="if(event.key==='Enter')confirmarNome()">
-        <button id="heroAccountButton" class="btn btn-account" type="button" onclick="confirmarNome()">Confirmar</button>
+        <button id="heroAccountButton" class="btn btn-account" type="button" onclick="abrirLogin()">Entrar</button>
       </div>
     </div>
 
@@ -302,7 +301,12 @@
             </div>
             <div class="settings-account-info">
               <span id="settingsAccountDisplay" class="settings-account-name"></span>
-              <button class="btn btn-account-settings" type="button" onclick="trocarNome()">Trocar / remover nome</button>
+              <button class="btn btn-account-settings" type="button" onclick="trocarNomeUsuario()">Trocar nome de usu&aacute;rio</button>
+              <button class="btn btn-account-settings" type="button" onclick="sairDaConta()">Sair da conta</button>
+            </div>
+            <div id="renomearArea" class="renomear-area" style="display:none">
+              <input id="inputNovoUsuario" class="login-input" type="text" placeholder="Novo nome de usu&aacute;rio" maxlength="30">
+              <button class="btn btn-account-settings" type="button" onclick="confirmarNovoUsuario()">Salvar</button>
             </div>
           </div>
         </div>
@@ -341,6 +345,56 @@
       </div>
     </section>
   </main>
+
+  <div id="loginModal" class="login-modal" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="loginTitle">
+    <div class="login-box">
+      <button class="modal-close" type="button" aria-label="Fechar login" onclick="fecharLogin()">&times;</button>
+
+      <div class="login-header">
+        <span class="section-kicker">Conta</span>
+        <h2 id="loginTitle">Entrar</h2>
+        <p>Escolha como quer entrar no site.</p>
+      </div>
+
+      <div id="loginGoogle" class="google-login-area"></div>
+
+      <div class="login-tabs" role="tablist" aria-label="Op&ccedil;&otilde;es de login">
+        <button class="login-tab active" type="button" data-login-tab="email" onclick="trocarLoginTab('email')">E-mail</button>
+        <button class="login-tab" type="button" data-login-tab="telefone" onclick="trocarLoginTab('telefone')">Telefone</button>
+        <button class="login-tab" type="button" data-login-tab="cadastro" onclick="trocarLoginTab('cadastro')">Criar conta</button>
+      </div>
+
+      <div id="loginTabEmail" class="login-tab-painel">
+        <label class="login-label" for="loginEmail">E-mail</label>
+        <input id="loginEmail" class="login-input" type="email" placeholder="voce@email.com" inputmode="email" autocomplete="email">
+        <label class="login-label" for="loginSenha">Senha</label>
+        <input id="loginSenha" class="login-input" type="password" placeholder="Sua senha" autocomplete="current-password">
+        <button id="btnLoginEmail" class="btn" type="button" onclick="loginComEmail()">Entrar com e-mail</button>
+      </div>
+
+      <div id="loginTabTelefone" class="login-tab-painel" style="display:none">
+        <label class="login-label" for="loginTelefone">Telefone (WhatsApp)</label>
+        <input id="loginTelefone" class="login-input" type="tel" placeholder="(83) 99999-9999" inputmode="tel" autocomplete="tel">
+        <label class="login-label" for="loginTelefoneSenha">Senha</label>
+        <input id="loginTelefoneSenha" class="login-input" type="password" placeholder="Sua senha" autocomplete="current-password">
+        <button id="btnLoginTelefone" class="btn" type="button" onclick="loginComTelefone()">Entrar com telefone</button>
+      </div>
+
+      <div id="loginTabCadastro" class="login-tab-painel" style="display:none">
+        <label class="login-label" for="cadUsername">Nome de usu&aacute;rio</label>
+        <input id="cadUsername" class="login-input" type="text" placeholder="Como quer ser chamado?" maxlength="30">
+        <label class="login-label" for="cadEmail">E-mail</label>
+        <input id="cadEmail" class="login-input" type="email" placeholder="voce@email.com" inputmode="email" autocomplete="email">
+        <label class="login-label" for="cadTelefone">Telefone (opcional)</label>
+        <input id="cadTelefone" class="login-input" type="tel" placeholder="(83) 99999-9999" inputmode="tel" autocomplete="tel">
+        <label class="login-label" for="cadSenha">Senha</label>
+        <input id="cadSenha" class="login-input" type="password" placeholder="Minimo 6 caracteres" autocomplete="new-password">
+        <button id="btnCadastrar" class="btn" type="button" onclick="cadastrarUsuario()">Criar conta</button>
+      </div>
+
+      <p id="loginStatus" class="login-status"></p>
+    </div>
+  </div>
 
   <div id="pixModal" class="pix-modal">
     <div class="pix-box">
