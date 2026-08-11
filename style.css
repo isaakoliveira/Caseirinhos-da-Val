@@ -755,6 +755,11 @@ h2 {
     display: block;
     margin-bottom: 4px;
     line-height: 1.25;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
 }
 
 .item-carrinho-info span {
@@ -766,6 +771,9 @@ h2 {
     display: flex;
     align-items: center;
     gap: 7px;
+    flex-wrap: nowrap;
+    white-space: nowrap;
+    justify-content: flex-end;
 }
 
 .btn-quantidade,
@@ -1302,14 +1310,27 @@ footer {
     }
 
     .item-carrinho {
-        grid-template-columns: 60px minmax(0, 1fr) auto;
-        gap: 10px;
+        grid-template-columns: 72px minmax(0, 1fr) auto;
+        gap: 12px;
     }
 
     .item-carrinho-imagem,
     .item-carrinho-placeholder {
-        width: 60px;
-        height: 60px;
+        width: 72px;
+        height: 72px;
+    }
+
+    .item-carrinho-controles {
+        gap: 6px;
+    }
+
+    .btn-quantidade {
+        width: 30px;
+        height: 30px;
+    }
+
+    .btn-remover {
+        padding: 6px 8px;
     }
 }
 
