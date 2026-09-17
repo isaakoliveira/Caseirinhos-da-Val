@@ -1,358 +1,768 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-br" data-tema="light">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Caseirinhos da Val</title>
+  <meta name="theme-color" content="#ffe0ec">
+  <title>Caseirinhos da Val | Doces e bolos caseiros em Picuí - PB</title>
+  <meta name="description" content="Doces e bolos caseiros da Caseirinhos da Val. Peça pelo WhatsApp ou pague direto no PIX. Atendimento em Picuí - PB.">
+
   <link rel="icon" type="image/png" href="logo.png">
   <link rel="apple-touch-icon" href="logo.png">
+  <meta property="og:title" content="Caseirinhos da Val">
+  <meta property="og:description" content="Doces e bolos caseiros. Pedido pelo WhatsApp e pagamento no PIX.">
   <meta property="og:image" content="logo.png">
   <meta name="twitter:image" content="logo.png">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
-  <header class="hero">
-    <button class="header-settings-button" type="button" onclick="abrirConfiguracoes()" aria-label="Abrir configurações" title="Configurações">
-      <span aria-hidden="true">&#9881;&#65039;</span>
-    </button>
-    <div class="hero-content">
-      <div class="brand-block">
-        <img class="logo-header" src="logo.png" alt="Logo Caseirinhos da Val">
-        <div class="header-text">
-          <span class="eyebrow">Doces e bolos caseiros</span>
-          <h1>&#127856; Caseirinhos da Val &#127854;</h1>
-          <p>Os melhores doces e bolos da cidade</p>
+
+  <!-- ===== Biblioteca de ícones (SVG) ===== -->
+  <svg class="svg-sprite" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <g id="i-base" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></g>
+    </defs>
+    <symbol id="i-cart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="9" cy="20" r="1.4"></circle><circle cx="18" cy="20" r="1.4"></circle>
+      <path d="M2 3h2.2l2.3 11.3a1.8 1.8 0 0 0 1.8 1.4h8.6a1.8 1.8 0 0 0 1.8-1.4L21 7H6"></path>
+    </symbol>
+    <symbol id="i-chat" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M21 11.5a8.4 8.4 0 0 1-8.5 8.4 8.6 8.6 0 0 1-3.8-.9L3.5 21l2-5.1a8.3 8.3 0 0 1-1-4 8.4 8.4 0 0 1 8.5-8.4 8.4 8.4 0 0 1 8 8z"></path>
+      <path d="M8.6 9.4c.6 2.2 2.3 4 4.6 4.6"></path>
+    </symbol>
+    <symbol id="i-card" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="2" y="5" width="20" height="14" rx="2.5"></rect><path d="M2 10h20"></path><path d="M6 15h4"></path>
+    </symbol>
+    <symbol id="i-pin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M20 10c0 6.2-8 12-8 12s-8-5.8-8-12a8 8 0 0 1 16 0z"></path><circle cx="12" cy="10" r="2.8"></circle>
+    </symbol>
+    <symbol id="i-mail" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="2.5" y="5" width="19" height="14" rx="2.5"></rect><path d="M3 7l9 6 9-6"></path>
+    </symbol>
+    <symbol id="i-gear" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="12" r="3.2"></circle>
+      <path d="M19.2 14.4a1.7 1.7 0 0 0 .3 1.9l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.5v.2a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.9.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.9 1.7 1.7 0 0 0-1.5-1H2.6a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.9l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.9.3h.1a1.7 1.7 0 0 0 1-1.5V2.6a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.9-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.9v.1a1.7 1.7 0 0 0 1.5 1h.2a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"></path>
+    </symbol>
+    <symbol id="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="12" r="4.2"></circle>
+      <path d="M12 2v2M12 20v2M4.2 4.2l1.4 1.4M18.4 18.4l1.4 1.4M2 12h2M20 12h2M4.2 19.8l1.4-1.4M18.4 5.6l1.4-1.4"></path>
+    </symbol>
+    <symbol id="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M20.5 14.2A8.6 8.6 0 0 1 9.8 3.5a8.6 8.6 0 1 0 10.7 10.7z"></path>
+    </symbol>
+    <symbol id="i-plus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14M5 12h14"></path></symbol>
+    <symbol id="i-minus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M5 12h14"></path></symbol>
+    <symbol id="i-trash" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M3.5 6h17M9 6V4.5A1.5 1.5 0 0 1 10.5 3h3A1.5 1.5 0 0 1 15 4.5V6M18.5 6l-.8 13a2 2 0 0 1-2 1.9H8.3a2 2 0 0 1-2-1.9L5.5 6"></path>
+    </symbol>
+    <symbol id="i-close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"></path></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12.5l5 5 10-11"></path></symbol>
+    <symbol id="i-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h15M13 6l6 6-6 6"></path></symbol>
+    <symbol id="i-copy" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="9" y="9" width="12" height="12" rx="2.5"></rect><path d="M5.5 15H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v.5"></path>
+    </symbol>
+    <symbol id="i-clip" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M21 11.6l-8.5 8.5a5.5 5.5 0 0 1-7.8-7.8l8.5-8.5a3.7 3.7 0 0 1 5.2 5.2l-8.5 8.5a1.8 1.8 0 0 1-2.6-2.6l7.8-7.8"></path>
+    </symbol>
+    <symbol id="i-lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="4" y="10.5" width="16" height="10.5" rx="2.5"></rect><path d="M8 10.5V7.8a4 4 0 0 1 8 0v2.7"></path>
+    </symbol>
+    <symbol id="i-hand" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M20.4 5.1a5 5 0 0 0-7.1 0L12 6.4l-1.3-1.3a5 5 0 1 0-7.1 7.1L12 20.6l8.4-8.4a5 5 0 0 0 0-7.1z"></path>
+    </symbol>
+    <symbol id="i-pote" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M8.5 3h7v3h-7z"></path><path d="M6 9.5A3.5 3.5 0 0 1 9.5 6h5A3.5 3.5 0 0 1 18 9.5v8A3.5 3.5 0 0 1 14.5 21h-5A3.5 3.5 0 0 1 6 17.5z"></path><path d="M6 13h12"></path>
+    </symbol>
+    <symbol id="i-bolo" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M3 20.5h18"></path><path d="M4.5 20.5v-6a3 3 0 0 1 3-3h9a3 3 0 0 1 3 3v6"></path><path d="M4.5 15.5c1.6 1.4 3.1 1.4 4.7 0 1.6 1.4 3.1 1.4 4.7 0 1.6 1.4 3.1 1.4 4.6 0"></path><path d="M12 8.5V6"></path><circle cx="12" cy="4.4" r="1.2"></circle>
+    </symbol>
+    <symbol id="i-left" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"></path></symbol>
+    <symbol id="i-right" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"></path></symbol>
+    <symbol id="i-qr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="3" y="3" width="7" height="7" rx="1.5"></rect><rect x="14" y="3" width="7" height="7" rx="1.5"></rect><rect x="3" y="14" width="7" height="7" rx="1.5"></rect><path d="M14 14h3v3h-3zM20.5 14v3M14 20.5h7"></path>
+    </symbol>
+  </svg>
+
+  <a class="skip-link" href="#conteudo">Ir para o conteúdo</a>
+
+  <!-- ===== Topo ===== -->
+  <header class="site-header">
+    <div class="topbar">
+      <div class="shell topbar-inner">
+        <a class="brand" href="#conteudo">
+          <img class="logo-header" src="logo.png" alt="Logo Caseirinhos da Val">
+          <span class="brand-text">
+            <strong>Caseirinhos da Val</strong>
+            <small>Doces e bolos caseiros</small>
+          </span>
+        </a>
+
+        <div class="topbar-acoes">
+          <a class="topbar-contato" href="https://wa.me/5583982168114?text=Ola%2C%20vim%20pelo%20site%20Caseirinhos%20da%20Val." target="_blank" rel="noopener">
+            <svg class="ico" aria-hidden="true"><use href="#i-chat"></use></svg>
+            <span>(83) 98216-8114</span>
+          </a>
+          <button class="icon-btn header-settings-button" type="button" onclick="abrirConfiguracoes()" aria-label="Abrir configurações" title="Configurações">
+            <svg class="ico" aria-hidden="true"><use href="#i-gear"></use></svg>
+          </button>
         </div>
       </div>
     </div>
 
-    <div class="hero-highlights" aria-label="Destaques do atendimento">
-      <div class="metodos-box">
-        <h2>Compra simples e segura</h2>
-        <span>&#128205; Atendimento em Picuí - PB</span>
-        <span>&#128179; PIX direto</span>
-        <span>&#128222; Pedido por WhatsApp</span>
+    <div class="hero">
+      <div class="shell hero-inner">
+        <div class="hero-texto">
+          <span class="eyebrow">Doces e bolos caseiros</span>
+          <h1>Caseirinhos da Val</h1>
+          <p class="hero-sub">
+            Doces e bolos feitos à mão, por encomenda, com o capricho de quem cozinha em casa.
+            Escolha no cardápio, peça pelo WhatsApp e pague no PIX.
+          </p>
+
+          <div class="hero-acoes">
+            <button class="btn btn-primario" type="button" onclick="mostrarAba('doces')">
+              Ver cardápio
+              <svg class="ico" aria-hidden="true"><use href="#i-arrow"></use></svg>
+            </button>
+            <a class="btn btn-contorno-claro" href="https://wa.me/5583982168114?text=Ola%2C%20vim%20pelo%20site%20Caseirinhos%20da%20Val." target="_blank" rel="noopener">
+              <svg class="ico" aria-hidden="true"><use href="#i-chat"></use></svg>
+              Falar com a Val
+            </a>
+          </div>
+        </div>
+
+        <aside class="hero-card" aria-label="Como funciona o atendimento">
+          <h2>Compra simples e segura</h2>
+          <ul class="hero-lista">
+            <li>
+              <span class="hero-ico"><svg class="ico" aria-hidden="true"><use href="#i-pin"></use></svg></span>
+              <span><strong>Atendimento em Picuí - PB</strong><small>Combine retirada ou entrega direto com a Val</small></span>
+            </li>
+            <li>
+              <span class="hero-ico"><svg class="ico" aria-hidden="true"><use href="#i-card"></use></svg></span>
+              <span><strong>PIX direto</strong><small>QR Code e código copia e cola na hora</small></span>
+            </li>
+            <li>
+              <span class="hero-ico"><svg class="ico" aria-hidden="true"><use href="#i-chat"></use></svg></span>
+              <span><strong>Pedido por WhatsApp</strong><small>Sem cadastro, sem complicação</small></span>
+            </li>
+          </ul>
+        </aside>
+      </div>
+
+      <div class="shell">
+        <ul class="hero-selos">
+          <li><svg class="ico" aria-hidden="true"><use href="#i-hand"></use></svg> Produção artesanal</li>
+          <li><svg class="ico" aria-hidden="true"><use href="#i-lock"></use></svg> Pagamento direto, sem taxas do site</li>
+          <li><svg class="ico" aria-hidden="true"><use href="#i-cart"></use></svg> Monte seu pedido em poucos toques</li>
+        </ul>
       </div>
     </div>
   </header>
 
-  <nav aria-label="Navega&ccedil;&atilde;o principal">
-    <button class="nav-link active-nav" type="button" data-aba="doces" onclick="mostrarAba('doces')">&#127854; Doces</button>
-    <button class="nav-link" type="button" data-aba="bolos" onclick="mostrarAba('bolos')">&#127874; Bolos</button>
-    <button class="nav-link" type="button" data-aba="carrinho" onclick="mostrarAba('carrinho')">&#128722; Carrinho (<span id="contadorCarrinho">0</span>)</button>
-    <button class="nav-link" type="button" data-aba="contato" onclick="mostrarAba('contato')">&#128222; Contato</button>
+  <!-- ===== Navegação ===== -->
+  <nav class="tabs" aria-label="Navegação principal">
+    <div class="shell tabs-inner">
+      <div class="tabs-trilho" id="tabsTrilho" role="tablist">
+        <button class="nav-link active-nav" type="button" role="tab" data-aba="doces" aria-selected="true" aria-controls="doces" onclick="mostrarAba('doces')">
+          <svg class="ico" aria-hidden="true"><use href="#i-pote"></use></svg> Doces
+        </button>
+        <button class="nav-link" type="button" role="tab" data-aba="bolos" aria-selected="false" aria-controls="bolos" onclick="mostrarAba('bolos')">
+          <svg class="ico" aria-hidden="true"><use href="#i-bolo"></use></svg> Bolos
+        </button>
+        <button class="nav-link" type="button" role="tab" data-aba="carrinho" aria-selected="false" aria-controls="carrinho" onclick="mostrarAba('carrinho')">
+          <svg class="ico" aria-hidden="true"><use href="#i-cart"></use></svg> Carrinho
+          <span class="nav-badge" id="contadorCarrinho">0</span>
+        </button>
+        <button class="nav-link" type="button" role="tab" data-aba="contato" aria-selected="false" aria-controls="contato" onclick="mostrarAba('contato')">
+          <svg class="ico" aria-hidden="true"><use href="#i-chat"></use></svg> Contato
+        </button>
+      </div>
+    </div>
   </nav>
 
-  <main>
-    <section id="doces" class="aba active">
-      <div class="section-head">
-        <span class="section-kicker">Card&aacute;pio</span>
-        <h2>&#127854; Doces</h2>
-        <p>Escolha seu doce favorito e finalize pelo PIX, WhatsApp ou carrinho.</p>
-      </div>
+  <p class="swipe-hint" id="swipeHint">
+    <svg class="ico" aria-hidden="true"><use href="#i-left"></use></svg>
+    deslize para trocar de aba
+    <svg class="ico" aria-hidden="true"><use href="#i-right"></use></svg>
+  </p>
 
-      <div class="container product-grid">
-        <div class="card produto-card">
-          <img src="doce-de-leite-com-coco-sem-risco-camera.jpeg" alt="Doce de Leite com Coco">
+  <!-- ===== Conteúdo ===== -->
+  <main id="conteudo" class="palco">
 
-          <div class="card-content">
-            <h3>Doce de Leite com Coco (pote 350 ml)</h3>
-            <p class="preco" id="preco-doce-leite-coco"></p>
-            <button class="btn" onclick="abrirPix('doceLeiteCoco')">&#128179; Pagar agora</button>
-            <a class="btn btn-pedido" href="#" onclick="fazerPedidoWhatsApp('doceLeiteCoco'); return false;">Fazer pedido pelo WhatsApp</a>
-            <button class="btn btn-carrinho" onclick="adicionarAoCarrinho('doceLeiteCoco', this)">Adicionar ao carrinho</button>
-          </div>
+    <!-- DOCES -->
+    <section id="doces" class="aba active" role="tabpanel" aria-labelledby="doces">
+      <div class="shell">
+        <div class="section-head">
+          <span class="section-kicker">Cardápio</span>
+          <h2>Doces</h2>
+          <p>Potes e pudins prontos para adoçar o dia. Pague no PIX, chame no WhatsApp ou monte o carrinho.</p>
         </div>
 
-        <div class="card produto-card">
-          <img src="doce-de-leite-com-goiabada-sem-risco-camera.jpeg" alt="Doce de Leite com Goiabada">
+        <div class="product-grid">
 
-          <div class="card-content">
-            <h3>Doce de Leite com Goiabada (pote 350 ml)</h3>
-            <p class="preco" id="preco-doce-leite-goiabada"></p>
-            <button class="btn" onclick="abrirPix('doceLeiteGoiabada')">&#128179; Pagar agora</button>
-            <a class="btn btn-pedido" href="#" onclick="fazerPedidoWhatsApp('doceLeiteGoiabada'); return false;">Fazer pedido pelo WhatsApp</a>
-            <button class="btn btn-carrinho" onclick="adicionarAoCarrinho('doceLeiteGoiabada', this)">Adicionar ao carrinho</button>
-          </div>
-        </div>
-
-        <div class="card produto-card">
-          <img src="doce-de-leite-sem-risco-camera-inpaint-wide.jpeg" alt="Doce de Leite Comum">
-
-          <div class="card-content">
-            <h3>Doce de Leite Comum (pote 350 ml)</h3>
-            <p class="preco" id="preco-doce-leite">R$ 12,00</p>
-            <button class="btn" onclick="abrirPix('doceLeite')">&#128179; Pagar agora</button>
-            <a class="btn btn-pedido" href="#" onclick="fazerPedidoWhatsApp('doceLeite'); return false;">Fazer pedido pelo WhatsApp</a>
-            <button class="btn btn-carrinho" onclick="adicionarAoCarrinho('doceLeite', this)">Adicionar ao carrinho</button>
-          </div>
-        </div>
-
-        <div class="card produto-card">
-          <img src="pudim 18,00$.jpeg" alt="Pudim Pequeno">
-
-          <div class="card-content">
-            <h3>Pudim Pequeno (500g)</h3>
-            <p class="preco" id="preco-pudim-18"></p>
-            <button class="btn" onclick="abrirPix('pudim18')">&#128179; Pagar agora</button>
-            <a class="btn btn-pedido" href="#" onclick="fazerPedidoWhatsApp('pudim18'); return false;">Fazer pedido pelo WhatsApp</a>
-            <button class="btn btn-carrinho" onclick="adicionarAoCarrinho('pudim18', this)">Adicionar ao carrinho</button>
-          </div>
-        </div>
-
-        <div class="card produto-card">
-          <img src="pudim 35,00$.jpeg" alt="Pudim Grande">
-
-          <div class="card-content">
-            <h3>Pudim Grande (1kg)</h3>
-            <p class="preco" id="preco-pudim-35"></p>
-            <button class="btn" onclick="abrirPix('pudim35')">&#128179; Pagar agora</button>
-            <a class="btn btn-pedido" href="#" onclick="fazerPedidoWhatsApp('pudim35'); return false;">Fazer pedido pelo WhatsApp</a>
-            <button class="btn btn-carrinho" onclick="adicionarAoCarrinho('pudim35', this)">Adicionar ao carrinho</button>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section id="bolos" class="aba">
-      <div class="section-head">
-        <span class="section-kicker">Encomendas</span>
-        <h2>&#127874; Bolos</h2>
-        <p>Veja as op&ccedil;&otilde;es dispon&iacute;veis e monte seu pedido em poucos cliques.</p>
-      </div>
-
-      <div class="container product-grid">
-        <div class="card produto-card">
-          <img src="bolo de leite.jpeg" alt="Bolo de Leite">
-
-          <div class="card-content">
-            <h3>Bolo de Leite</h3>
-            <p class="preco" id="preco-bolo-simples"></p>
-            <button class="btn" onclick="abrirPix('boloSimples')">&#128179; Pagar agora</button>
-            <a class="btn btn-pedido" href="#" onclick="fazerPedidoWhatsApp('boloSimples'); return false;">Fazer pedido pelo WhatsApp</a>
-            <button class="btn btn-carrinho" onclick="adicionarAoCarrinho('boloSimples', this)">Adicionar ao carrinho</button>
-          </div>
-        </div>
-
-        <div class="card produto-card">
-          <img src="Bolo de miho na palha.jpg" alt="Bolo de Milho Verde na Palha">
-
-          <div class="card-content">
-            <h3>Bolo de Milho Verde na Palha</h3>
-            <p class="preco" id="preco-bolo-milho-palha"></p>
-            <button class="btn" onclick="abrirPix('boloMilhoPalha')">&#128179; Pagar agora</button>
-            <a class="btn btn-pedido" href="#" onclick="fazerPedidoWhatsApp('boloMilhoPalha'); return false;">Fazer pedido pelo WhatsApp</a>
-            <button class="btn btn-carrinho" onclick="adicionarAoCarrinho('boloMilhoPalha', this)">Adicionar ao carrinho</button>
-          </div>
-        </div>
-
-        <div class="card produto-card">
-          <img src="bolo de chocolate 50%25.jpeg" alt="Bolo de Chocolate 50%">
-
-          <div class="card-content">
-            <h3>Bolo de Chocolate 50%</h3>
-            <p class="preco" id="preco-bolo-chocolate-50"></p>
-            <button class="btn" onclick="abrirPix('boloChocolate50')">&#128179; Pagar agora</button>
-            <a class="btn btn-pedido" href="#" onclick="fazerPedidoWhatsApp('boloChocolate50'); return false;">Fazer pedido pelo WhatsApp</a>
-            <button class="btn btn-carrinho" onclick="adicionarAoCarrinho('boloChocolate50', this)">Adicionar ao carrinho</button>
-          </div>
-        </div>
-
-        <div class="card produto-card">
-          <img src="bolo de leite com coco 2.0.jpeg" alt="Bolo de Leite com Coco">
-
-          <div class="card-content">
-            <h3>Bolo de Leite com Coco</h3>
-            <p class="preco" id="preco-bolo-leite-coco"></p>
-            <button class="btn" onclick="abrirPix('boloLeiteCoco')">&#128179; Pagar agora</button>
-            <a class="btn btn-pedido" href="#" onclick="fazerPedidoWhatsApp('boloLeiteCoco'); return false;">Fazer pedido pelo WhatsApp</a>
-            <button class="btn btn-carrinho" onclick="adicionarAoCarrinho('boloLeiteCoco', this)">Adicionar ao carrinho</button>
-          </div>
-        </div>
-
-        <div class="card produto-card">
-          <img src="bolo de ovos.jpeg" alt="Bolo de Ovos">
-
-          <div class="card-content">
-            <h3>Bolo de Ovos</h3>
-            <p class="preco" id="preco-bolo-ovos"></p>
-            <button class="btn" onclick="abrirPix('boloOvos')">&#128179; Pagar agora</button>
-            <a class="btn btn-pedido" href="#" onclick="fazerPedidoWhatsApp('boloOvos'); return false;">Fazer pedido pelo WhatsApp</a>
-            <button class="btn btn-carrinho" onclick="adicionarAoCarrinho('boloOvos', this)">Adicionar ao carrinho</button>
-          </div>
-        </div>
-
-        <div class="card produto-card">
-          <img src="bolo formigueiro.jpeg" alt="Bolo Formigueiro">
-
-          <div class="card-content">
-            <h3>Bolo Formigueiro</h3>
-            <p class="preco" id="preco-bolo-formigueiro"></p>
-            <button class="btn" onclick="abrirPix('boloFormigueiro')">&#128179; Pagar agora</button>
-            <a class="btn btn-pedido" href="#" onclick="fazerPedidoWhatsApp('boloFormigueiro'); return false;">Fazer pedido pelo WhatsApp</a>
-            <button class="btn btn-carrinho" onclick="adicionarAoCarrinho('boloFormigueiro', this)">Adicionar ao carrinho</button>
-          </div>
-        </div>
-
-        <div class="card produto-card">
-          <img src="bolo mesclado.jpeg" alt="Bolo Mesclado">
-
-          <div class="card-content">
-            <h3>Bolo Mesclado</h3>
-            <p class="preco" id="preco-bolo-mesclado"></p>
-            <button class="btn" onclick="abrirPix('boloMesclado')">&#128179; Pagar agora</button>
-            <a class="btn btn-pedido" href="#" onclick="fazerPedidoWhatsApp('boloMesclado'); return false;">Fazer pedido pelo WhatsApp</a>
-            <button class="btn btn-carrinho" onclick="adicionarAoCarrinho('boloMesclado', this)">Adicionar ao carrinho</button>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section id="carrinho" class="aba">
-      <div class="section-head">
-        <span class="section-kicker">Pedido</span>
-        <h2>&#128722; Carrinho</h2>
-        <p>Confira os itens antes de enviar seu pedido.</p>
-      </div>
-
-      <div class="container">
-        <div class="card carrinho-card">
-          <div class="card-content">
-            <h3>Seu pedido</h3>
-
-            <p id="carrinhoVazio" class="carrinho-vazio">Seu carrinho esta vazio.</p>
-            <div id="listaCarrinho" class="lista-carrinho"></div>
-
-            <p class="total-carrinho">Total: <span id="totalCarrinho">R$ 0,00</span></p>
-
-            <div class="carrinho-acoes">
-              <button class="btn" onclick="finalizarCarrinhoWhatsApp()">Finalizar pelo WhatsApp</button>
-              <button class="btn btn-secundario" onclick="abrirPixCarrinho()">Pagar total no PIX</button>
-              <button class="btn btn-limpar" onclick="limparCarrinho()">Limpar carrinho</button>
+          <article class="card produto-card">
+            <div class="produto-midia">
+              <img src="doce-de-leite-com-coco-sem-risco-camera.jpeg" alt="Doce de Leite com Coco" loading="lazy">
+              <span class="produto-chip">350 ml</span>
             </div>
+            <div class="card-content">
+              <h3>Doce de Leite com Coco (pote 350 ml)</h3>
+              <p class="produto-desc">Doce de leite cremoso com coco.</p>
+              <p class="preco" id="preco-doce-leite-coco"></p>
+              <div class="card-acoes">
+                <button class="btn btn-primario btn-carrinho" type="button" onclick="adicionarAoCarrinho('doceLeiteCoco', this)">
+                  <svg class="ico" aria-hidden="true"><use href="#i-cart"></use></svg> Adicionar ao carrinho
+                </button>
+                <div class="card-acoes-linha">
+                  <button class="btn btn-suave" type="button" onclick="abrirPix('doceLeiteCoco')">
+                    <svg class="ico" aria-hidden="true"><use href="#i-card"></use></svg> PIX
+                  </button>
+                  <a class="btn btn-whats btn-pedido" href="#" onclick="fazerPedidoWhatsApp('doceLeiteCoco'); return false;">
+                    <svg class="ico" aria-hidden="true"><use href="#i-chat"></use></svg> WhatsApp
+                  </a>
+                </div>
+              </div>
+            </div>
+          </article>
 
-            <p id="carrinhoStatus" class="carrinho-status"></p>
-          </div>
+          <article class="card produto-card">
+            <div class="produto-midia">
+              <img src="doce-de-leite-com-goiabada-sem-risco-camera.jpeg" alt="Doce de Leite com Goiabada" loading="lazy">
+              <span class="produto-chip">350 ml</span>
+            </div>
+            <div class="card-content">
+              <h3>Doce de Leite com Goiabada (pote 350 ml)</h3>
+              <p class="produto-desc">Doce de leite com goiabada.</p>
+              <p class="preco" id="preco-doce-leite-goiabada"></p>
+              <div class="card-acoes">
+                <button class="btn btn-primario btn-carrinho" type="button" onclick="adicionarAoCarrinho('doceLeiteGoiabada', this)">
+                  <svg class="ico" aria-hidden="true"><use href="#i-cart"></use></svg> Adicionar ao carrinho
+                </button>
+                <div class="card-acoes-linha">
+                  <button class="btn btn-suave" type="button" onclick="abrirPix('doceLeiteGoiabada')">
+                    <svg class="ico" aria-hidden="true"><use href="#i-card"></use></svg> PIX
+                  </button>
+                  <a class="btn btn-whats btn-pedido" href="#" onclick="fazerPedidoWhatsApp('doceLeiteGoiabada'); return false;">
+                    <svg class="ico" aria-hidden="true"><use href="#i-chat"></use></svg> WhatsApp
+                  </a>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="card produto-card">
+            <div class="produto-midia">
+              <img src="doce-de-leite-sem-risco-camera-inpaint-wide.jpeg" alt="Doce de Leite Comum" loading="lazy">
+              <span class="produto-chip">350 ml</span>
+            </div>
+            <div class="card-content">
+              <h3>Doce de Leite Comum (pote 350 ml)</h3>
+              <p class="produto-desc">Doce de leite tradicional, bem cremoso.</p>
+              <p class="preco" id="preco-doce-leite"></p>
+              <div class="card-acoes">
+                <button class="btn btn-primario btn-carrinho" type="button" onclick="adicionarAoCarrinho('doceLeite', this)">
+                  <svg class="ico" aria-hidden="true"><use href="#i-cart"></use></svg> Adicionar ao carrinho
+                </button>
+                <div class="card-acoes-linha">
+                  <button class="btn btn-suave" type="button" onclick="abrirPix('doceLeite')">
+                    <svg class="ico" aria-hidden="true"><use href="#i-card"></use></svg> PIX
+                  </button>
+                  <a class="btn btn-whats btn-pedido" href="#" onclick="fazerPedidoWhatsApp('doceLeite'); return false;">
+                    <svg class="ico" aria-hidden="true"><use href="#i-chat"></use></svg> WhatsApp
+                  </a>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="card produto-card">
+            <div class="produto-midia">
+              <img src="pudim 18,00$.jpeg" alt="Pudim Pequeno" loading="lazy">
+              <span class="produto-chip">500 g</span>
+            </div>
+            <div class="card-content">
+              <h3>Pudim Pequeno (500g)</h3>
+              <p class="produto-desc">Tamanho certo para o dia a dia.</p>
+              <p class="preco" id="preco-pudim-18"></p>
+              <div class="card-acoes">
+                <button class="btn btn-primario btn-carrinho" type="button" onclick="adicionarAoCarrinho('pudim18', this)">
+                  <svg class="ico" aria-hidden="true"><use href="#i-cart"></use></svg> Adicionar ao carrinho
+                </button>
+                <div class="card-acoes-linha">
+                  <button class="btn btn-suave" type="button" onclick="abrirPix('pudim18')">
+                    <svg class="ico" aria-hidden="true"><use href="#i-card"></use></svg> PIX
+                  </button>
+                  <a class="btn btn-whats btn-pedido" href="#" onclick="fazerPedidoWhatsApp('pudim18'); return false;">
+                    <svg class="ico" aria-hidden="true"><use href="#i-chat"></use></svg> WhatsApp
+                  </a>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="card produto-card">
+            <div class="produto-midia">
+              <img src="pudim 35,00$.jpeg" alt="Pudim Grande" loading="lazy">
+              <span class="produto-chip">1 kg</span>
+            </div>
+            <div class="card-content">
+              <h3>Pudim Grande (1kg)</h3>
+              <p class="produto-desc">Indicado para festas e encontros em família.</p>
+              <p class="preco" id="preco-pudim-35"></p>
+              <div class="card-acoes">
+                <button class="btn btn-primario btn-carrinho" type="button" onclick="adicionarAoCarrinho('pudim35', this)">
+                  <svg class="ico" aria-hidden="true"><use href="#i-cart"></use></svg> Adicionar ao carrinho
+                </button>
+                <div class="card-acoes-linha">
+                  <button class="btn btn-suave" type="button" onclick="abrirPix('pudim35')">
+                    <svg class="ico" aria-hidden="true"><use href="#i-card"></use></svg> PIX
+                  </button>
+                  <a class="btn btn-whats btn-pedido" href="#" onclick="fazerPedidoWhatsApp('pudim35'); return false;">
+                    <svg class="ico" aria-hidden="true"><use href="#i-chat"></use></svg> WhatsApp
+                  </a>
+                </div>
+              </div>
+            </div>
+          </article>
+
         </div>
       </div>
     </section>
 
-    <section id="contato" class="aba">
-      <div class="section-head">
-        <span class="section-kicker">Atendimento</span>
-        <h2>&#128222; Contato</h2>
-        <p>Fale direto com a Val para encomendas, d&uacute;vidas e confirma&ccedil;&atilde;o de pagamento.</p>
+    <!-- BOLOS -->
+    <section id="bolos" class="aba" role="tabpanel" aria-labelledby="bolos">
+      <div class="shell">
+        <div class="section-head">
+          <span class="section-kicker">Encomendas</span>
+          <h2>Bolos</h2>
+          <p>Bolos caseiros para o café da tarde ou para a mesa da festa. Combine o dia da retirada com a Val.</p>
+        </div>
+
+        <div class="product-grid">
+
+          <article class="card produto-card">
+            <div class="produto-midia">
+              <img src="bolo de leite.jpeg" alt="Bolo de Leite" loading="lazy">
+            </div>
+            <div class="card-content">
+              <h3>Bolo de Leite</h3>
+              <p class="produto-desc">Clássico do café da tarde.</p>
+              <p class="preco" id="preco-bolo-simples"></p>
+              <div class="card-acoes">
+                <button class="btn btn-primario btn-carrinho" type="button" onclick="adicionarAoCarrinho('boloSimples', this)">
+                  <svg class="ico" aria-hidden="true"><use href="#i-cart"></use></svg> Adicionar ao carrinho
+                </button>
+                <div class="card-acoes-linha">
+                  <button class="btn btn-suave" type="button" onclick="abrirPix('boloSimples')">
+                    <svg class="ico" aria-hidden="true"><use href="#i-card"></use></svg> PIX
+                  </button>
+                  <a class="btn btn-whats btn-pedido" href="#" onclick="fazerPedidoWhatsApp('boloSimples'); return false;">
+                    <svg class="ico" aria-hidden="true"><use href="#i-chat"></use></svg> WhatsApp
+                  </a>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="card produto-card">
+            <div class="produto-midia">
+              <img src="Bolo de miho na palha.jpg" alt="Bolo de Milho Verde na Palha" loading="lazy">
+            </div>
+            <div class="card-content">
+              <h3>Bolo de Milho Verde na Palha</h3>
+              <p class="produto-desc">Milho verde assado na palha, do jeito tradicional.</p>
+              <p class="preco" id="preco-bolo-milho-palha"></p>
+              <div class="card-acoes">
+                <button class="btn btn-primario btn-carrinho" type="button" onclick="adicionarAoCarrinho('boloMilhoPalha', this)">
+                  <svg class="ico" aria-hidden="true"><use href="#i-cart"></use></svg> Adicionar ao carrinho
+                </button>
+                <div class="card-acoes-linha">
+                  <button class="btn btn-suave" type="button" onclick="abrirPix('boloMilhoPalha')">
+                    <svg class="ico" aria-hidden="true"><use href="#i-card"></use></svg> PIX
+                  </button>
+                  <a class="btn btn-whats btn-pedido" href="#" onclick="fazerPedidoWhatsApp('boloMilhoPalha'); return false;">
+                    <svg class="ico" aria-hidden="true"><use href="#i-chat"></use></svg> WhatsApp
+                  </a>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="card produto-card">
+            <div class="produto-midia">
+              <img src="bolo de chocolate 50%25.jpeg" alt="Bolo de Chocolate 50%" loading="lazy">
+            </div>
+            <div class="card-content">
+              <h3>Bolo de Chocolate 50%</h3>
+              <p class="produto-desc">Massa de chocolate para quem gosta de sabor marcante.</p>
+              <p class="preco" id="preco-bolo-chocolate-50"></p>
+              <div class="card-acoes">
+                <button class="btn btn-primario btn-carrinho" type="button" onclick="adicionarAoCarrinho('boloChocolate50', this)">
+                  <svg class="ico" aria-hidden="true"><use href="#i-cart"></use></svg> Adicionar ao carrinho
+                </button>
+                <div class="card-acoes-linha">
+                  <button class="btn btn-suave" type="button" onclick="abrirPix('boloChocolate50')">
+                    <svg class="ico" aria-hidden="true"><use href="#i-card"></use></svg> PIX
+                  </button>
+                  <a class="btn btn-whats btn-pedido" href="#" onclick="fazerPedidoWhatsApp('boloChocolate50'); return false;">
+                    <svg class="ico" aria-hidden="true"><use href="#i-chat"></use></svg> WhatsApp
+                  </a>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="card produto-card">
+            <div class="produto-midia">
+              <img src="bolo de leite com coco 2.0.jpeg" alt="Bolo de Leite com Coco" loading="lazy">
+            </div>
+            <div class="card-content">
+              <h3>Bolo de Leite com Coco</h3>
+              <p class="produto-desc">Bolo de leite com coco na massa.</p>
+              <p class="preco" id="preco-bolo-leite-coco"></p>
+              <div class="card-acoes">
+                <button class="btn btn-primario btn-carrinho" type="button" onclick="adicionarAoCarrinho('boloLeiteCoco', this)">
+                  <svg class="ico" aria-hidden="true"><use href="#i-cart"></use></svg> Adicionar ao carrinho
+                </button>
+                <div class="card-acoes-linha">
+                  <button class="btn btn-suave" type="button" onclick="abrirPix('boloLeiteCoco')">
+                    <svg class="ico" aria-hidden="true"><use href="#i-card"></use></svg> PIX
+                  </button>
+                  <a class="btn btn-whats btn-pedido" href="#" onclick="fazerPedidoWhatsApp('boloLeiteCoco'); return false;">
+                    <svg class="ico" aria-hidden="true"><use href="#i-chat"></use></svg> WhatsApp
+                  </a>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="card produto-card">
+            <div class="produto-midia">
+              <img src="bolo de ovos.jpeg" alt="Bolo de Ovos" loading="lazy">
+            </div>
+            <div class="card-content">
+              <h3>Bolo de Ovos</h3>
+              <p class="produto-desc">Receita simples, massa fofinha.</p>
+              <p class="preco" id="preco-bolo-ovos"></p>
+              <div class="card-acoes">
+                <button class="btn btn-primario btn-carrinho" type="button" onclick="adicionarAoCarrinho('boloOvos', this)">
+                  <svg class="ico" aria-hidden="true"><use href="#i-cart"></use></svg> Adicionar ao carrinho
+                </button>
+                <div class="card-acoes-linha">
+                  <button class="btn btn-suave" type="button" onclick="abrirPix('boloOvos')">
+                    <svg class="ico" aria-hidden="true"><use href="#i-card"></use></svg> PIX
+                  </button>
+                  <a class="btn btn-whats btn-pedido" href="#" onclick="fazerPedidoWhatsApp('boloOvos'); return false;">
+                    <svg class="ico" aria-hidden="true"><use href="#i-chat"></use></svg> WhatsApp
+                  </a>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="card produto-card">
+            <div class="produto-midia">
+              <img src="bolo formigueiro.jpeg" alt="Bolo Formigueiro" loading="lazy">
+            </div>
+            <div class="card-content">
+              <h3>Bolo Formigueiro</h3>
+              <p class="produto-desc">Massa branca com granulado de chocolate.</p>
+              <p class="preco" id="preco-bolo-formigueiro"></p>
+              <div class="card-acoes">
+                <button class="btn btn-primario btn-carrinho" type="button" onclick="adicionarAoCarrinho('boloFormigueiro', this)">
+                  <svg class="ico" aria-hidden="true"><use href="#i-cart"></use></svg> Adicionar ao carrinho
+                </button>
+                <div class="card-acoes-linha">
+                  <button class="btn btn-suave" type="button" onclick="abrirPix('boloFormigueiro')">
+                    <svg class="ico" aria-hidden="true"><use href="#i-card"></use></svg> PIX
+                  </button>
+                  <a class="btn btn-whats btn-pedido" href="#" onclick="fazerPedidoWhatsApp('boloFormigueiro'); return false;">
+                    <svg class="ico" aria-hidden="true"><use href="#i-chat"></use></svg> WhatsApp
+                  </a>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="card produto-card">
+            <div class="produto-midia">
+              <img src="bolo mesclado.jpeg" alt="Bolo Mesclado" loading="lazy">
+            </div>
+            <div class="card-content">
+              <h3>Bolo Mesclado</h3>
+              <p class="produto-desc">Massa branca e de chocolate na mesma fatia.</p>
+              <p class="preco" id="preco-bolo-mesclado"></p>
+              <div class="card-acoes">
+                <button class="btn btn-primario btn-carrinho" type="button" onclick="adicionarAoCarrinho('boloMesclado', this)">
+                  <svg class="ico" aria-hidden="true"><use href="#i-cart"></use></svg> Adicionar ao carrinho
+                </button>
+                <div class="card-acoes-linha">
+                  <button class="btn btn-suave" type="button" onclick="abrirPix('boloMesclado')">
+                    <svg class="ico" aria-hidden="true"><use href="#i-card"></use></svg> PIX
+                  </button>
+                  <a class="btn btn-whats btn-pedido" href="#" onclick="fazerPedidoWhatsApp('boloMesclado'); return false;">
+                    <svg class="ico" aria-hidden="true"><use href="#i-chat"></use></svg> WhatsApp
+                  </a>
+                </div>
+              </div>
+            </div>
+          </article>
+
+        </div>
       </div>
+    </section>
 
-      <div class="container">
-        <div class="card contato-card">
-          <div class="card-content">
-            <h3>&#127856; Fa&ccedil;a seu pedido</h3>
+    <!-- CARRINHO -->
+    <section id="carrinho" class="aba" role="tabpanel" aria-labelledby="carrinho">
+      <div class="shell">
+        <div class="section-head">
+          <span class="section-kicker">Pedido</span>
+          <h2>Carrinho</h2>
+          <p>Revise os itens, ajuste as quantidades e escolha como prefere finalizar.</p>
+        </div>
 
-            <p class="contato-info">
-              Chame a Val no WhatsApp para encomendas, d&uacute;vidas e confirma&ccedil;&atilde;o de pagamento.
-            </p>
+        <div class="carrinho-layout">
+          <div class="card carrinho-card">
+            <div class="card-content">
+              <div class="carrinho-topo">
+                <h3>Seus itens</h3>
+                <span class="carrinho-qtd" id="carrinhoResumoQtd">0 itens</span>
+              </div>
 
-            <p class="contato-info contato-linhas">
-              <span>&#128241; WhatsApp: <a href="https://wa.me/5583982168114?text=Ola%2C%20vim%20pelo%20site%20Caseirinhos%20da%20Val." target="_blank">+55 83 98216-8114 (Val)</a></span>
-              <span>&#9993; Email: <a href="https://mail.google.com/mail/?view=cm&fs=1&to=caseirinhosdaval2026@gmail.com" target="_blank">caseirinhosdaval2026@gmail.com</a></span>
-              <span>&#128205; Atendimento: Picu&iacute; - PB</span>
-            </p>
+              <div id="carrinhoVazio" class="carrinho-vazio">
+                <span class="vazio-ico"><svg class="ico" aria-hidden="true"><use href="#i-cart"></use></svg></span>
+                <strong>Seu carrinho está vazio</strong>
+                <p>Adicione doces ou bolos do cardápio para montar seu pedido.</p>
+                <button class="btn btn-suave" type="button" onclick="mostrarAba('doces')">Ver cardápio</button>
+              </div>
 
-            <p class="suporte-site">
-              Erros no site? Fale com <br>
-              <a href="https://wa.me/5583987239748?text=Ola%2C%20encontrei%20um%20erro%20no%20site%20Caseirinhos%20da%20Val." target="_blank">
+              <div id="listaCarrinho" class="lista-carrinho"></div>
+            </div>
+          </div>
+
+          <aside class="card resumo-card">
+            <div class="card-content">
+              <h3>Resumo</h3>
+
+              <div class="resumo-linha">
+                <span>Itens</span>
+                <span id="resumoItens">0</span>
+              </div>
+              <div class="resumo-linha total-carrinho">
+                <span>Total</span>
+                <span id="totalCarrinho">R$ 0,00</span>
+              </div>
+
+              <div class="carrinho-acoes">
+                <button class="btn btn-whats btn-cheio" type="button" onclick="finalizarCarrinhoWhatsApp()">
+                  <svg class="ico" aria-hidden="true"><use href="#i-chat"></use></svg> Finalizar pelo WhatsApp
+                </button>
+                <button class="btn btn-primario btn-cheio btn-secundario" type="button" onclick="abrirPixCarrinho()">
+                  <svg class="ico" aria-hidden="true"><use href="#i-card"></use></svg> Pagar total no PIX
+                </button>
+                <button class="btn btn-texto btn-limpar" type="button" onclick="limparCarrinho()">
+                  <svg class="ico" aria-hidden="true"><use href="#i-trash"></use></svg> Limpar carrinho
+                </button>
+              </div>
+
+              <p id="carrinhoStatus" class="carrinho-status" role="status" aria-live="polite"></p>
+              <p class="resumo-nota">O valor final e a data de entrega são confirmados com a Val pelo WhatsApp.</p>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTATO -->
+    <section id="contato" class="aba" role="tabpanel" aria-labelledby="contato">
+      <div class="shell">
+        <div class="section-head">
+          <span class="section-kicker">Atendimento</span>
+          <h2>Contato</h2>
+          <p>Fale direto com a Val para encomendas, dúvidas e confirmação de pagamento.</p>
+        </div>
+
+        <div class="contato-grid">
+          <div class="card contato-card">
+            <div class="card-content">
+              <h3>Faça seu pedido</h3>
+              <p class="contato-info">
+                O atendimento é feito por WhatsApp. Mande o que você quer, a quantidade e o dia — a Val confirma tudo por lá.
+              </p>
+
+              <ul class="contato-lista">
+                <li>
+                  <span class="contato-ico"><svg class="ico" aria-hidden="true"><use href="#i-chat"></use></svg></span>
+                  <span>
+                    <small>WhatsApp</small>
+                    <a href="https://wa.me/5583982168114?text=Ola%2C%20vim%20pelo%20site%20Caseirinhos%20da%20Val." target="_blank" rel="noopener">+55 83 98216-8114 (Val)</a>
+                  </span>
+                </li>
+                <li>
+                  <span class="contato-ico"><svg class="ico" aria-hidden="true"><use href="#i-mail"></use></svg></span>
+                  <span>
+                    <small>E-mail</small>
+                    <a href="https://mail.google.com/mail/?view=cm&fs=1&to=caseirinhosdaval2026@gmail.com" target="_blank" rel="noopener">caseirinhosdaval2026@gmail.com</a>
+                  </span>
+                </li>
+                <li>
+                  <span class="contato-ico"><svg class="ico" aria-hidden="true"><use href="#i-pin"></use></svg></span>
+                  <span>
+                    <small>Atendimento</small>
+                    <strong>Picuí - PB</strong>
+                  </span>
+                </li>
+              </ul>
+
+              <a class="btn btn-whats btn-cheio" href="https://wa.me/5583982168114?text=Ola%2C%20vim%20pelo%20site%20Caseirinhos%20da%20Val." target="_blank" rel="noopener">
+                <svg class="ico" aria-hidden="true"><use href="#i-chat"></use></svg> Abrir conversa no WhatsApp
+              </a>
+            </div>
+          </div>
+
+          <div class="card suporte-card">
+            <div class="card-content">
+              <span class="section-kicker">Suporte do site</span>
+              <h3>Encontrou algum erro?</h3>
+              <p class="contato-info">
+                Problemas com o carrinho, com o PIX ou com alguma imagem? Avise o responsável técnico do site.
+              </p>
+              <a class="btn btn-suave btn-cheio" href="https://wa.me/5583987239748?text=Ola%2C%20encontrei%20um%20erro%20no%20site%20Caseirinhos%20da%20Val." target="_blank" rel="noopener">
                 +55 (83) 987239748 (isaac)
-              </a>.
-            </p>
+              </a>
+            </div>
           </div>
         </div>
       </div>
     </section>
 
-
-    <section id="configuracoes" class="aba settings-modal" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="settingsTitle">
-      <div class="settings-dialog">
-        <button class="modal-close" type="button" aria-label="Fechar configurações" onclick="fecharConfiguracoes()">&times;</button>
-      <div class="section-head">
-        <span class="section-kicker">Configurações</span>
-        <h2 id="settingsTitle">&#9881;&#65039; Configura&ccedil;&otilde;es</h2>
-        <p>Personalize sua experi&ecirc;ncia.</p>
-      </div>
-      <div class="container">
-        <div class="card settings-card">
-          <div class="card-content">
-            <div class="settings-heading">
-              <span class="settings-icon" aria-hidden="true">&#127769;</span>
-              <div>
-                <span class="settings-label">Apar&ecirc;ncia</span>
-                <h3>Tema do site</h3>
-                <p>Escolha a visualiza&ccedil;&atilde;o mais confort&aacute;vel.</p>
-              </div>
-            </div>
-            <div class="theme-selector" role="group" aria-label="Escolher tema">
-              <button class="theme-option" type="button" data-theme-option="light" onclick="definirTema('light')"><span>&#9728;&#65039;</span> Claro</button>
-              <button class="theme-option" type="button" data-theme-option="dark" onclick="definirTema('dark')"><span>&#127769;</span> Escuro</button>
-            </div>
-          </div>
-        </div>
-        <div class="card settings-card">
-          <div class="card-content">
-            <div class="settings-heading">
-              <span class="settings-icon" aria-hidden="true">&#128172;</span>
-              <div>
-                <span class="settings-label">Suporte</span>
-                <h3>D&uacute;vidas na compra?</h3>
-                <p>Fale com o suporte t&eacute;cnico.</p>
-              </div>
-            </div>
-            <a class="btn btn-support-settings" href="https://wa.me/5583987239748?text=Ola%2C%20tenho%20uma%20duvida%20sobre%20o%20site%20Caseirinhos%20da%20Val." target="_blank">
-              &#128241; Falar com Isaac
-            </a>
-          </div>
-        </div>
-      </div>
-      </div>
-    </section>
   </main>
 
-  <div id="pixModal" class="pix-modal">
-    <div class="pix-box">
-      <span class="fechar" onclick="fecharPix()">&times;</span>
+  <!-- ===== Modal PIX ===== -->
+  <div id="pixModal" class="modal pix-modal" role="dialog" aria-modal="true" aria-labelledby="pixTitulo" aria-hidden="true">
+    <div class="modal-box pix-box">
+      <button class="icon-btn modal-close" type="button" onclick="fecharPix()" aria-label="Fechar pagamento">
+        <svg class="ico" aria-hidden="true"><use href="#i-close"></use></svg>
+      </button>
 
-      <h2>Pagamento direto via PIX</h2>
-      <p id="produtoPix"></p>
-
-      <img id="pixQrCode" class="pix-qrcode" src="" alt="QR Code PIX">
-
-      <textarea id="pixCopiaCola" class="pix-copia" readonly aria-label="Chave PIX aleatoria copia e cola"></textarea>
-
-      <div class="comprovante-area">
-        <input id="comprovantePix" class="comprovante-input" type="file" accept="image/*,.pdf" onchange="atualizarComprovante()">
-        <label class="btn btn-comprovante" for="comprovantePix">Escolher comprovante</label>
-        <p id="nomeComprovante" class="comprovante-nome">Nenhum comprovante selecionado</p>
+      <div class="modal-head">
+        <span class="section-kicker">Pagamento</span>
+        <h2 id="pixTitulo">PIX direto para a Val</h2>
+        <p id="produtoPix"></p>
       </div>
 
-      <div class="pix-acoes">
-        <button class="btn btn-secundario" onclick="copiarPix()">Copiar PIX</button>
-        <button id="btnWhatsapp" class="btn" type="button" onclick="enviarComprovanteWhatsApp()" disabled>Enviar comprovante</button>
+      <div class="pix-grid">
+        <div class="pix-qr-area">
+          <img id="pixQrCode" class="pix-qrcode" src="" alt="QR Code do PIX">
+          <span class="pix-legenda"><svg class="ico" aria-hidden="true"><use href="#i-qr"></use></svg> Aponte a câmera do banco</span>
+        </div>
+
+        <div class="pix-passos">
+          <label class="campo-label" for="pixCopiaCola">Código copia e cola</label>
+          <textarea id="pixCopiaCola" class="pix-copia" readonly aria-label="Código PIX copia e cola"></textarea>
+
+          <button class="btn btn-suave btn-cheio" type="button" onclick="copiarPix()">
+            <svg class="ico" aria-hidden="true"><use href="#i-copy"></use></svg> Copiar código PIX
+          </button>
+
+          <div class="comprovante-area">
+            <input id="comprovantePix" class="comprovante-input" type="file" accept="image/*,.pdf" onchange="atualizarComprovante()">
+            <label class="btn btn-contorno btn-cheio btn-comprovante" for="comprovantePix">
+              <svg class="ico" aria-hidden="true"><use href="#i-clip"></use></svg> Escolher comprovante
+            </label>
+            <p id="nomeComprovante" class="comprovante-nome">Nenhum comprovante selecionado</p>
+          </div>
+
+          <button id="btnWhatsapp" class="btn btn-whats btn-cheio" type="button" onclick="enviarComprovanteWhatsApp()" disabled>
+            <svg class="ico" aria-hidden="true"><use href="#i-chat"></use></svg> Enviar comprovante
+          </button>
+        </div>
       </div>
 
-      <p id="pixStatus" class="pix-status"></p>
+      <p id="pixStatus" class="pix-status" role="status" aria-live="polite"></p>
     </div>
   </div>
 
+  <!-- ===== Modal Configurações ===== -->
+  <div id="configuracoes" class="modal settings-modal" role="dialog" aria-modal="true" aria-labelledby="settingsTitle" aria-hidden="true">
+    <div class="modal-box settings-dialog">
+      <button class="icon-btn modal-close" type="button" aria-label="Fechar configurações" onclick="fecharConfiguracoes()">
+        <svg class="ico" aria-hidden="true"><use href="#i-close"></use></svg>
+      </button>
 
+      <div class="modal-head">
+        <span class="section-kicker">Configurações</span>
+        <h2 id="settingsTitle">Preferências</h2>
+        <p>Ajuste a aparência do site do seu jeito.</p>
+      </div>
 
-  <a class="whatsapp-flutuante" href="https://wa.me/5583982168114?text=Olá%2C%20vim%20pelo%20site%20Caseirinhos%20da%20Val." target="_blank" aria-label="Fazer pedido pelo WhatsApp">
-    <img src="https://cdn-icons-png.flaticon.com/512/124/124034.png" alt="WhatsApp">
+      <div class="card settings-card">
+        <div class="card-content">
+          <div class="settings-heading">
+            <span class="settings-icon"><svg class="ico" aria-hidden="true"><use href="#i-moon"></use></svg></span>
+            <div>
+              <span class="settings-label">Aparência</span>
+              <h3>Tema do site</h3>
+              <p>Escolha a visualização mais confortável para os seus olhos.</p>
+            </div>
+          </div>
+          <div class="theme-selector" role="group" aria-label="Escolher tema">
+            <button class="theme-option" type="button" data-theme-option="light" onclick="definirTema('light')">
+              <svg class="ico" aria-hidden="true"><use href="#i-sun"></use></svg> Claro
+            </button>
+            <button class="theme-option" type="button" data-theme-option="dark" onclick="definirTema('dark')">
+              <svg class="ico" aria-hidden="true"><use href="#i-moon"></use></svg> Escuro
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="card settings-card">
+        <div class="card-content">
+          <div class="settings-heading">
+            <span class="settings-icon"><svg class="ico" aria-hidden="true"><use href="#i-chat"></use></svg></span>
+            <div>
+              <span class="settings-label">Suporte</span>
+              <h3>Dúvidas na compra?</h3>
+              <p>Fale com o suporte técnico do site.</p>
+            </div>
+          </div>
+          <a class="btn btn-primario btn-cheio btn-support-settings" href="https://wa.me/5583987239748?text=Ola%2C%20tenho%20uma%20duvida%20sobre%20o%20site%20Caseirinhos%20da%20Val." target="_blank" rel="noopener">
+            <svg class="ico" aria-hidden="true"><use href="#i-chat"></use></svg> Falar com Isaac
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== Botão flutuante ===== -->
+  <a class="whatsapp-flutuante" href="https://wa.me/5583982168114?text=Ol%C3%A1%2C%20vim%20pelo%20site%20Caseirinhos%20da%20Val." target="_blank" rel="noopener" aria-label="Fazer pedido pelo WhatsApp">
+    <svg class="ico" aria-hidden="true"><use href="#i-chat"></use></svg>
+    <span>Pedir no WhatsApp</span>
   </a>
 
   <div id="toastSite" class="toast-site" role="status" aria-live="polite"></div>
 
-  <footer>
-    &copy; 2026 Caseirinhos da Val - Todos os direitos reservados
+  <footer class="site-footer">
+    <div class="shell footer-inner">
+      <div class="footer-marca">
+        <strong>Caseirinhos da Val</strong>
+        <span>Doces e bolos caseiros — Picuí - PB</span>
+      </div>
+      <nav class="footer-links" aria-label="Links do rodapé">
+        <button type="button" onclick="mostrarAba('doces')">Doces</button>
+        <button type="button" onclick="mostrarAba('bolos')">Bolos</button>
+        <button type="button" onclick="mostrarAba('carrinho')">Carrinho</button>
+        <button type="button" onclick="mostrarAba('contato')">Contato</button>
+      </nav>
+      <small>&copy; 2026 Caseirinhos da Val — Todos os direitos reservados</small>
+    </div>
   </footer>
 
   <script src="script.js"></script>
