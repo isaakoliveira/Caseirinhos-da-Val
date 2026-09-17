@@ -31,10 +31,6 @@
       <circle cx="9" cy="20" r="1.4"></circle><circle cx="18" cy="20" r="1.4"></circle>
       <path d="M2 3h2.2l2.3 11.3a1.8 1.8 0 0 0 1.8 1.4h8.6a1.8 1.8 0 0 0 1.8-1.4L21 7H6"></path>
     </symbol>
-    <symbol id="i-chat" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-      <path d="M21 11.5a8.4 8.4 0 0 1-8.5 8.4 8.6 8.6 0 0 1-3.8-.9L3.5 21l2-5.1a8.3 8.3 0 0 1-1-4 8.4 8.4 0 0 1 8.5-8.4 8.4 8.4 0 0 1 8 8z"></path>
-      <path d="M8.6 9.4c.6 2.2 2.3 4 4.6 4.6"></path>
-    </symbol>
     <symbol id="i-card" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
       <rect x="2" y="5" width="20" height="14" rx="2.5"></rect><path d="M2 10h20"></path><path d="M6 15h4"></path>
     </symbol>
@@ -104,8 +100,8 @@
 
         <div class="topbar-acoes">
           <a class="topbar-contato" href="https://wa.me/5583982168114?text=Ola%2C%20vim%20pelo%20site%20Caseirinhos%20da%20Val." target="_blank" rel="noopener">
-            <svg class="ico" aria-hidden="true"><use href="#i-chat"></use></svg>
-            <span>💬 (83) 98216-8114</span>
+            <span class="ico-emoji" aria-hidden="true">💬</span>
+            <span>(83) 98216-8114</span>
           </a>
           <button class="icon-btn header-settings-button" type="button" onclick="abrirConfiguracoes()" aria-label="Abrir configurações" title="Configurações">
             <svg class="ico" aria-hidden="true"><use href="#i-gear"></use></svg>
@@ -130,7 +126,7 @@
               <svg class="ico" aria-hidden="true"><use href="#i-arrow"></use></svg>
             </button>
             <a class="btn btn-contorno-claro" href="https://wa.me/5583982168114?text=Ola%2C%20vim%20pelo%20site%20Caseirinhos%20da%20Val." target="_blank" rel="noopener">
-              📞 Falar com a Val
+              <span class="ico-emoji" aria-hidden="true">💬</span> Falar com a Val
             </a>
           </div>
         </div>
@@ -147,7 +143,7 @@
               <span><strong>PIX direto</strong><small>QR Code e código copia e cola na hora</small></span>
             </li>
             <li>
-              <span class="hero-ico"><svg class="ico" aria-hidden="true"><use href="#i-chat"></use></svg></span>
+              <span class="hero-ico"><span class="ico-emoji" aria-hidden="true">💬</span></span>
               <span><strong>Pedido por WhatsApp</strong><small>Sem cadastro, sem complicação</small></span>
             </li>
           </ul>
@@ -179,7 +175,7 @@
           <span class="nav-badge" id="contadorCarrinho">0</span>
         </button>
         <button class="nav-link" type="button" role="tab" data-aba="contato" aria-selected="false" aria-controls="contato" onclick="mostrarAba('contato')">
-          <svg class="ico" aria-hidden="true"><use href="#i-chat"></use></svg> Contato
+          <span class="ico-emoji" aria-hidden="true">💬</span> Contato
         </button>
       </div>
     </div>
@@ -223,7 +219,7 @@
                     <svg class="ico" aria-hidden="true"><use href="#i-card"></use></svg> PIX
                   </button>
                   <a class="btn btn-whats btn-pedido" href="#" onclick="fazerPedidoWhatsApp('doceLeiteCoco'); return false;">
-                    <svg class="ico" aria-hidden="true"><use href="#i-chat"></use></svg> WhatsApp
+                    <span class="ico-emoji" aria-hidden="true">💬</span> WhatsApp
                   </a>
                 </div>
               </div>
@@ -248,7 +244,7 @@
                     <svg class="ico" aria-hidden="true"><use href="#i-card"></use></svg> PIX
                   </button>
                   <a class="btn btn-whats btn-pedido" href="#" onclick="fazerPedidoWhatsApp('doceLeiteGoiabada'); return false;">
-                    <svg class="ico" aria-hidden="true"><use href="#i-chat"></use></svg> WhatsApp
+                    <span class="ico-emoji" aria-hidden="true">💬</span> WhatsApp
                   </a>
                 </div>
               </div>
@@ -273,7 +269,7 @@
                     <svg class="ico" aria-hidden="true"><use href="#i-card"></use></svg> PIX
                   </button>
                   <a class="btn btn-whats btn-pedido" href="#" onclick="fazerPedidoWhatsApp('doceLeite'); return false;">
-                    <svg class="ico" aria-hidden="true"><use href="#i-chat"></use></svg> WhatsApp
+                    <span class="ico-emoji" aria-hidden="true">💬</span> WhatsApp
                   </a>
                 </div>
               </div>
@@ -298,7 +294,7 @@
                     <svg class="ico" aria-hidden="true"><use href="#i-card"></use></svg> PIX
                   </button>
                   <a class="btn btn-whats btn-pedido" href="#" onclick="fazerPedidoWhatsApp('pudim18'); return false;">
-                    <svg class="ico" aria-hidden="true"><use href="#i-chat"></use></svg> WhatsApp
+                    <span class="ico-emoji" aria-hidden="true">💬</span> WhatsApp
                   </a>
                 </div>
               </div>
@@ -323,7 +319,7 @@
                     <svg class="ico" aria-hidden="true"><use href="#i-card"></use></svg> PIX
                   </button>
                   <a class="btn btn-whats btn-pedido" href="#" onclick="fazerPedidoWhatsApp('pudim35'); return false;">
-                    <svg class="ico" aria-hidden="true"><use href="#i-chat"></use></svg> WhatsApp
+                    <span class="ico-emoji" aria-hidden="true">💬</span> WhatsApp
                   </a>
                 </div>
               </div>
@@ -362,7 +358,7 @@
                     <svg class="ico" aria-hidden="true"><use href="#i-card"></use></svg> PIX
                   </button>
                   <a class="btn btn-whats btn-pedido" href="#" onclick="fazerPedidoWhatsApp('boloSimples'); return false;">
-                    <svg class="ico" aria-hidden="true"><use href="#i-chat"></use></svg> WhatsApp
+                    <span class="ico-emoji" aria-hidden="true">💬</span> WhatsApp
                   </a>
                 </div>
               </div>
@@ -386,7 +382,7 @@
                     <svg class="ico" aria-hidden="true"><use href="#i-card"></use></svg> PIX
                   </button>
                   <a class="btn btn-whats btn-pedido" href="#" onclick="fazerPedidoWhatsApp('boloMilhoPalha'); return false;">
-                    <svg class="ico" aria-hidden="true"><use href="#i-chat"></use></svg> WhatsApp
+                    <span class="ico-emoji" aria-hidden="true">💬</span> WhatsApp
                   </a>
                 </div>
               </div>
@@ -410,7 +406,7 @@
                     <svg class="ico" aria-hidden="true"><use href="#i-card"></use></svg> PIX
                   </button>
                   <a class="btn btn-whats btn-pedido" href="#" onclick="fazerPedidoWhatsApp('boloChocolate50'); return false;">
-                    <svg class="ico" aria-hidden="true"><use href="#i-chat"></use></svg> WhatsApp
+                    <span class="ico-emoji" aria-hidden="true">💬</span> WhatsApp
                   </a>
                 </div>
               </div>
@@ -434,7 +430,7 @@
                     <svg class="ico" aria-hidden="true"><use href="#i-card"></use></svg> PIX
                   </button>
                   <a class="btn btn-whats btn-pedido" href="#" onclick="fazerPedidoWhatsApp('boloLeiteCoco'); return false;">
-                    <svg class="ico" aria-hidden="true"><use href="#i-chat"></use></svg> WhatsApp
+                    <span class="ico-emoji" aria-hidden="true">💬</span> WhatsApp
                   </a>
                 </div>
               </div>
@@ -458,7 +454,7 @@
                     <svg class="ico" aria-hidden="true"><use href="#i-card"></use></svg> PIX
                   </button>
                   <a class="btn btn-whats btn-pedido" href="#" onclick="fazerPedidoWhatsApp('boloOvos'); return false;">
-                    <svg class="ico" aria-hidden="true"><use href="#i-chat"></use></svg> WhatsApp
+                    <span class="ico-emoji" aria-hidden="true">💬</span> WhatsApp
                   </a>
                 </div>
               </div>
@@ -482,7 +478,7 @@
                     <svg class="ico" aria-hidden="true"><use href="#i-card"></use></svg> PIX
                   </button>
                   <a class="btn btn-whats btn-pedido" href="#" onclick="fazerPedidoWhatsApp('boloFormigueiro'); return false;">
-                    <svg class="ico" aria-hidden="true"><use href="#i-chat"></use></svg> WhatsApp
+                    <span class="ico-emoji" aria-hidden="true">💬</span> WhatsApp
                   </a>
                 </div>
               </div>
@@ -506,7 +502,7 @@
                     <svg class="ico" aria-hidden="true"><use href="#i-card"></use></svg> PIX
                   </button>
                   <a class="btn btn-whats btn-pedido" href="#" onclick="fazerPedidoWhatsApp('boloMesclado'); return false;">
-                    <svg class="ico" aria-hidden="true"><use href="#i-chat"></use></svg> WhatsApp
+                    <span class="ico-emoji" aria-hidden="true">💬</span> WhatsApp
                   </a>
                 </div>
               </div>
@@ -560,7 +556,7 @@
 
               <div class="carrinho-acoes">
                 <button class="btn btn-whats btn-cheio" type="button" onclick="finalizarCarrinhoWhatsApp()">
-                  <svg class="ico" aria-hidden="true"><use href="#i-chat"></use></svg> Finalizar pelo WhatsApp
+                  <span class="ico-emoji" aria-hidden="true">💬</span> Finalizar pelo WhatsApp
                 </button>
                 <button class="btn btn-primario btn-cheio btn-secundario" type="button" onclick="abrirPixCarrinho()">
                   <svg class="ico" aria-hidden="true"><use href="#i-card"></use></svg> Pagar total no PIX
@@ -597,7 +593,7 @@
 
               <ul class="contato-lista">
                 <li>
-                  <span class="contato-ico"><svg class="ico" aria-hidden="true"><use href="#i-chat"></use></svg></span>
+                  <span class="contato-ico"><span class="ico-emoji" aria-hidden="true">💬</span></span>
                   <span>
                     <small>💬 WhatsApp</small>
                     <a href="https://wa.me/5583982168114?text=Ola%2C%20vim%20pelo%20site%20Caseirinhos%20da%20Val." target="_blank" rel="noopener">+55 83 98216-8114 (Val)</a>
@@ -620,7 +616,7 @@
               </ul>
 
               <a class="btn btn-whats btn-cheio" href="https://wa.me/5583982168114?text=Ola%2C%20vim%20pelo%20site%20Caseirinhos%20da%20Val." target="_blank" rel="noopener">
-                <svg class="ico" aria-hidden="true"><use href="#i-chat"></use></svg> 💬 Abrir conversa no WhatsApp
+                <span class="ico-emoji" aria-hidden="true">💬</span> Abrir conversa no WhatsApp
               </a>
             </div>
           </div>
@@ -679,7 +675,7 @@
           </div>
 
           <button id="btnWhatsapp" class="btn btn-whats btn-cheio" type="button" onclick="enviarComprovanteWhatsApp()" disabled>
-            <svg class="ico" aria-hidden="true"><use href="#i-chat"></use></svg> Enviar comprovante
+            <span class="ico-emoji" aria-hidden="true">💬</span> Enviar comprovante
           </button>
         </div>
       </div>
@@ -725,7 +721,7 @@
       <div class="card settings-card">
         <div class="card-content">
           <div class="settings-heading">
-            <span class="settings-icon"><svg class="ico" aria-hidden="true"><use href="#i-chat"></use></svg></span>
+            <span class="settings-icon"><span class="ico-emoji" aria-hidden="true">💬</span></span>
             <div>
               <span class="settings-label">Suporte</span>
               <h3>Dúvidas na compra?</h3>
@@ -733,7 +729,7 @@
             </div>
           </div>
           <a class="btn btn-primario btn-cheio btn-support-settings" href="https://wa.me/5583987239748?text=Ola%2C%20tenho%20uma%20duvida%20sobre%20o%20site%20Caseirinhos%20da%20Val." target="_blank" rel="noopener">
-            <svg class="ico" aria-hidden="true"><use href="#i-chat"></use></svg> 💬 Falar com Isaac
+            <span class="ico-emoji" aria-hidden="true">💬</span> Falar com Isaac
           </a>
         </div>
       </div>
@@ -742,8 +738,8 @@
 
   <!-- ===== Botão flutuante ===== -->
   <a class="whatsapp-flutuante" href="https://wa.me/5583982168114?text=Ol%C3%A1%2C%20vim%20pelo%20site%20Caseirinhos%20da%20Val." target="_blank" rel="noopener" aria-label="Fazer pedido pelo WhatsApp">
-    <svg class="ico" aria-hidden="true"><use href="#i-chat"></use></svg>
-    <span>💬 Pedir no WhatsApp</span>
+    <span class="ico-emoji" aria-hidden="true">💬</span>
+    <span>Pedir no WhatsApp</span>
   </a>
 
   <div id="toastSite" class="toast-site" role="status" aria-live="polite"></div>
