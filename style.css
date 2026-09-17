@@ -169,6 +169,15 @@ a {
     color: currentColor;
 }
 
+.ico-emoji {
+    display: inline-block;
+    flex: 0 0 auto;
+    font-size: 1.05em;
+    line-height: 1;
+    font-style: normal;
+    transform: translateY(.02em);
+}
+
 .shell {
     width: 100%;
     max-width: 1180px;
@@ -313,6 +322,10 @@ h3 {
 .icon-btn .ico {
     width: 19px;
     height: 19px;
+}
+
+.icon-btn .ico-emoji {
+    font-size: 19px;
 }
 
 @media (hover: hover) {
@@ -553,6 +566,10 @@ h3 {
 .hero-ico .ico {
     width: 19px;
     height: 19px;
+}
+
+.hero-ico .ico-emoji {
+    font-size: 19px;
 }
 
 .hero-selos {
@@ -1263,6 +1280,10 @@ h3 {
     height: 20px;
 }
 
+.contato-ico .ico-emoji {
+    font-size: 20px;
+}
+
 .suporte-card {
     background: var(--surface-2);
 }
@@ -1477,6 +1498,10 @@ h3 {
 .settings-icon .ico {
     width: 21px;
     height: 21px;
+}
+
+.settings-icon .ico-emoji {
+    font-size: 21px;
 }
 
 .settings-heading h3 {

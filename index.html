@@ -37,12 +37,12 @@
     <symbol id="i-pin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
       <path d="M20 10c0 6.2-8 12-8 12s-8-5.8-8-12a8 8 0 0 1 16 0z"></path><circle cx="12" cy="10" r="2.8"></circle>
     </symbol>
+    <symbol id="i-chat" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M21 11.5a8.4 8.4 0 0 1-8.5 8.4 8.6 8.6 0 0 1-3.8-.9L3.5 21l2-5.1a8.3 8.3 0 0 1-1-4 8.4 8.4 0 0 1 8.5-8.4 8.4 8.4 0 0 1 8 8z"></path>
+      <path d="M8.6 9.4c.6 2.2 2.3 4 4.6 4.6"></path>
+    </symbol>
     <symbol id="i-mail" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
       <rect x="2.5" y="5" width="19" height="14" rx="2.5"></rect><path d="M3 7l9 6 9-6"></path>
-    </symbol>
-    <symbol id="i-gear" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-      <circle cx="12" cy="12" r="3.2"></circle>
-      <path d="M19.2 14.4a1.7 1.7 0 0 0 .3 1.9l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.5v.2a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.9.3l-.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.5v.2a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.9.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.9 1.7 1.7 0 0 0-1.5-1H2a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1 1.7 1.7 0 0 0-.3-1.9l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.9.3h.1a1.7 1.7 0 0 0 1-1.5V2a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1.1 1.5 1.7 1.7 0 0 0 1.9-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.9v.1a1.7 1.7 0 0 0 1.5 1H22a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"></path>
     </symbol>
     <symbol id="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
       <circle cx="12" cy="12" r="4.2"></circle>
@@ -104,7 +104,7 @@
             <span>(83) 98216-8114</span>
           </a>
           <button class="icon-btn header-settings-button" type="button" onclick="abrirConfiguracoes()" aria-label="Abrir configurações" title="Configurações">
-            <svg class="ico" aria-hidden="true"><use href="#i-gear"></use></svg>
+            <span class="ico-emoji" aria-hidden="true">⚙️</span>
           </button>
         </div>
       </div>
@@ -143,7 +143,7 @@
               <span><strong>PIX direto</strong><small>QR Code e código copia e cola na hora</small></span>
             </li>
             <li>
-              <span class="hero-ico"><span class="ico-emoji" aria-hidden="true">💬</span></span>
+              <span class="hero-ico"><svg class="ico" aria-hidden="true"><use href="#i-chat"></use></svg></span>
               <span><strong>Pedido por WhatsApp</strong><small>Sem cadastro, sem complicação</small></span>
             </li>
           </ul>
@@ -593,9 +593,9 @@
 
               <ul class="contato-lista">
                 <li>
-                  <span class="contato-ico"><span class="ico-emoji" aria-hidden="true">💬</span></span>
+                  <span class="contato-ico"><svg class="ico" aria-hidden="true"><use href="#i-chat"></use></svg></span>
                   <span>
-                    <small>💬 WhatsApp</small>
+                    <small>WhatsApp</small>
                     <a href="https://wa.me/5583982168114?text=Ola%2C%20vim%20pelo%20site%20Caseirinhos%20da%20Val." target="_blank" rel="noopener">+55 83 98216-8114 (Val)</a>
                   </span>
                 </li>
@@ -721,7 +721,7 @@
       <div class="card settings-card">
         <div class="card-content">
           <div class="settings-heading">
-            <span class="settings-icon"><span class="ico-emoji" aria-hidden="true">💬</span></span>
+            <span class="settings-icon"><svg class="ico" aria-hidden="true"><use href="#i-chat"></use></svg></span>
             <div>
               <span class="settings-label">Suporte</span>
               <h3>Dúvidas na compra?</h3>
