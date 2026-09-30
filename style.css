@@ -1,1648 +1,836 @@
-/* =========================================================
-   Caseirinhos da Val — folha de estilo
-   1. Tokens  2. Base  3. Botões  4. Topo/Hero  5. Abas
-   6. Cards   7. Carrinho  8. Contato  9. Modais
-   10. Extras 11. Responsivo
-   ========================================================= */
-
-/* ============ 1. TOKENS ============ */
-:root {
-    --font-display: "Fraunces", Georgia, "Times New Roman", serif;
-    --font-sans: "Inter", "Segoe UI", system-ui, -apple-system, Arial, sans-serif;
-
-    --bg: #fff7fa;
-    --surface: #ffffff;
-    --surface-2: #fdeff4;
-    --surface-3: #fbe2ec;
-
-    --ink: #3a212b;
-    --ink-2: #6f4d5a;
-    --ink-3: #9a7683;
-
-    --line: #f6dde6;
-    --line-strong: #eec4d4;
-
-    --brand: #d6336c;
-    --brand-hover: #bd2a5e;
-    --brand-soft: #ff8fb8;
-    --brand-tint: #fff0f6;
-    --accent: #d6336c;
-    --gold: #d99a3b;
-    --gold-tint: #fdf3e6;
-
-    --whats: #16a05b;
-    --whats-hover: #12864c;
-
-    --hero-bg:
-        radial-gradient(90% 120% at 88% 8%, rgba(255, 175, 208, .55) 0%, rgba(255, 175, 208, 0) 62%),
-        linear-gradient(165deg, #ffe0ec 0%, #fff0f5 52%, #fff7fa 100%);
-    --hero-ink: var(--ink);
-    --hero-ink-2: var(--ink-2);
-
-    --shadow-sm: 0 1px 2px rgba(122, 45, 78, .05), 0 4px 14px rgba(122, 45, 78, .06);
-    --shadow-md: 0 10px 30px rgba(122, 45, 78, .12);
-    --shadow-lg: 0 28px 70px rgba(122, 45, 78, .22);
-    --overlay: rgba(96, 40, 61, .42);
-
-    --r-sm: 10px;
-    --r-md: 14px;
-    --r-lg: 20px;
-    --r-pill: 999px;
-
-    --nav-h: 62px;
-}
-
-[data-tema="dark"] {
-    --bg: #191114;
-    --surface: #21171b;
-    --surface-2: #291d23;
-    --surface-3: #33232a;
-
-    --ink: #f9edf1;
-    --ink-2: #d2b5c0;
-    --ink-3: #a98d98;
-
-    --line: #38272f;
-    --line-strong: #4b353e;
-
-    --brand: #d6336c;
-    --brand-hover: #e85490;
-    --brand-soft: #ff9dbe;
-    --brand-tint: #331921;
-    --accent: #ff9dbe;
-    --gold: #e2ae5c;
-    --gold-tint: #2e2418;
-
-    --whats: #1aad64;
-    --whats-hover: #159254;
-
-    --hero-bg:
-        radial-gradient(90% 120% at 88% 8%, rgba(214, 51, 108, .34) 0%, rgba(214, 51, 108, 0) 62%),
-        linear-gradient(165deg, #3a1d28 0%, #2a161e 55%, #1d1216 100%);
-    --hero-ink: var(--ink);
-    --hero-ink-2: var(--ink-2);
-
-    --shadow-sm: 0 1px 2px rgba(0, 0, 0, .4), 0 4px 14px rgba(0, 0, 0, .26);
-    --shadow-md: 0 10px 30px rgba(0, 0, 0, .4);
-    --shadow-lg: 0 28px 70px rgba(0, 0, 0, .58);
-    --overlay: rgba(20, 8, 13, .62);
-}
-
-/* ============ 2. BASE ============ */
-*,
-*::before,
-*::after {
-    box-sizing: border-box;
-}
-
-* {
-    margin: 0;
-    padding: 0;
-}
-
-html {
-    scroll-behavior: smooth;
-    scrollbar-gutter: stable;
-    -webkit-text-size-adjust: 100%;
-}
-
-body {
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    background: var(--bg);
-    background-image: radial-gradient(60% 40% at 50% -6%, rgba(255, 175, 208, .22), transparent 70%);
-    background-repeat: no-repeat;
-    color: var(--ink);
-    font-family: var(--font-sans);
-    font-size: 16px;
-    line-height: 1.55;
-    letter-spacing: -0.005em;
-    -webkit-font-smoothing: antialiased;
-    overflow-x: hidden;
-}
-
-body.sem-rolagem {
-    overflow: hidden;
-}
-
-img {
-    max-width: 100%;
-    display: block;
-}
-
-a {
-    color: inherit;
-    text-decoration: none;
-}
-
-button,
-input,
-textarea,
-select {
-    font: inherit;
-    color: inherit;
-}
-
-button,
-a {
-    -webkit-tap-highlight-color: transparent;
-}
-
-:focus-visible {
-    outline: 2px solid var(--brand);
-    outline-offset: 3px;
-    border-radius: 6px;
-}
-
-.svg-sprite {
-    position: absolute;
-    width: 0;
-    height: 0;
-    overflow: hidden;
-}
-
-.ico {
-    width: 1.12em;
-    height: 1.12em;
-    flex: 0 0 auto;
-    color: currentColor;
-}
-
-.ico-emoji {
-    display: inline-block;
-    flex: 0 0 auto;
-    font-size: 1.05em;
-    line-height: 1;
-    font-style: normal;
-    transform: translateY(.02em);
-}
-
-.shell {
-    width: 100%;
-    max-width: 1180px;
-    margin-inline: auto;
-    padding-inline: clamp(16px, 4vw, 30px);
-}
-
-.skip-link {
-    position: absolute;
-    left: -9999px;
-    top: 0;
-    z-index: 200;
-    padding: 12px 18px;
-    background: var(--brand);
-    color: #fff;
-    border-radius: 0 0 var(--r-sm) 0;
-    font-weight: 600;
-}
-
-.skip-link:focus {
-    left: 0;
-}
-
-h1,
-h2,
-h3 {
-    font-family: var(--font-display);
-    font-weight: 600;
-    line-height: 1.12;
-    letter-spacing: -0.02em;
-}
-
-.section-kicker,
-.eyebrow,
-.settings-label {
-    display: inline-block;
-    font-family: var(--font-sans);
-    font-size: .73rem;
-    font-weight: 600;
-    letter-spacing: .14em;
-    text-transform: uppercase;
-    color: var(--accent);
-}
-
-/* ============ 3. BOTÕES ============ */
-.btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    min-height: 46px;
-    padding: 12px 18px;
-    border: 1px solid transparent;
-    border-radius: var(--r-md);
-    background: transparent;
-    font-size: .94rem;
-    font-weight: 600;
-    line-height: 1.2;
-    text-align: center;
-    cursor: pointer;
-    transition: background .2s ease, border-color .2s ease, color .2s ease,
-        transform .18s ease, box-shadow .2s ease;
-}
-
-.btn-cheio {
-    width: 100%;
-}
-
-.btn-primario {
-    background: var(--brand);
-    color: #fff;
-    box-shadow: 0 8px 20px rgba(214, 51, 108, .24);
-}
-
-.btn-suave {
-    background: var(--surface-2);
-    color: var(--ink);
-    border-color: var(--line);
-}
-
-.btn-contorno {
-    background: transparent;
-    color: var(--ink);
-    border-color: var(--line-strong);
-}
-
-.btn-contorno-claro {
-    background: var(--surface);
-    color: var(--ink);
-    border-color: var(--line-strong);
-    box-shadow: var(--shadow-sm);
-}
-
-.btn-whats {
-    background: var(--whats);
-    color: #fff;
-    box-shadow: 0 6px 16px rgba(18, 140, 75, .18);
-}
-
-.btn-texto {
-    min-height: 40px;
-    padding: 8px 12px;
-    color: var(--ink-3);
-    font-weight: 500;
-}
-
-.btn:disabled {
-    opacity: .45;
-    cursor: not-allowed;
-    box-shadow: none;
-}
-
-@media (hover: hover) {
-    .btn-primario:hover { background: var(--brand-hover); transform: translateY(-1px); }
-    .btn-whats:hover { background: var(--whats-hover); transform: translateY(-1px); }
-    .btn-suave:hover { background: var(--surface-3); border-color: var(--line-strong); }
-    .btn-contorno:hover { background: var(--surface-2); }
-    .btn-contorno-claro:hover { background: var(--brand-tint); border-color: var(--brand); color: var(--brand); }
-    .btn-texto:hover { color: var(--brand); background: var(--brand-tint); }
-    .btn:disabled:hover { transform: none; filter: none; }
-}
-
-.btn.adicionado {
-    background: var(--whats) !important;
-    color: #fff !important;
-    border-color: transparent !important;
-}
-
-.icon-btn {
-    width: 42px;
-    height: 42px;
-    display: grid;
-    place-items: center;
-    border: 1px solid var(--line);
-    border-radius: var(--r-pill);
-    background: var(--surface);
-    color: var(--ink-2);
-    cursor: pointer;
-    transition: color .2s ease, background .2s ease, border-color .2s ease;
-}
-
-.icon-btn .ico {
-    width: 19px;
-    height: 19px;
-}
-
-.icon-btn .ico-emoji {
-    font-size: 19px;
-}
-
-@media (hover: hover) {
-    .icon-btn:hover {
-        color: var(--brand);
-        border-color: var(--brand);
-        background: var(--brand-tint);
-    }
-}
-
-/* ============ 4. TOPO / HERO ============ */
-.site-header {
-    position: relative;
-}
-
-.topbar {
-    background: var(--surface);
-    border-bottom: 1px solid var(--line);
-}
-
-[data-tema="dark"] .produto-chip {
-    background: rgba(33, 23, 27, .92);
-    color: var(--brand-soft);
-}
-
-.topbar-inner {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 16px;
-    min-height: 74px;
-    padding-block: 12px;
-}
-
-.brand {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    min-width: 0;
-}
-
-.logo-header,
-.logo-fallback {
-    width: 62px;
-    height: 62px;
-    flex: 0 0 auto;
-    border-radius: var(--r-pill);
-    border: 1px solid var(--line);
-    background: var(--surface-2);
-    object-fit: cover;
-}
-
-.logo-fallback {
-    display: grid;
-    place-items: center;
-    font-family: var(--font-display);
-    font-size: 1.15rem;
-    font-weight: 700;
-    color: var(--brand);
-}
-
-.brand-text {
-    display: flex;
-    flex-direction: column;
-    min-width: 0;
-}
-
-.brand-text strong {
-    font-family: var(--font-display);
-    font-size: 1.16rem;
-    font-weight: 600;
-    letter-spacing: -0.02em;
-    white-space: nowrap;
-}
-
-.brand-text small {
-    color: var(--ink-3);
-    font-size: .78rem;
-    letter-spacing: .02em;
-}
-
-.topbar-acoes {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.topbar-contato {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    padding: 9px 16px;
-    border: 1px solid var(--line);
-    border-radius: var(--r-pill);
-    color: var(--ink-2);
-    font-size: .88rem;
-    font-weight: 500;
-    transition: color .2s ease, border-color .2s ease, background .2s ease;
-}
-
-@media (hover: hover) {
-    .topbar-contato:hover {
-        color: var(--whats);
-        border-color: var(--whats);
-        background: rgba(18, 140, 75, .07);
-    }
-}
-
-.hero {
-    position: relative;
-    padding: clamp(36px, 7vw, 72px) 0 clamp(28px, 5vw, 44px);
-    background: var(--hero-bg);
-    color: var(--hero-ink);
-    overflow: hidden;
-}
-
-.hero::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background-image:
-        repeating-linear-gradient(135deg, rgba(214, 51, 108, .05) 0 1px, transparent 1px 24px);
-    pointer-events: none;
-}
-
-.hero::after {
-    content: "";
-    position: absolute;
-    right: -140px;
-    bottom: -180px;
-    width: 460px;
-    height: 460px;
-    border-radius: 50%;
-    background: radial-gradient(circle, rgba(255, 143, 184, .3), transparent 68%);
-    pointer-events: none;
-}
-
-.hero-inner {
-    position: relative;
-    z-index: 1;
-    display: grid;
-    grid-template-columns: minmax(0, 1.05fr) minmax(0, .95fr);
-    gap: clamp(26px, 5vw, 56px);
-    align-items: center;
-}
-
-.hero .eyebrow {
-    color: var(--brand);
-}
-
-.hero h1 {
-    margin-top: 12px;
-    font-size: clamp(2.3rem, 6.2vw, 4rem);
-    font-weight: 600;
-    color: var(--hero-ink);
-}
-
-.hero-sub {
-    margin-top: 16px;
-    max-width: 46ch;
-    color: var(--hero-ink-2);
-    font-size: clamp(1rem, 1.6vw, 1.08rem);
-    line-height: 1.65;
-}
-
-.hero-acoes {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 12px;
-    margin-top: 28px;
-}
-
-.hero-acoes .btn-primario {
-    box-shadow: 0 12px 26px rgba(214, 51, 108, .28);
-}
-
-.hero-card {
-    position: relative;
-    padding: clamp(20px, 3vw, 28px);
-    border: 1px solid var(--line);
-    border-radius: var(--r-lg);
-    background: color-mix(in srgb, var(--surface) 88%, transparent);
-    backdrop-filter: blur(10px);
-    box-shadow: var(--shadow-md);
-}
-
-.hero-card h2 {
-    font-size: 1.12rem;
-    font-weight: 600;
-    color: var(--ink);
-    padding-bottom: 14px;
-    border-bottom: 1px solid var(--line);
-}
-
-.hero-lista {
-    list-style: none;
-    display: grid;
-    gap: 14px;
-    margin-top: 18px;
-}
-
-.hero-lista li {
-    display: flex;
-    align-items: flex-start;
-    gap: 13px;
-}
-
-.hero-lista li > span:last-child {
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-    min-width: 0;
-}
-
-.hero-lista strong {
-    font-size: .95rem;
-    font-weight: 600;
-    color: var(--ink);
-}
-
-.hero-lista small {
-    font-size: .82rem;
-    line-height: 1.45;
-    color: var(--ink-3);
-}
-
-.hero-ico {
-    width: 38px;
-    height: 38px;
-    flex: 0 0 auto;
-    display: grid;
-    place-items: center;
-    border-radius: var(--r-sm);
-    background: var(--brand-tint);
-    color: var(--brand);
-}
-
-.hero-ico .ico {
-    width: 19px;
-    height: 19px;
-}
-
-.hero-ico .ico-emoji {
-    font-size: 19px;
-}
-
-.hero-selos {
-    position: relative;
-    z-index: 1;
-    list-style: none;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px 26px;
-    margin-top: clamp(26px, 4vw, 40px);
-    padding-top: 22px;
-    border-top: 1px solid var(--line-strong);
-}
-
-.hero-selos li {
-    display: inline-flex;
-    align-items: center;
-    gap: 9px;
-    color: var(--ink-2);
-    font-size: .87rem;
-    font-weight: 500;
-}
-
-.hero-selos .ico {
-    width: 17px;
-    height: 17px;
-    color: var(--brand);
-}
-
-/* ============ 5. ABAS ============ */
-.tabs {
-    position: sticky;
-    top: 0;
-    z-index: 40;
-    background: var(--bg);
-    background: color-mix(in srgb, var(--bg) 88%, transparent);
-    backdrop-filter: blur(12px);
-    border-bottom: 1px solid var(--line);
-}
-
-.tabs-inner {
-    padding-block: 9px;
-}
-
-.tabs-trilho {
-    display: flex;
-    gap: 6px;
-    overflow-x: auto;
-    scrollbar-width: none;
-    scroll-snap-type: x proximity;
-}
-
-.tabs-trilho::-webkit-scrollbar {
-    display: none;
-}
-
-.nav-link {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    flex: 0 0 auto;
-    scroll-snap-align: center;
-    min-height: 44px;
-    padding: 10px 18px;
-    border: 1px solid transparent;
-    border-radius: var(--r-pill);
-    background: transparent;
-    color: var(--ink-2);
-    font-size: .93rem;
-    font-weight: 500;
-    white-space: nowrap;
-    cursor: pointer;
-    transition: background .22s ease, color .22s ease, border-color .22s ease;
-}
-
-.nav-link .ico {
-    width: 18px;
-    height: 18px;
-    opacity: .85;
-}
-
-@media (hover: hover) {
-    .nav-link:hover {
-        color: var(--ink);
-        background: var(--surface-2);
-    }
-}
-
-.nav-link.active-nav {
-    background: var(--brand);
-    border-color: var(--brand);
-    color: #fff;
-    font-weight: 600;
-    box-shadow: 0 8px 20px rgba(214, 51, 108, .26);
-}
-
-.nav-link.active-nav .ico {
-    opacity: 1;
-}
-
-.nav-badge {
-    display: inline-grid;
-    place-items: center;
-    min-width: 22px;
-    height: 22px;
-    padding: 0 6px;
-    border-radius: var(--r-pill);
-    background: var(--surface-3);
-    color: var(--ink-2);
-    font-size: .74rem;
-    font-weight: 700;
-    font-variant-numeric: tabular-nums;
-    transition: background .2s ease, color .2s ease;
-}
-
-.nav-link.active-nav .nav-badge {
-    background: rgba(255, 255, 255, .22);
-    color: #fff;
-}
-
-.nav-badge.contador-animado {
-    animation: pulsoBadge .55s cubic-bezier(.34, 1.56, .64, 1);
-}
-
-.swipe-hint {
-    display: none;
-    align-items: center;
-    justify-content: center;
-    gap: 7px;
-    margin: 10px auto 0;
-    color: var(--ink-3);
-    font-size: .78rem;
-    letter-spacing: .04em;
-}
-
-.swipe-hint .ico {
-    width: 14px;
-    height: 14px;
-    opacity: .7;
-}
-
-.swipe-hint.visivel {
-    display: flex;
-}
-
-/* ============ 6. SEÇÕES E CARDS ============ */
-.palco {
-    flex: 1;
-    padding: clamp(28px, 5vw, 52px) 0 clamp(48px, 8vw, 80px);
-}
-
-.aba {
-    display: none;
-}
-
-.aba.active {
-    display: block;
-}
-
-.aba.entrando-dir {
-    animation: entrarDir .3s ease both;
-}
-
-.aba.entrando-esq {
-    animation: entrarEsq .3s ease both;
-}
-
-.section-head {
-    max-width: 62ch;
-    margin-bottom: clamp(22px, 3.5vw, 34px);
-}
-
-.section-head h2 {
-    margin-top: 10px;
-    font-size: clamp(1.8rem, 4vw, 2.5rem);
-}
-
-.section-head p {
-    margin-top: 10px;
-    color: var(--ink-2);
-    font-size: 1rem;
-    line-height: 1.6;
-}
-
-.product-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(min(100%, 258px), 1fr));
-    gap: clamp(14px, 2vw, 22px);
-}
-
-.card {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    background: var(--surface);
-    border: 1px solid var(--line);
-    border-radius: var(--r-lg);
-    box-shadow: var(--shadow-sm);
-    overflow: hidden;
-    transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease;
-}
-
-@media (hover: hover) {
-    .produto-card:hover {
-        transform: translateY(-4px);
-        border-color: var(--line-strong);
-        box-shadow: var(--shadow-md);
-    }
-
-    .produto-card:hover .produto-midia img {
-        transform: scale(1.05);
-    }
-}
-
-.card.produto-adicionado {
-    border-color: var(--whats);
-    box-shadow: 0 0 0 2px rgba(18, 140, 75, .18), var(--shadow-md);
-}
-
-.produto-midia {
-    position: relative;
-    aspect-ratio: 4 / 3;
-    overflow: hidden;
-    background: var(--surface-2);
-}
-
-.produto-midia img,
-.produto-placeholder {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform .5s cubic-bezier(.22, .8, .3, 1);
-}
-
-.produto-placeholder {
-    display: grid;
-    place-items: center;
-    padding: 14px;
-    background:
-        linear-gradient(140deg, var(--surface-2) 0%, var(--surface-3) 100%);
-    color: var(--ink-3);
-    font-family: var(--font-display);
-    font-size: .95rem;
-    font-weight: 600;
-    line-height: 1.3;
-    text-align: center;
-}
-
-.produto-chip {
-    position: absolute;
-    top: 12px;
-    left: 12px;
-    padding: 5px 11px;
-    border-radius: var(--r-pill);
-    background: rgba(255, 255, 255, .94);
-    color: #8a1f4a;
-    font-size: .73rem;
-    font-weight: 600;
-    letter-spacing: .02em;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, .12);
-}
-
-.card-content {
-    display: flex;
-    flex-direction: column;
-    flex: 1;
-    gap: 6px;
-    padding: 18px;
-}
-
-.card-content h3 {
-    font-size: 1.04rem;
-    font-weight: 600;
-    line-height: 1.28;
-    color: var(--ink);
-}
-
-.produto-desc {
-    color: var(--ink-3);
-    font-size: .87rem;
-    line-height: 1.5;
-}
-
-.preco {
-    margin-top: 4px;
-    font-family: var(--font-display);
-    font-size: 1.42rem;
-    font-weight: 600;
-    letter-spacing: -0.02em;
-    color: var(--accent);
-}
-
-.card-acoes {
-    display: grid;
-    gap: 8px;
-    margin-top: auto;
-    padding-top: 14px;
-}
-
-.card-acoes-linha {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 8px;
-}
-
-.card-acoes .btn {
-    min-height: 44px;
-    font-size: .88rem;
-    padding: 10px 12px;
-}
-
-.card-acoes-linha .btn {
-    min-height: 40px;
-    font-size: .84rem;
-    padding: 8px 10px;
-}
-
-.card-acoes-linha .btn-whats {
-    background: transparent;
-    color: var(--whats);
-    border-color: var(--line-strong);
-    border-color: color-mix(in srgb, var(--whats) 42%, transparent);
-    box-shadow: none;
-}
-
-@media (hover: hover) {
-    .card-acoes-linha .btn-whats:hover {
-        background: var(--whats);
-        color: #fff;
-        border-color: var(--whats);
-    }
-}
-
-/* ============ 7. CARRINHO ============ */
-.carrinho-layout {
-    display: grid;
-    grid-template-columns: minmax(0, 1.55fr) minmax(0, .8fr);
-    gap: clamp(16px, 2.5vw, 26px);
-    align-items: start;
-}
-
-.carrinho-topo {
-    display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-    gap: 12px;
-    padding-bottom: 14px;
-    border-bottom: 1px solid var(--line);
-}
-
-.carrinho-topo h3,
-.resumo-card h3 {
-    font-size: 1.18rem;
-}
-
-.carrinho-qtd {
-    color: var(--ink-3);
-    font-size: .85rem;
-    font-weight: 500;
-}
-
-.carrinho-vazio {
-    display: grid;
-    justify-items: center;
-    gap: 8px;
-    padding: 42px 16px;
-    text-align: center;
-}
-
-.carrinho-vazio strong {
-    font-family: var(--font-display);
-    font-size: 1.1rem;
-    font-weight: 600;
-}
-
-.carrinho-vazio p {
-    max-width: 34ch;
-    color: var(--ink-3);
-    font-size: .9rem;
-}
-
-.carrinho-vazio .btn {
-    margin-top: 8px;
-}
-
-.vazio-ico {
-    display: grid;
-    place-items: center;
-    width: 56px;
-    height: 56px;
-    margin-bottom: 4px;
-    border-radius: var(--r-pill);
-    background: var(--surface-2);
-    color: var(--ink-3);
-}
-
-.vazio-ico .ico {
-    width: 24px;
-    height: 24px;
-}
-
-.lista-carrinho {
-    display: grid;
-    gap: 2px;
-}
-
-.item-carrinho {
-    display: grid;
-    grid-template-columns: 76px minmax(0, 1fr) auto;
-    gap: 14px;
-    align-items: center;
-    padding: 16px 0;
-    border-bottom: 1px solid var(--line);
-    animation: surgir .28s ease both;
-}
-
-.item-carrinho:last-child {
-    border-bottom: 0;
-    padding-bottom: 4px;
-}
-
-.item-carrinho-imagem,
-.item-carrinho-placeholder {
-    width: 76px;
-    height: 76px;
-    border-radius: var(--r-md);
-    border: 1px solid var(--line);
-    object-fit: cover;
-}
-
-.item-carrinho-placeholder {
-    display: grid;
-    place-items: center;
-    background: var(--surface-2);
-    color: var(--brand);
-    font-family: var(--font-display);
-    font-weight: 700;
-    font-size: .9rem;
-}
-
-.item-carrinho-info {
-    min-width: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-}
-
-.item-carrinho-info strong {
-    font-size: .96rem;
-    font-weight: 600;
-    color: var(--ink);
-}
-
-.item-carrinho-info span {
-    font-size: .82rem;
-    color: var(--ink-2);
-    line-height: 1.5;
-    word-break: break-word;
-}
-
-.item-carrinho-controles {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
-.stepper {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    padding: 6px 8px;
-    border: 1px solid var(--line);
-    border-radius: var(--r-pill);
-    background: var(--surface-2);
-}
-
-.btn-quantidade {
-    width: 28px;
-    height: 28px;
-    display: grid;
-    place-items: center;
-    border: 0;
-    border-radius: 50%;
-    background: var(--surface);
-    color: var(--ink);
-    cursor: pointer;
-    transition: background .2s ease, color .2s ease;
-}
-
-.btn-quantidade .ico {
-    width: 14px;
-    height: 14px;
-}
-
-.btn-quantidade:hover {
-    background: var(--brand-tint);
-    color: var(--brand);
-}
-
-.quantidade-carrinho {
-    min-width: 1.8em;
-    text-align: center;
-    font-size: .8rem;
-    font-weight: 700;
-    color: var(--ink);
-}
-
-.btn-remover {
-    width: 34px;
-    height: 34px;
-    display: grid;
-    place-items: center;
-    padding: 0;
-    border: 1px solid var(--line);
-    border-radius: var(--r-pill);
-    background: transparent;
-    color: var(--ink-3);
-    cursor: pointer;
-    transition: color .2s ease, border-color .2s ease, background .2s ease;
-}
-
-.btn-remover .ico {
-    width: 16px;
-    height: 16px;
-}
-
-@media (hover: hover) {
-    .btn-remover:hover {
-        border-color: var(--brand);
-        background: var(--brand-tint);
-        color: var(--brand);
-    }
-}
-
-.resumo-card {
-    position: sticky;
-    top: calc(var(--nav-h) + 18px);
-}
-
-.resumo-card .card-content {
-    gap: 14px;
-}
-
-.resumo-linha {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 12px;
-    font-size: .96rem;
-    color: var(--ink-2);
-}
-
-.total-carrinho {
-    padding-top: 14px;
-    border-top: 1px solid var(--line);
-    font-weight: 700;
-    font-size: 1.15rem;
-    color: var(--ink);
-}
-
-.carrinho-acoes {
-    display: grid;
-    gap: 10px;
-    margin-top: 2px;
-}
-
-.carrinho-status,
-.pix-status {
-    min-height: 1.45em;
-    color: var(--brand);
-    font-size: .82rem;
-    font-weight: 600;
-}
-
-.resumo-nota {
-    color: var(--ink-3);
-    font-size: .8rem;
-    line-height: 1.5;
-}
-
-/* ============ 8. CONTATO ============ */
-.contato-grid {
-    display: grid;
-    grid-template-columns: minmax(0, 1.2fr) minmax(0, .8fr);
-    gap: 18px;
-}
-
-.contato-card,
-.suporte-card {
-    height: 100%;
-}
-
-.contato-info {
-    color: var(--ink-2);
-    line-height: 1.6;
-}
-
-.contato-lista {
-    list-style: none;
-    display: grid;
-    gap: 14px;
-    margin: 22px 0;
-}
-
-.contato-lista li {
-    display: flex;
-    align-items: flex-start;
-    gap: 12px;
-}
-
-.contato-lista small {
-    display: block;
-    margin-bottom: 2px;
-    color: var(--ink-3);
-    letter-spacing: .04em;
-    text-transform: uppercase;
-    font-size: .68rem;
-    font-weight: 600;
-}
-
-.contato-lista a,
-.contato-lista strong {
-    font-weight: 600;
-    color: var(--ink);
-}
-
-.contato-ico {
-    width: 38px;
-    height: 38px;
-    display: grid;
-    place-items: center;
-    border-radius: 12px;
-    background: var(--brand-tint);
-    color: var(--brand);
-    flex: 0 0 auto;
-}
-
-.contato-ico .ico {
-    width: 18px;
-    height: 18px;
-}
-
-/* ============ 9. MODAIS ============ */
-.modal {
-    position: fixed;
-    inset: 0;
-    z-index: 120;
-    display: grid;
-    place-items: center;
-    padding: 20px;
-    background: var(--overlay);
-    opacity: 0;
-    visibility: hidden;
-    pointer-events: none;
-    transition: opacity .22s ease, visibility .22s ease;
-}
-
-.modal.active {
-    opacity: 1;
-    visibility: visible;
-    pointer-events: auto;
-}
-
-.modal-box {
-    position: relative;
-    width: min(100%, 760px);
-    max-height: min(85vh, 760px);
-    overflow: auto;
-    padding: clamp(18px, 2.5vw, 28px);
-    border-radius: 22px;
-    border: 1px solid var(--line);
-    background: var(--surface);
-    box-shadow: var(--shadow-lg);
-}
-
-.modal-head {
-    margin-bottom: 22px;
-}
-
-.modal-head h2 {
-    margin-top: 10px;
-    font-size: clamp(1.7rem, 3vw, 2.2rem);
-}
-
-.modal-head p {
-    margin-top: 8px;
-    color: var(--ink-2);
-}
-
-.modal-close {
-    position: absolute;
-    top: 18px;
-    right: 18px;
-}
-
-.pix-grid {
-    display: grid;
-    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
-    gap: 22px;
-    align-items: stretch;
-}
-
-.pix-qr-area {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 14px;
-    padding: 18px;
-    border: 1px solid var(--line);
-    border-radius: var(--r-lg);
-    background: var(--surface-2);
-}
-
-.pix-qrcode {
-    width: min(100%, 220px);
-    aspect-ratio: 1;
-    border-radius: 16px;
-    background: #fff;
-    padding: 10px;
-    box-shadow: inset 0 0 0 1px rgba(0,0,0,.04);
-}
-
-.pix-legenda {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    color: var(--ink-2);
-    font-size: .83rem;
-    font-weight: 600;
-}
-
-.pix-passos {
-    display: grid;
-    gap: 14px;
-}
-
-.campo-label {
-    font-size: .8rem;
-    font-weight: 700;
-    color: var(--ink-2);
-    letter-spacing: .06em;
-    text-transform: uppercase;
-}
-
-.pix-copia {
-    width: 100%;
-    min-height: 120px;
-    padding: 14px 16px;
-    resize: vertical;
-    border: 1px solid var(--line);
-    border-radius: var(--r-md);
-    background: var(--surface-2);
-    color: var(--ink);
-    line-height: 1.6;
-}
-
-.comprovante-area {
-    display: grid;
-    gap: 10px;
-}
-
-.comprovante-input {
-    display: none;
-}
-
-.btn-comprovante {
-    justify-content: center;
-}
-
-.comprovante-nome {
-    color: var(--ink-3);
-    font-size: .8rem;
-    line-height: 1.5;
-}
-
-.settings-modal .modal-box {
-    width: min(100%, 620px);
-}
-
-.settings-dialog {
-    display: grid;
-    gap: 18px;
-}
-
-.settings-card {
-    border-color: var(--line);
-}
-
-.settings-heading {
-    display: flex;
-    align-items: flex-start;
-    gap: 12px;
-    margin-bottom: 14px;
-}
-
-.settings-icon {
-    width: 42px;
-    height: 42px;
-    display: grid;
-    place-items: center;
-    border-radius: 12px;
-    background: var(--brand-tint);
-    color: var(--brand);
-}
-
-.settings-heading h3 {
-    margin-top: 6px;
-    font-size: 1.1rem;
-}
-
-.settings-heading p {
-    margin-top: 4px;
-    color: var(--ink-3);
-    line-height: 1.5;
-}
-
-.theme-selector {
-    display: flex;
-    gap: 10px;
-}
-
-.theme-option {
-    flex: 1;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    min-height: 48px;
-    padding: 10px 14px;
-    border: 1px solid var(--line);
-    border-radius: var(--r-md);
-    background: var(--surface-2);
-    color: var(--ink-2);
-    font-weight: 600;
-    cursor: pointer;
-    transition: border-color .2s ease, background .2s ease, color .2s ease;
-}
-
-.theme-option.ativo {
-    background: var(--brand);
-    border-color: var(--brand);
-    color: #fff;
-}
-
-.btn-support-settings {
-    margin-top: 8px;
-}
-
-/* ============ 10. EXTRAS ============ */
-.whatsapp-flutuante {
-    position: fixed;
-    right: 18px;
-    bottom: 18px;
-    z-index: 70;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 9px;
-    min-height: 58px;
-    padding: 12px 18px;
-    border-radius: var(--r-pill);
-    background: var(--whats);
-    color: #fff;
-    box-shadow: 0 18px 34px rgba(18, 140, 75, .28);
-    font-weight: 700;
-    white-space: nowrap;
-    transition: transform .2s ease, box-shadow .2s ease;
-}
-
-.whatsapp-flutuante .ico {
-    width: 18px;
-    height: 18px;
-}
-
-@media (hover: hover) {
-    .whatsapp-flutuante:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 22px 38px rgba(18, 140, 75, .32);
-    }
-}
-
-.toast-site {
-    position: fixed;
-    left: 50%;
-    bottom: 90px;
-    z-index: 110;
-    transform: translateX(-50%) translateY(14px);
-    max-width: min(88vw, 420px);
-    padding: 12px 16px;
-    border-radius: var(--r-md);
-    background: rgba(25, 17, 20, .88);
-    color: #fff;
-    box-shadow: var(--shadow-md);
-    text-align: center;
-    opacity: 0;
-    visibility: hidden;
-    transition: opacity .2s ease, transform .2s ease, visibility .2s ease;
-}
-
-.toast-site.mostrar {
-    opacity: 1;
-    visibility: visible;
-    transform: translateX(-50%) translateY(0);
-}
-
-.site-footer {
-    padding: 26px 0 36px;
-    border-top: 1px solid var(--line);
-    background: var(--surface);
-}
-
-.footer-inner {
-    display: grid;
-    gap: 18px;
-    align-items: center;
-    text-align: center;
-}
-
-.footer-marca {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-    font-size: .95rem;
-}
-
-.footer-marca strong {
-    font-family: var(--font-display);
-    font-size: 1.15rem;
-}
-
-.footer-marca span {
-    color: var(--ink-3);
-}
-
-.footer-links {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 10px 18px;
-}
-
-.footer-links button {
-    border: 0;
-    background: transparent;
-    color: var(--ink-2);
-    font-weight: 600;
-    cursor: pointer;
-}
-
-.footer-inner small {
-    color: var(--ink-3);
-}
-
-/* ============ 11. RESPONSIVO ============ */
-@media (max-width: 860px) {
-    .hero-inner,
-    .pix-grid,
-    .contato-grid,
-    .carrinho-layout {
-        grid-template-columns: 1fr;
-    }
-
-    .resumo-card {
-        position: static;
-    }
-}
-
-@media (max-width: 560px) {
-    .brand-text strong {
-        white-space: normal;
-    }
-
-    .hero-card {
-        padding: 18px;
-    }
-
-    .item-carrinho {
-        grid-template-columns: 64px minmax(0, 1fr);
-    }
-
-    .item-carrinho-controles {
-        grid-column: 1 / -1;
-        justify-content: space-between;
-        padding-top: 4px;
-    }
-
-    .whatsapp-flutuante {
-        right: 14px;
-        bottom: 14px;
-        min-height: 54px;
-        padding-inline: 14px;
-    }
-
-    .whatsapp-flutuante span {
-        display: none;
-    }
-}
-
-@keyframes entrarDir {
-    from {
-        opacity: 0;
-        transform: translateX(18px);
-    }
-    to {
-        opacity: 1;
-        transform: translateX(0);
-    }
-}
-
-@keyframes entrarEsq {
-    from {
-        opacity: 0;
-        transform: translateX(-18px);
-    }
-    to {
-        opacity: 1;
-        transform: translateX(0);
-    }
-}
-
-@keyframes surgir {
-    from {
-        opacity: 0;
-        transform: translateY(8px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-@keyframes pulsoBadge {
-    0% { transform: scale(1); }
-    35% { transform: scale(1.18); }
-    100% { transform: scale(1); }
-}
-@import url("https://raw.githubusercontent.com/isaakoliveira/Caseirinhos-da-Val/e87c53cdb1be1fc960e5186c4764e06f82109786/style.css");
-
-/* Logo ampliada */
-.topbar-inner {
-    min-height: clamp(150px, 18vw, 210px);
-    padding-block: clamp(18px, 3vw, 28px);
-}
-
-.logo-header,
-.logo-fallback {
-    width: clamp(120px, 18vw, 180px);
-    height: clamp(120px, 18vw, 180px);
-}
-
-.brand {
-    gap: clamp(18px, 3vw, 30px);
-}
-
-.logo-fallback {
-    font-size: clamp(1.6rem, 3vw, 2.4rem);
-}
-
-@media (max-width: 560px) {
-    .topbar-inner {
-        min-height: 132px;
-        padding-block: 14px;
-    }
-
-    .logo-header,
-    .logo-fallback {
-        width: 108px;
-        height: 108px;
-    }
-
-    .brand {
-        gap: 14px;
-    }
-}
+<!DOCTYPE html>
+<html lang="pt-br" data-tema="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#ffe0ec">
+  <title>Caseirinhos da Val | Doces e bolos caseiros em Picuí - PB</title>
+  <meta name="description" content="Doces e bolos caseiros da Caseirinhos da Val. Peça pelo WhatsApp ou pague direto no PIX. Atendimento em Picuí - PB.">
+
+  <link rel="icon" type="image/png" href="logo.png">
+  <link rel="apple-touch-icon" href="logo.png">
+  <meta property="og:title" content="Caseirinhos da Val">
+  <meta property="og:description" content="Doces e bolos caseiros. Pedido pelo WhatsApp e pagamento no PIX.">
+  <meta property="og:image" content="logo.png">
+  <meta name="twitter:image" content="logo.png">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <!-- ===== Biblioteca de ícones (SVG) ===== -->
+  <svg class="svg-sprite" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <g id="i-base" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></g>
+    </defs>
+    <symbol id="i-cart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="9" cy="20" r="1.4"></circle><circle cx="18" cy="20" r="1.4"></circle>
+      <path d="M2 3h2.2l2.3 11.3a1.8 1.8 0 0 0 1.8 1.4h8.6a1.8 1.8 0 0 0 1.8-1.4L21 7H6"></path>
+    </symbol>
+    <symbol id="i-card" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="2" y="5" width="20" height="14" rx="2.5"></rect><path d="M2 10h20"></path><path d="M6 15h4"></path>
+    </symbol>
+    <symbol id="i-pin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M20 10c0 6.2-8 12-8 12s-8-5.8-8-12a8 8 0 0 1 16 0z"></path><circle cx="12" cy="10" r="2.8"></circle>
+    </symbol>
+    <symbol id="i-chat" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M21 11.5a8.4 8.4 0 0 1-8.5 8.4 8.6 8.6 0 0 1-3.8-.9L3.5 21l2-5.1a8.3 8.3 0 0 1-1-4 8.4 8.4 0 0 1 8.5-8.4 8.4 8.4 0 0 1 8 8z"></path>
+      <path d="M8.6 9.4c.6 2.2 2.3 4 4.6 4.6"></path>
+    </symbol>
+    <symbol id="i-mail" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="2.5" y="5" width="19" height="14" rx="2.5"></rect><path d="M3 7l9 6 9-6"></path>
+    </symbol>
+    <symbol id="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="12" r="4.2"></circle>
+      <path d="M12 2v2M12 20v2M4.2 4.2l1.4 1.4M18.4 18.4l1.4 1.4M2 12h2M20 12h2M4.2 19.8l1.4-1.4M18.4 5.6l1.4-1.4"></path>
+    </symbol>
+    <symbol id="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M20.5 14.2A8.6 8.6 0 0 1 9.8 3.5a8.6 8.6 0 1 0 10.7 10.7z"></path>
+    </symbol>
+    <symbol id="i-plus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14M5 12h14"></path></symbol>
+    <symbol id="i-minus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M5 12h14"></path></symbol>
+    <symbol id="i-trash" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M3.5 6h17M9 6V4.5A1.5 1.5 0 0 1 10.5 3h3A1.5 1.5 0 0 1 15 4.5V6M18.5 6l-.8 13a2 2 0 0 1-2 1.9H8.3a2 2 0 0 1-2-1.9L5.5 6"></path>
+    </symbol>
+    <symbol id="i-close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"></path></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12.5l5 5 10-11"></path></symbol>
+    <symbol id="i-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h15M13 6l6 6-6 6"></path></symbol>
+    <symbol id="i-copy" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="9" y="9" width="12" height="12" rx="2.5"></rect><path d="M5.5 15H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v.5"></path>
+    </symbol>
+    <symbol id="i-clip" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M21 11.6l-8.5 8.5a5.5 5.5 0 0 1-7.8-7.8l8.5-8.5a3.7 3.7 0 0 1 5.2 5.2l-8.5 8.5a1.8 1.8 0 0 1-2.6-2.6l7.8-7.8"></path>
+    </symbol>
+    <symbol id="i-lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="4" y="10.5" width="16" height="10.5" rx="2.5"></rect><path d="M8 10.5V7.8a4 4 0 0 1 8 0v2.7"></path>
+    </symbol>
+    <symbol id="i-hand" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M20.4 5.1a5 5 0 0 0-7.1 0L12 6.4l-1.3-1.3a5 5 0 1 0-7.1 7.1L12 20.6l8.4-8.4a5 5 0 0 0 0-7.1z"></path>
+    </symbol>
+    <symbol id="i-pote" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M8.5 3h7v3h-7z"></path><path d="M6 9.5A3.5 3.5 0 0 1 9.5 6h5A3.5 3.5 0 0 1 18 9.5v8A3.5 3.5 0 0 1 14.5 21h-5A3.5 3.5 0 0 1 6 17.5z"></path><path d="M6 13h12"></path>
+    </symbol>
+    <symbol id="i-bolo" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M3 20.5h18"></path><path d="M4.5 20.5v-6a3 3 0 0 1 3-3h9a3 3 0 0 1 3 3v6"></path><path d="M4.5 15.5c1.6 1.4 3.1 1.4 4.7 0 1.6 1.4 3.1 1.4 4.7 0 1.6 1.4 3.1 1.4 4.6 0"></path><path d="M10 3.5c.6 1.2 1.3 2.1 2 2.5.7.4 1.4.4 2 0 .7-.4 1.4-1.3 2-2.5"></path>
+    </symbol>
+    <symbol id="i-left" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"></path></symbol>
+    <symbol id="i-right" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"></path></symbol>
+    <symbol id="i-qr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="3" y="3" width="7" height="7" rx="1.5"></rect><rect x="14" y="3" width="7" height="7" rx="1.5"></rect><rect x="3" y="14" width="7" height="7" rx="1.5"></rect><path d="M14 14h3v3h-3zM20 14h1v3h-1zM14 20h3v1h-3z"></path>
+    </symbol>
+  </svg>
+
+  <a class="skip-link" href="#conteudo">Ir para o conteúdo</a>
+
+  <!-- ===== Topo ===== -->
+  <header class="site-header">
+    <div class="topbar">
+      <div class="shell topbar-inner">
+        <a class="brand" href="#conteudo">
+          <img class="logo-header" src="logo.png" alt="Logo Caseirinhos da Val">
+          <span class="brand-text">
+            <strong>Caseirinhos da Val</strong>
+            <small>Doces e bolos caseiros</small>
+          </span>
+        </a>
+          <button class="icon-btn header-settings-button" type="button" onclick="abrirConfiguracoes()" aria-label="Abrir configurações" title="Configurações" align="right">
+            <span class="ico-emoji" aria-hidden="true">⚙️</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="hero">
+      <div class="shell hero-inner">
+        <div class="hero-texto">
+          <span class="eyebrow">Doces e bolos caseiros</span>
+          <h1>Caseirinhos da Val</h1>
+          <p class="hero-sub">
+            Doces e bolos feitos à mão, por encomenda, com o capricho de quem cozinha em casa.
+            Escolha no cardápio, peça pelo WhatsApp e pague no PIX.
+          </p>
+
+          <div class="hero-acoes">
+            <button class="btn btn-primario" type="button" onclick="mostrarAba('doces')">
+              Ver cardápio
+              <svg class="ico" aria-hidden="true"><use href="#i-arrow"></use></svg>
+            </button>
+            <a class="btn btn-contorno-claro" href="https://wa.me/5583982168114?text=Ola%2C%20vim%20pelo%20site%20Caseirinhos%20da%20Val." target="_blank" rel="noopener">
+              <svg class="ico" aria-hidden="true"><use href="#i-chat"></use></svg> Falar com a Val
+            </a>
+          </div>
+        </div>
+
+        <aside class="hero-card" aria-label="Como funciona o atendimento">
+          <h2>Compra simples e segura</h2>
+          <ul class="hero-lista">
+            <li>
+              <span class="hero-ico"><svg class="ico" aria-hidden="true"><use href="#i-pin"></use></svg></span>
+              <span><strong>Atendimento em Picuí - PB</strong><small>Combine retirada ou entrega direto com a Val</small></span>
+            </li>
+            <li>
+              <span class="hero-ico"><svg class="ico" aria-hidden="true"><use href="#i-card"></use></svg></span>
+              <span><strong>PIX direto</strong><small>QR Code e código copia e cola na hora</small></span>
+            </li>
+            <li>
+              <span class="hero-ico"><svg class="ico" aria-hidden="true"><use href="#i-chat"></use></svg></span>
+              <span><strong>Pedido por WhatsApp</strong><small>Sem cadastro, sem complicação</small></span>
+            </li>
+          </ul>
+        </aside>
+      </div>
+
+      <div class="shell">
+        <ul class="hero-selos">
+          <li><svg class="ico" aria-hidden="true"><use href="#i-hand"></use></svg> Produção artesanal</li>
+          <li><svg class="ico" aria-hidden="true"><use href="#i-lock"></use></svg> Pagamento direto, sem taxas do site</li>
+          <li><svg class="ico" aria-hidden="true"><use href="#i-cart"></use></svg> Monte seu pedido em poucos toques</li>
+        </ul>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== Navegação ===== -->
+  <nav class="tabs" aria-label="Navegação principal">
+    <div class="shell tabs-inner">
+      <div class="tabs-trilho" id="tabsTrilho" role="tablist">
+        <button class="nav-link active-nav" type="button" role="tab" data-aba="doces" aria-selected="true" aria-controls="doces" onclick="mostrarAba('doces')">
+          <svg class="ico" aria-hidden="true"><use href="#i-pote"></use></svg> Doces
+        </button>
+        <button class="nav-link" type="button" role="tab" data-aba="bolos" aria-selected="false" aria-controls="bolos" onclick="mostrarAba('bolos')">
+          <svg class="ico" aria-hidden="true"><use href="#i-bolo"></use></svg> Bolos
+        </button>
+        <button class="nav-link" type="button" role="tab" data-aba="carrinho" aria-selected="false" aria-controls="carrinho" onclick="mostrarAba('carrinho')">
+          <svg class="ico" aria-hidden="true"><use href="#i-cart"></use></svg> Carrinho
+          <span class="nav-badge" id="contadorCarrinho">0</span>
+        </button>
+        <button class="nav-link" type="button" role="tab" data-aba="contato" aria-selected="false" aria-controls="contato" onclick="mostrarAba('contato')">
+          <svg class="ico" aria-hidden="true"><use href="#i-chat"></use></svg> Contato
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <p class="swipe-hint" id="swipeHint">
+    <svg class="ico" aria-hidden="true"><use href="#i-left"></use></svg>
+    deslize para trocar de aba
+    <svg class="ico" aria-hidden="true"><use href="#i-right"></use></svg>
+  </p>
+
+  <!-- ===== Conteúdo ===== -->
+  <main id="conteudo" class="palco">
+
+    <!-- DOCES -->
+    <section id="doces" class="aba active" role="tabpanel" aria-labelledby="doces">
+      <div class="shell">
+        <div class="section-head">
+          <span class="section-kicker">Cardápio</span>
+          <h2>Doces</h2>
+          <p>Potes e pudins prontos para adoçar o dia. Pague no PIX, chame no WhatsApp ou monte o carrinho.</p>
+        </div>
+
+        <div class="product-grid">
+
+          <article class="card produto-card">
+            <div class="produto-midia">
+              <img src="doce-de-leite-com-coco-sem-risco-camera.jpeg" alt="Doce de Leite com Coco" loading="lazy">
+              <span class="produto-chip">350 ml</span>
+            </div>
+            <div class="card-content">
+              <h3>Doce de Leite com Coco</h3>
+              <p class="produto-desc">Doce de leite cremoso com coco.</p>
+              <p class="preco" id="preco-doce-leite-coco"></p>
+              <div class="card-acoes">
+                <button class="btn btn-primario btn-carrinho" type="button" onclick="adicionarAoCarrinho('doceLeiteCoco', this)">
+                  <svg class="ico" aria-hidden="true"><use href="#i-cart"></use></svg> Adicionar ao carrinho
+                </button>
+                <div class="card-acoes-linha">
+                  <button class="btn btn-suave" type="button" onclick="abrirPix('doceLeiteCoco')">
+                    <svg class="ico" aria-hidden="true"><use href="#i-card"></use></svg> PIX
+                  </button>
+                  <a class="btn btn-whats btn-pedido" href="#" onclick="fazerPedidoWhatsApp('doceLeiteCoco'); return false;">
+                    <svg class="ico" aria-hidden="true"><use href="#i-chat"></use></svg> WhatsApp
+                  </a>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="card produto-card">
+            <div class="produto-midia">
+              <img src="doce-de-leite-com-goiabada-sem-risco-camera.jpeg" alt="Doce de Leite com Goiabada" loading="lazy">
+              <span class="produto-chip">350 ml</span>
+            </div>
+            <div class="card-content">
+              <h3>Doce de Leite com Goiabada</h3>
+              <p class="produto-desc">Doce de leite com goiabada.</p>
+              <p class="preco" id="preco-doce-leite-goiabada"></p>
+              <div class="card-acoes">
+                <button class="btn btn-primario btn-carrinho" type="button" onclick="adicionarAoCarrinho('doceLeiteGoiabada', this)">
+                  <svg class="ico" aria-hidden="true"><use href="#i-cart"></use></svg> Adicionar ao carrinho
+                </button>
+                <div class="card-acoes-linha">
+                  <button class="btn btn-suave" type="button" onclick="abrirPix('doceLeiteGoiabada')">
+                    <svg class="ico" aria-hidden="true"><use href="#i-card"></use></svg> PIX
+                  </button>
+                  <a class="btn btn-whats btn-pedido" href="#" onclick="fazerPedidoWhatsApp('doceLeiteGoiabada'); return false;">
+                    <svg class="ico" aria-hidden="true"><use href="#i-chat"></use></svg> WhatsApp
+                  </a>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="card produto-card">
+            <div class="produto-midia">
+              <img src="doce-de-leite-sem-risco-camera-inpaint-wide.jpeg" alt="Doce de Leite Comum" loading="lazy">
+              <span class="produto-chip">350 ml</span>
+            </div>
+            <div class="card-content">
+              <h3>Doce de Leite Comum</h3>
+              <p class="produto-desc">Doce de leite tradicional, bem cremoso.</p>
+              <p class="preco" id="preco-doce-leite"></p>
+              <div class="card-acoes">
+                <button class="btn btn-primario btn-carrinho" type="button" onclick="adicionarAoCarrinho('doceLeite', this)">
+                  <svg class="ico" aria-hidden="true"><use href="#i-cart"></use></svg> Adicionar ao carrinho
+                </button>
+                <div class="card-acoes-linha">
+                  <button class="btn btn-suave" type="button" onclick="abrirPix('doceLeite')">
+                    <svg class="ico" aria-hidden="true"><use href="#i-card"></use></svg> PIX
+                  </button>
+                  <a class="btn btn-whats btn-pedido" href="#" onclick="fazerPedidoWhatsApp('doceLeite'); return false;">
+                    <svg class="ico" aria-hidden="true"><use href="#i-chat"></use></svg> WhatsApp
+                  </a>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="card produto-card">
+            <div class="produto-midia">
+              <img src="pudim 18,00$.jpeg" alt="Pudim Pequeno" loading="lazy">
+              <span class="produto-chip">500 g</span>
+            </div>
+            <div class="card-content">
+              <h3>Pudim Pequeno</h3>
+              <p class="produto-desc">Tamanho certo para o dia a dia.</p>
+              <p class="preco" id="preco-pudim-18"></p>
+              <div class="card-acoes">
+                <button class="btn btn-primario btn-carrinho" type="button" onclick="adicionarAoCarrinho('pudim18', this)">
+                  <svg class="ico" aria-hidden="true"><use href="#i-cart"></use></svg> Adicionar ao carrinho
+                </button>
+                <div class="card-acoes-linha">
+                  <button class="btn btn-suave" type="button" onclick="abrirPix('pudim18')">
+                    <svg class="ico" aria-hidden="true"><use href="#i-card"></use></svg> PIX
+                  </button>
+                  <a class="btn btn-whats btn-pedido" href="#" onclick="fazerPedidoWhatsApp('pudim18'); return false;">
+                    <svg class="ico" aria-hidden="true"><use href="#i-chat"></use></svg> WhatsApp
+                  </a>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="card produto-card">
+            <div class="produto-midia">
+              <img src="pudim 35,00$.jpeg" alt="Pudim Grande" loading="lazy">
+              <span class="produto-chip">1 kg</span>
+            </div>
+            <div class="card-content">
+              <h3>Pudim Grande</h3>
+              <p class="produto-desc">Indicado para festas e encontros em família.</p>
+              <p class="preco" id="preco-pudim-35"></p>
+              <div class="card-acoes">
+                <button class="btn btn-primario btn-carrinho" type="button" onclick="adicionarAoCarrinho('pudim35', this)">
+                  <svg class="ico" aria-hidden="true"><use href="#i-cart"></use></svg> Adicionar ao carrinho
+                </button>
+                <div class="card-acoes-linha">
+                  <button class="btn btn-suave" type="button" onclick="abrirPix('pudim35')">
+                    <svg class="ico" aria-hidden="true"><use href="#i-card"></use></svg> PIX
+                  </button>
+                  <a class="btn btn-whats btn-pedido" href="#" onclick="fazerPedidoWhatsApp('pudim35'); return false;">
+                    <svg class="ico" aria-hidden="true"><use href="#i-chat"></use></svg> WhatsApp
+                  </a>
+                </div>
+              </div>
+            </div>
+          </article>
+
+
+          <article class="card produto-card">
+            <div class="produto-midia">
+              <img src="WhatsApp Image 2026-09-26 at 14.42.52 (1).jpeg" alt="Pudim Menor" loading="lazy">
+              <span class="produto-chip">Individual</span>
+            </div>
+            <div class="card-content">
+              <h3>Pudim Menor</h3>
+              <p class="produto-desc">Pudim cremoso com calda de caramelo, no potinho.</p>
+              <p class="preco" id="preco-pudim-individual"></p>
+              <div class="card-acoes">
+                <button class="btn btn-primario btn-carrinho" type="button" onclick="adicionarAoCarrinho('pudimIndividual', this)">
+                  <svg class="ico" aria-hidden="true"><use href="#i-cart"></use></svg> Adicionar ao carrinho
+                </button>
+                <div class="card-acoes-linha">
+                  <button class="btn btn-suave" type="button" onclick="abrirPix('pudimIndividual')">
+                    <svg class="ico" aria-hidden="true"><use href="#i-card"></use></svg> PIX
+                  </button>
+                  <a class="btn btn-whats btn-pedido" href="#" onclick="fazerPedidoWhatsApp('pudimIndividual'); return false;">
+                    <svg class="ico" aria-hidden="true"><use href="#i-chat"></use></svg> WhatsApp
+                  </a>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="card produto-card">
+            <div class="produto-midia">
+              <img src="WhatsApp Image 2026-09-26 at 14.42.52.jpeg" alt="Surpresa de Uva" loading="lazy">
+              <span class="produto-chip">Individual</span>
+            </div>
+            <div class="card-content">
+              <h3>Surpresa de Uva</h3>
+              <p class="produto-desc">Creme com cobertura de chocolate e granulado, finalizado com uva.</p>
+              <p class="preco" id="preco-chocolate-uva"></p>
+              <div class="card-acoes">
+                <button class="btn btn-primario btn-carrinho" type="button" onclick="adicionarAoCarrinho('chocolateUva', this)">
+                  <svg class="ico" aria-hidden="true"><use href="#i-cart"></use></svg> Adicionar ao carrinho
+                </button>
+                <div class="card-acoes-linha">
+                  <button class="btn btn-suave" type="button" onclick="abrirPix('chocolateUva')">
+                    <svg class="ico" aria-hidden="true"><use href="#i-card"></use></svg> PIX
+                  </button>
+                  <a class="btn btn-whats btn-pedido" href="#" onclick="fazerPedidoWhatsApp('chocolateUva'); return false;">
+                    <svg class="ico" aria-hidden="true"><use href="#i-chat"></use></svg> WhatsApp
+                  </a>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="card produto-card">
+            <div class="produto-midia">
+              <img src="WhatsApp Image 2026-09-26 at 14.42.49.jpeg" alt="Surpresa de Morango" loading="lazy">
+              <span class="produto-chip">Individual</span>
+            </div>
+            <div class="card-content">
+              <h3>Surpresa de Morango</h3>
+              <p class="produto-desc">Creme com cobertura de chocolate e granulado, finalizado com morango.</p>
+              <p class="preco" id="preco-chocolate-morango"></p>
+              <div class="card-acoes">
+                <button class="btn btn-primario btn-carrinho" type="button" onclick="adicionarAoCarrinho('chocolateMorango', this)">
+                  <svg class="ico" aria-hidden="true"><use href="#i-cart"></use></svg> Adicionar ao carrinho
+                </button>
+                <div class="card-acoes-linha">
+                  <button class="btn btn-suave" type="button" onclick="abrirPix('chocolateMorango')">
+                    <svg class="ico" aria-hidden="true"><use href="#i-card"></use></svg> PIX
+                  </button>
+                  <a class="btn btn-whats btn-pedido" href="#" onclick="fazerPedidoWhatsApp('chocolateMorango'); return false;">
+                    <svg class="ico" aria-hidden="true"><use href="#i-chat"></use></svg> WhatsApp
+                  </a>
+                </div>
+              </div>
+            </div>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- BOLOS -->
+    <section id="bolos" class="aba" role="tabpanel" aria-labelledby="bolos">
+      <div class="shell">
+        <div class="section-head">
+          <span class="section-kicker">Encomendas</span>
+          <h2>Bolos</h2>
+          <p>Bolos caseiros para o café da tarde ou para a mesa da festa. Combine o dia da retirada com a Val.</p>
+        </div>
+
+        <div class="product-grid">
+
+          <article class="card produto-card">
+            <div class="produto-midia">
+              <img src="bolo de leite.jpeg" alt="Bolo de Leite" loading="lazy">
+            </div>
+            <div class="card-content">
+              <h3>Bolo de Leite</h3>
+              <p class="produto-desc">Clássico do café da tarde.</p>
+              <p class="preco" id="preco-bolo-simples"></p>
+              <div class="card-acoes">
+                <button class="btn btn-primario btn-carrinho" type="button" onclick="adicionarAoCarrinho('boloSimples', this)">
+                  <svg class="ico" aria-hidden="true"><use href="#i-cart"></use></svg> Adicionar ao carrinho
+                </button>
+                <div class="card-acoes-linha">
+                  <button class="btn btn-suave" type="button" onclick="abrirPix('boloSimples')">
+                    <svg class="ico" aria-hidden="true"><use href="#i-card"></use></svg> PIX
+                  </button>
+                  <a class="btn btn-whats btn-pedido" href="#" onclick="fazerPedidoWhatsApp('boloSimples'); return false;">
+                    <svg class="ico" aria-hidden="true"><use href="#i-chat"></use></svg> WhatsApp
+                  </a>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="card produto-card">
+            <div class="produto-midia">
+              <img src="Bolo de miho na palha.jpg" alt="Bolo de Milho Verde na Palha" loading="lazy">
+            </div>
+            <div class="card-content">
+              <h3>Bolo de Milho Verde na Palha</h3>
+              <p class="produto-desc">Milho verde assado na palha, do jeito tradicional.</p>
+              <p class="preco" id="preco-bolo-milho-palha"></p>
+              <div class="card-acoes">
+                <button class="btn btn-primario btn-carrinho" type="button" onclick="adicionarAoCarrinho('boloMilhoPalha', this)">
+                  <svg class="ico" aria-hidden="true"><use href="#i-cart"></use></svg> Adicionar ao carrinho
+                </button>
+                <div class="card-acoes-linha">
+                  <button class="btn btn-suave" type="button" onclick="abrirPix('boloMilhoPalha')">
+                    <svg class="ico" aria-hidden="true"><use href="#i-card"></use></svg> PIX
+                  </button>
+                  <a class="btn btn-whats btn-pedido" href="#" onclick="fazerPedidoWhatsApp('boloMilhoPalha'); return false;">
+                    <svg class="ico" aria-hidden="true"><use href="#i-chat"></use></svg> WhatsApp
+                  </a>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="card produto-card">
+            <div class="produto-midia">
+              <img src="bolo de chocolate 50%25.jpeg" alt="Bolo de Chocolate 50%" loading="lazy">
+            </div>
+            <div class="card-content">
+              <h3>Bolo de Chocolate 50%</h3>
+              <p class="produto-desc">Massa de chocolate para quem gosta de sabor marcante.</p>
+              <p class="preco" id="preco-bolo-chocolate-50"></p>
+              <div class="card-acoes">
+                <button class="btn btn-primario btn-carrinho" type="button" onclick="adicionarAoCarrinho('boloChocolate50', this)">
+                  <svg class="ico" aria-hidden="true"><use href="#i-cart"></use></svg> Adicionar ao carrinho
+                </button>
+                <div class="card-acoes-linha">
+                  <button class="btn btn-suave" type="button" onclick="abrirPix('boloChocolate50')">
+                    <svg class="ico" aria-hidden="true"><use href="#i-card"></use></svg> PIX
+                  </button>
+                  <a class="btn btn-whats btn-pedido" href="#" onclick="fazerPedidoWhatsApp('boloChocolate50'); return false;">
+                    <svg class="ico" aria-hidden="true"><use href="#i-chat"></use></svg> WhatsApp
+                  </a>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="card produto-card">
+            <div class="produto-midia">
+              <img src="bolo de leite com coco 2.0.jpeg" alt="Bolo de Leite com Coco" loading="lazy">
+            </div>
+            <div class="card-content">
+              <h3>Bolo de Leite com Coco</h3>
+              <p class="produto-desc">Bolo de leite com coco na massa.</p>
+              <p class="preco" id="preco-bolo-leite-coco"></p>
+              <div class="card-acoes">
+                <button class="btn btn-primario btn-carrinho" type="button" onclick="adicionarAoCarrinho('boloLeiteCoco', this)">
+                  <svg class="ico" aria-hidden="true"><use href="#i-cart"></use></svg> Adicionar ao carrinho
+                </button>
+                <div class="card-acoes-linha">
+                  <button class="btn btn-suave" type="button" onclick="abrirPix('boloLeiteCoco')">
+                    <svg class="ico" aria-hidden="true"><use href="#i-card"></use></svg> PIX
+                  </button>
+                  <a class="btn btn-whats btn-pedido" href="#" onclick="fazerPedidoWhatsApp('boloLeiteCoco'); return false;">
+                    <svg class="ico" aria-hidden="true"><use href="#i-chat"></use></svg> WhatsApp
+                  </a>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="card produto-card">
+            <div class="produto-midia">
+              <img src="bolo de ovos.jpeg" alt="Bolo de Ovos" loading="lazy">
+            </div>
+            <div class="card-content">
+              <h3>Bolo de Ovos</h3>
+              <p class="produto-desc">Receita simples, massa fofinha.</p>
+              <p class="preco" id="preco-bolo-ovos"></p>
+              <div class="card-acoes">
+                <button class="btn btn-primario btn-carrinho" type="button" onclick="adicionarAoCarrinho('boloOvos', this)">
+                  <svg class="ico" aria-hidden="true"><use href="#i-cart"></use></svg> Adicionar ao carrinho
+                </button>
+                <div class="card-acoes-linha">
+                  <button class="btn btn-suave" type="button" onclick="abrirPix('boloOvos')">
+                    <svg class="ico" aria-hidden="true"><use href="#i-card"></use></svg> PIX
+                  </button>
+                  <a class="btn btn-whats btn-pedido" href="#" onclick="fazerPedidoWhatsApp('boloOvos'); return false;">
+                    <svg class="ico" aria-hidden="true"><use href="#i-chat"></use></svg> WhatsApp
+                  </a>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="card produto-card">
+            <div class="produto-midia">
+              <img src="bolo formigueiro.jpeg" alt="Bolo Formigueiro" loading="lazy">
+            </div>
+            <div class="card-content">
+              <h3>Bolo Formigueiro</h3>
+              <p class="produto-desc">Massa branca com granulado de chocolate.</p>
+              <p class="preco" id="preco-bolo-formigueiro"></p>
+              <div class="card-acoes">
+                <button class="btn btn-primario btn-carrinho" type="button" onclick="adicionarAoCarrinho('boloFormigueiro', this)">
+                  <svg class="ico" aria-hidden="true"><use href="#i-cart"></use></svg> Adicionar ao carrinho
+                </button>
+                <div class="card-acoes-linha">
+                  <button class="btn btn-suave" type="button" onclick="abrirPix('boloFormigueiro')">
+                    <svg class="ico" aria-hidden="true"><use href="#i-card"></use></svg> PIX
+                  </button>
+                  <a class="btn btn-whats btn-pedido" href="#" onclick="fazerPedidoWhatsApp('boloFormigueiro'); return false;">
+                    <svg class="ico" aria-hidden="true"><use href="#i-chat"></use></svg> WhatsApp
+                  </a>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="card produto-card">
+            <div class="produto-midia">
+              <img src="bolo mesclado.jpeg" alt="Bolo Mesclado" loading="lazy">
+            </div>
+            <div class="card-content">
+              <h3>Bolo Mesclado</h3>
+              <p class="produto-desc">Massa branca e de chocolate na mesma fatia.</p>
+              <p class="preco" id="preco-bolo-mesclado"></p>
+              <div class="card-acoes">
+                <button class="btn btn-primario btn-carrinho" type="button" onclick="adicionarAoCarrinho('boloMesclado', this)">
+                  <svg class="ico" aria-hidden="true"><use href="#i-cart"></use></svg> Adicionar ao carrinho
+                </button>
+                <div class="card-acoes-linha">
+                  <button class="btn btn-suave" type="button" onclick="abrirPix('boloMesclado')">
+                    <svg class="ico" aria-hidden="true"><use href="#i-card"></use></svg> PIX
+                  </button>
+                  <a class="btn btn-whats btn-pedido" href="#" onclick="fazerPedidoWhatsApp('boloMesclado'); return false;">
+                    <svg class="ico" aria-hidden="true"><use href="#i-chat"></use></svg> WhatsApp
+                  </a>
+                </div>
+              </div>
+            </div>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- CARRINHO -->
+    <section id="carrinho" class="aba" role="tabpanel" aria-labelledby="carrinho">
+      <div class="shell">
+        <div class="section-head">
+          <span class="section-kicker">Pedido</span>
+          <h2>Carrinho</h2>
+          <p>Revise os itens, ajuste as quantidades e escolha como prefere finalizar.</p>
+        </div>
+
+        <div class="carrinho-layout">
+          <div class="card carrinho-card">
+            <div class="card-content">
+              <div class="carrinho-topo">
+                <h3>Seus itens</h3>
+                <span class="carrinho-qtd" id="carrinhoResumoQtd">0 itens</span>
+              </div>
+
+              <div id="carrinhoVazio" class="carrinho-vazio">
+                <span class="vazio-ico"><svg class="ico" aria-hidden="true"><use href="#i-cart"></use></svg></span>
+                <strong>Seu carrinho está vazio</strong>
+                <p>Adicione doces ou bolos do cardápio para montar seu pedido.</p>
+                <button class="btn btn-suave" type="button" onclick="mostrarAba('doces')">Ver cardápio</button>
+              </div>
+
+              <div id="listaCarrinho" class="lista-carrinho"></div>
+            </div>
+          </div>
+
+          <aside class="card resumo-card">
+            <div class="card-content">
+              <h3>Resumo</h3>
+
+              <div class="resumo-linha">
+                <span>Itens</span>
+                <span id="resumoItens">0</span>
+              </div>
+              <div class="resumo-linha total-carrinho">
+                <span>Total</span>
+                <span id="totalCarrinho">R$ 0,00</span>
+              </div>
+
+              <div class="carrinho-acoes">
+                <button class="btn btn-whats btn-cheio" type="button" onclick="finalizarCarrinhoWhatsApp()">
+                  <svg class="ico" aria-hidden="true"><use href="#i-chat"></use></svg> Finalizar pelo WhatsApp
+                </button>
+                <button class="btn btn-primario btn-cheio btn-secundario" type="button" onclick="abrirPixCarrinho()">
+                  <svg class="ico" aria-hidden="true"><use href="#i-card"></use></svg> Pagar total no PIX
+                </button>
+                <button class="btn btn-texto btn-limpar" type="button" onclick="limparCarrinho()">
+                  <svg class="ico" aria-hidden="true"><use href="#i-trash"></use></svg> Limpar carrinho
+                </button>
+              </div>
+
+              <p id="carrinhoStatus" class="carrinho-status" role="status" aria-live="polite"></p>
+              <p class="resumo-nota">O valor final e a data de entrega são confirmados com a Val pelo WhatsApp.</p>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTATO -->
+    <section id="contato" class="aba" role="tabpanel" aria-labelledby="contato">
+      <div class="shell">
+        <div class="section-head">
+          <span class="section-kicker">Atendimento</span>
+          <h2>Contato</h2>
+          <p>Fale direto com a Val para encomendas, dúvidas e confirmação de pagamento.</p>
+        </div>
+
+        <div class="contato-grid">
+          <div class="card contato-card">
+            <div class="card-content">
+              <h3>Faça seu pedido</h3>
+              <p class="contato-info">
+                O atendimento é feito por WhatsApp. Mande o que você quer, a quantidade e o dia — a Val confirma tudo por lá.
+              </p>
+
+              <ul class="contato-lista">
+                <li>
+                  <span class="contato-ico"><svg class="ico" aria-hidden="true"><use href="#i-chat"></use></svg></span>
+                  <span>
+                    <small>WhatsApp</small>
+                    <a href="https://wa.me/5583982168114?text=Ola%2C%20vim%20pelo%20site%20Caseirinhos%20da%20Val." target="_blank" rel="noopener">+55 83 98216-8114 (Val)</a>
+                  </span>
+                </li>
+                <li>
+                  <span class="contato-ico"><svg class="ico" aria-hidden="true"><use href="#i-mail"></use></svg></span>
+                  <span>
+                    <small>E-mail</small>
+                    <a href="https://mail.google.com/mail/?view=cm&fs=1&to=caseirinhosdaval2026@gmail.com" target="_blank" rel="noopener">caseirinhosdaval2026@gmail.com</a>
+                  </span>
+                </li>
+                <li>
+                  <span class="contato-ico"><svg class="ico" aria-hidden="true"><use href="#i-pin"></use></svg></span>
+                  <span>
+                    <small>Atendimento</small>
+                    <strong>Picuí - PB</strong>
+                  </span>
+                </li>
+              </ul>
+
+              <a class="btn btn-whats btn-cheio" href="https://wa.me/5583982168114?text=Ola%2C%20vim%20pelo%20site%20Caseirinhos%20da%20Val." target="_blank" rel="noopener">
+                <svg class="ico" aria-hidden="true"><use href="#i-chat"></use></svg> Abrir conversa no WhatsApp
+              </a>
+            </div>
+          </div>
+
+          <div class="card suporte-card">
+            <div class="card-content">
+              <span class="section-kicker">Suporte do site</span>
+              <h3>Encontrou algum erro?</h3>
+              <p class="contato-info">
+                Problemas com o carrinho, com o PIX ou com alguma imagem? Avise o responsável técnico do site.
+              </p>
+              <a class="btn btn-suave btn-cheio" href="https://wa.me/5583987239748?text=Ola%2C%20encontrei%20um%20erro%20no%20site%20Caseirinhos%20da%20Val." target="_blank" rel="noopener">
+                📞 +55 (83) 987239748 (isaac)
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ===== Modal PIX ===== -->
+  <div id="pixModal" class="modal pix-modal" role="dialog" aria-modal="true" aria-labelledby="pixTitulo" aria-hidden="true">
+    <div class="modal-box pix-box">
+      <button class="icon-btn modal-close" type="button" onclick="fecharPix()" aria-label="Fechar pagamento">
+        <svg class="ico" aria-hidden="true"><use href="#i-close"></use></svg>
+      </button>
+
+      <div class="modal-head">
+        <span class="section-kicker">Pagamento</span>
+        <h2 id="pixTitulo">PIX direto para a Val</h2>
+        <p id="produtoPix"></p>
+      </div>
+
+      <div class="pix-grid">
+        <div class="pix-qr-area">
+          <img id="pixQrCode" class="pix-qrcode" src="" alt="QR Code do PIX">
+          <span class="pix-legenda"><svg class="ico" aria-hidden="true"><use href="#i-qr"></use></svg> Aponte a câmera do banco</span>
+        </div>
+
+        <div class="pix-passos">
+          <label class="campo-label" for="pixCopiaCola">Código copia e cola</label>
+          <textarea id="pixCopiaCola" class="pix-copia" readonly aria-label="Código PIX copia e cola"></textarea>
+
+          <button class="btn btn-suave btn-cheio" type="button" onclick="copiarPix()">
+            <svg class="ico" aria-hidden="true"><use href="#i-copy"></use></svg> Copiar código PIX
+          </button>
+
+          <div class="comprovante-area">
+            <input id="comprovantePix" class="comprovante-input" type="file" accept="image/*,.pdf" onchange="atualizarComprovante()">
+            <label class="btn btn-contorno btn-cheio btn-comprovante" for="comprovantePix">
+              <svg class="ico" aria-hidden="true"><use href="#i-clip"></use></svg> Escolher comprovante
+            </label>
+            <p id="nomeComprovante" class="comprovante-nome">Nenhum comprovante selecionado</p>
+          </div>
+
+          <button id="btnWhatsapp" class="btn btn-whats btn-cheio" type="button" onclick="enviarComprovanteWhatsApp()" disabled>
+            <svg class="ico" aria-hidden="true"><use href="#i-chat"></use></svg> Enviar comprovante
+          </button>
+        </div>
+      </div>
+
+      <p id="pixStatus" class="pix-status" role="status" aria-live="polite"></p>
+    </div>
+  </div>
+
+  <!-- ===== Modal Configurações ===== -->
+  <div id="configuracoes" class="modal settings-modal" role="dialog" aria-modal="true" aria-labelledby="settingsTitle" aria-hidden="true">
+    <div class="modal-box settings-dialog">
+      <button class="icon-btn modal-close" type="button" aria-label="Fechar configurações" onclick="fecharConfiguracoes()">
+        <svg class="ico" aria-hidden="true"><use href="#i-close"></use></svg>
+      </button>
+
+      <div class="modal-head">
+        <span class="section-kicker">Configurações</span>
+        <h2 id="settingsTitle">Preferências</h2>
+        <p>Ajuste a aparência do site do seu jeito.</p>
+      </div>
+
+      <div class="card settings-card">
+        <div class="card-content">
+          <div class="settings-heading">
+            <span class="settings-icon"><svg class="ico" aria-hidden="true"><use href="#i-moon"></use></svg></span>
+            <div>
+              <span class="settings-label">Aparência</span>
+              <h3>Tema do site</h3>
+              <p>Escolha a visualização mais confortável para os seus olhos.</p>
+            </div>
+          </div>
+          <div class="theme-selector" role="group" aria-label="Escolher tema">
+            <button class="theme-option" type="button" data-theme-option="light" onclick="definirTema('light')">
+              <svg class="ico" aria-hidden="true"><use href="#i-sun"></use></svg> Claro
+            </button>
+            <button class="theme-option" type="button" data-theme-option="dark" onclick="definirTema('dark')">
+              <svg class="ico" aria-hidden="true"><use href="#i-moon"></use></svg> Escuro
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="card settings-card">
+        <div class="card-content">
+          <div class="settings-heading">
+            <span class="settings-icon"><svg class="ico" aria-hidden="true"><use href="#i-chat"></use></svg></span>
+            <div>
+              <span class="settings-label">Suporte</span>
+              <h3>Dúvidas na compra?</h3>
+              <p>Fale com o suporte técnico do site.</p>
+            </div>
+          </div>
+          <a class="btn btn-primario btn-cheio btn-support-settings" href="https://wa.me/5583987239748?text=Ola%2C%20tenho%20uma%20duvida%20sobre%20o%20site%20Caseirinhos%20da%20Val." target="_blank" rel="noopener">
+            <svg class="ico" aria-hidden="true"><use href="#i-chat"></use></svg> Falar com Isaac
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== Botão flutuante ===== -->
+  <a class="whatsapp-flutuante" href="https://wa.me/5583982168114?text=Ol%C3%A1%2C%20vim%20pelo%20site%20Caseirinhos%20da%20Val." target="_blank" rel="noopener" aria-label="Fazer pedido pelo WhatsApp">
+    <svg class="ico" aria-hidden="true"><use href="#i-chat"></use></svg>
+    <span>Pedir no WhatsApp</span>
+  </a>
+
+  <div id="toastSite" class="toast-site" role="status" aria-live="polite"></div>
+
+  <footer class="site-footer">
+    <div class="shell footer-inner">
+      <div class="footer-marca">
+        <strong>Caseirinhos da Val</strong>
+        <span>Doces e bolos caseiros — Picuí - PB</span>
+      </div>
+      <nav class="footer-links" aria-label="Links do rodapé">
+        <button type="button" onclick="mostrarAba('doces')">Doces</button>
+        <button type="button" onclick="mostrarAba('bolos')">Bolos</button>
+        <button type="button" onclick="mostrarAba('carrinho')">Carrinho</button>
+        <button type="button" onclick="mostrarAba('contato')">Contato</button>
+      </nav>
+      <small>&copy; 2026 Caseirinhos da Val — Todos os direitos reservados</small>
+    </div>
+  </footer>
+
+  <script src="script.js?v=20260929"></script>
+</body>
+</html>
+

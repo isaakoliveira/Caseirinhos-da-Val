@@ -20,11 +20,11 @@ const IMAGENS_PRODUTOS = {
   doceLeiteCoco: "doce-de-leite-com-coco-sem-risco-camera.jpeg",
   doceLeiteGoiabada: "doce-de-leite-com-goiabada-sem-risco-camera.jpeg",
   doceLeite: "doce-de-leite-sem-risco-camera-inpaint-wide.jpeg",
-  pudim18: "pudim 18,00$.jpeg",
+  pudim18: "../doces/pudim pequeno.jpeg",
   pudim35: "pudim 35,00$.jpeg",
   pudimIndividual: "WhatsApp Image 2026-09-26 at 14.42.52 (1).jpeg",
-  chocolateUva: "WhatsApp Image 2026-09-26 at 14.42.52.jpeg",
-  chocolateMorango: "WhatsApp Image 2026-09-26 at 14.42.49.jpeg",
+  chocolateUva: "../doces/surpresa de morango.jpeg",
+  chocolateMorango: "../doces/surpresa de morango.jpeg",
   boloSimples: "bolo de leite.jpeg",
   boloMilhoPalha: "Bolo de miho na palha.jpg",
   boloChocolate50: "bolo de chocolate 50%25.jpeg",
@@ -428,7 +428,12 @@ function criarLinhaCarrinho(item) {
   div.className = "item-carrinho";
 
   var img = document.createElement("img");
-  img.src = IMAGENS_PRODUTOS[item.codigo] || "";
+  var imagemProduto = IMAGENS_PRODUTOS[item.codigo];
+  if (imagemProduto) {
+    // Resolve nomes com espaços e caracteres especiais (como o $ do pudim)
+    // como URL relativa ao próprio site.
+    img.src = new URL(imagemProduto, document.baseURI).href;
+  }
   img.alt = item.produto.nome;
   img.className = "item-carrinho-imagem";
   img.loading = "lazy";
