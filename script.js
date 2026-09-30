@@ -17,21 +17,21 @@ let ultimoFoco = null;
 const carrinho = {};
 
 const IMAGENS_PRODUTOS = {
-  doceLeiteCoco: "doce-de-leite-com-coco-sem-risco-camera.jpeg",
-  doceLeiteGoiabada: "doce-de-leite-com-goiabada-sem-risco-camera.jpeg",
-  doceLeite: "doce-de-leite-sem-risco-camera-inpaint-wide.jpeg",
+  doceLeiteCoco: "../doces/doce-de-leite-com-coco-sem-risco-camera.jpeg",
+  doceLeiteGoiabada: "../doces/doce-de-leite-com-goiabada-sem-risco-camera.jpeg",
+  doceLeite: "../doces/doce-de-leite-sem-risco-camera-inpaint-wide.jpeg",
   pudim18: "../doces/pudim pequeno.jpeg",
-  pudim35: "pudim 35,00$.jpeg",
-  pudimIndividual: "WhatsApp Image 2026-09-26 at 14.42.52 (1).jpeg",
+  pudim35: "../doces/pudim 35,00$.jpeg",
+  pudimIndividual: "../doces/pudim pequeno.jpeg",
   chocolateUva: "../doces/surpresa de morango.jpeg",
   chocolateMorango: "../doces/surpresa de morango.jpeg",
-  boloSimples: "bolo de leite.jpeg",
-  boloMilhoPalha: "Bolo de miho na palha.jpg",
-  boloChocolate50: "bolo de chocolate 50%25.jpeg",
-  boloLeiteCoco: "bolo de leite com coco 2.0.jpeg",
-  boloOvos: "bolo de ovos.jpeg",
-  boloFormigueiro: "bolo formigueiro.jpeg",
-  boloMesclado: "bolo mesclado.jpeg"
+  boloSimples: "../bolos/bolo de leite.jpeg",
+  boloMilhoPalha: "../bolos/Bolo de miho na palha.jpg",
+  boloChocolate50: "../bolos/bolo de chocolate 50%.jpeg",
+  boloLeiteCoco: "../bolos/bolo de leite com coco 2.0.jpeg",
+  boloOvos: "../bolos/bolo de ovos.jpeg",
+  boloFormigueiro: "../bolos/bolo formigueiro.jpeg",
+  boloMesclado: "../bolos/bolo mesclado.jpeg"
 };
 
 const PRODUTOS = {
@@ -798,3 +798,75 @@ function mostrarToastSite(msg) {
   t.classList.add("mostrar");
   t.timer = setTimeout(function () { t.classList.remove("mostrar"); }, 2600);
 }
+/* =========================================================
+   Caseirinhos da Val — efeitos interativos (opcional)
+   Inclua DEPOIS do script.js:  <script src="efeitos.js" defer></script>
+   O style.css funciona sem este arquivo; aqui só entram os efeitos
+   que dependem da posição do mouse/dedo:
+   - onda de luz no clique dos botões
+   - brilho que segue o mouse + inclinação 3D nos cards
+   - movimento em profundidade do granulado no topo
+   ========================================================= */
+(function () {
+  "use strict";
+
+  var reduz = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var mouse = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+
+  /* Origem da onda de luz nos botões (vale para mouse e toque) */
+  document.addEventListener("pointerdown", function (e) {
+    var b = e.target.closest ? e.target.closest(".btn") : null;
+    if (!b) return;
+    var r = b.getBoundingClientRect();
+    b.style.setProperty("--bx", (e.clientX - r.left) + "px");
+    b.style.setProperty("--by", (e.clientY - r.top) + "px");
+  }, { passive: true });
+
+  if (!mouse || reduz) return;
+
+  var hero = document.querySelector(".hero");
+  var alvo = null, ultimo = null, quadro = 0;
+
+  function limpar(el) {
+    if (!el) return;
+    ["--mx", "--my", "--tilt-x", "--tilt-y"].forEach(function (p) { el.style.removeProperty(p); });
+  }
+
+  function atualizar() {
+    quadro = 0;
+    var e = ultimo;
+    if (!e) return;
+
+    /* brilho + inclinação nos cards de produto e no cartão do topo */
+    var card = e.target.closest ? e.target.closest(".produto-card, .hero-card") : null;
+    if (card !== alvo) { limpar(alvo); alvo = card; }
+    if (card) {
+      var r = card.getBoundingClientRect();
+      var x = (e.clientX - r.left) / r.width;
+      var y = (e.clientY - r.top) / r.height;
+      card.style.setProperty("--mx", (x * 100).toFixed(1) + "%");
+      card.style.setProperty("--my", (y * 100).toFixed(1) + "%");
+      card.style.setProperty("--tilt-y", ((x - 0.5) * 9).toFixed(2) + "deg");
+      card.style.setProperty("--tilt-x", ((0.5 - y) * 7).toFixed(2) + "deg");
+    }
+
+    /* profundidade do granulado no topo */
+    if (hero) {
+      var h = hero.getBoundingClientRect();
+      var dentro = e.clientY >= h.top && e.clientY <= h.bottom;
+      hero.style.setProperty("--px", dentro ? ((e.clientX / window.innerWidth - 0.5) * 2).toFixed(3) : "0");
+      hero.style.setProperty("--py", dentro ? (((e.clientY - h.top) / h.height - 0.5) * 2).toFixed(3) : "0");
+    }
+  }
+
+  document.addEventListener("pointermove", function (e) {
+    ultimo = e;
+    if (!quadro) quadro = requestAnimationFrame(atualizar);
+  }, { passive: true });
+
+  document.documentElement.addEventListener("mouseleave", function () {
+    limpar(alvo);
+    alvo = null;
+    if (hero) { hero.style.setProperty("--px", "0"); hero.style.setProperty("--py", "0"); }
+  });
+})();
