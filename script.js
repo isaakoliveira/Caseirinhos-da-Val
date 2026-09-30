@@ -17,21 +17,21 @@ let ultimoFoco = null;
 const carrinho = {};
 
 const IMAGENS_PRODUTOS = {
-  doceLeiteCoco: "../doces/doce-de-leite-com-coco-sem-risco-camera.jpeg?v=20260930-2",
-  doceLeiteGoiabada: "../doces/doce-de-leite-com-goiabada-sem-risco-camera.jpeg?v=20260930-2",
-  doceLeite: "../doces/doce-de-leite-sem-risco-camera-inpaint-wide.jpeg?v=20260930-2",
-  pudim18: "../doces/pudim%2018%2C00%24.jpeg?v=20260930-2",
-  pudim35: "../doces/pudim%2035%2C00%24.jpeg?v=20260930-2",
-  pudimIndividual: "../doces/pudim%20pequeno.jpeg?v=20260930-2",
-  chocolateUva: "../doces/surpresa%20de%20uva.jpeg?v=20260930-2",
-  chocolateMorango: "../doces/surpresa%20de%20morango.jpeg?v=20260930-2",
-  boloSimples: "../bolos/bolo de leite.jpeg?v=20260930",
-  boloMilhoPalha: "../bolos/Bolo de miho na palha.jpg?v=20260930",
-  boloChocolate50: "../bolos/bolo de chocolate 50%.jpeg?v=20260930",
-  boloLeiteCoco: "../bolos/bolo de leite com coco 2.0.jpeg?v=20260930",
-  boloOvos: "../bolos/bolo de ovos.jpeg?v=20260930",
-  boloFormigueiro: "../bolos/bolo formigueiro.jpeg?v=20260930",
-  boloMesclado: "../bolos/bolo mesclado.jpeg?v=20260930"
+  doceLeiteCoco: "doces/doce-de-leite-com-coco-sem-risco-camera.jpeg?v=20261001",
+  doceLeiteGoiabada: "doces/doce-de-leite-com-goiabada-sem-risco-camera.jpeg?v=20261001",
+  doceLeite: "doces/doce-de-leite-sem-risco-camera-inpaint-wide.jpeg?v=20261001",
+  pudim18: "doces/pudim%2018%2C00%24.jpeg?v=20261001",
+  pudim35: "doces/pudim%2035%2C00%24.jpeg?v=20261001",
+  pudimIndividual: "doces/pudim%20pequeno.jpeg?v=20261001",
+  chocolateUva: "doces/surpresa%20de%20uva.jpeg?v=20261001",
+  chocolateMorango: "doces/surpresa%20de%20morango.jpeg?v=20261001",
+  boloSimples: "bolos/bolo%20de%20leite.jpeg?v=20261001",
+  boloMilhoPalha: "bolos/Bolo%20de%20miho%20na%20palha.jpg?v=20261001",
+  boloChocolate50: "bolos/bolo%20de%20chocolate%2050%25.jpeg?v=20261001",
+  boloLeiteCoco: "bolos/bolo%20de%20leite%20com%20coco%202.0.jpeg?v=20261001",
+  boloOvos: "bolos/bolo%20de%20ovos.jpeg?v=20261001",
+  boloFormigueiro: "bolos/bolo%20formigueiro.jpeg?v=20261001",
+  boloMesclado: "bolos/bolo%20mesclado.jpeg?v=20261001"
 };
 
 const PRODUTOS = {
@@ -870,4 +870,3 @@ function mostrarToastSite(msg) {
     if (hero) { hero.style.setProperty("--px", "0"); hero.style.setProperty("--py", "0"); }
   });
 })();
-
