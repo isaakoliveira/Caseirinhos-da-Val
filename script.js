@@ -17,14 +17,14 @@ let ultimoFoco = null;
 const carrinho = {};
 
 const IMAGENS_PRODUTOS = {
-  doceLeiteCoco: "../doces/doce-de-leite-com-coco-sem-risco-camera.jpeg?v=20260930",
-  doceLeiteGoiabada: "../doces/doce-de-leite-com-goiabada-sem-risco-camera.jpeg?v=20260930",
-  doceLeite: "../doces/doce-de-leite-sem-risco-camera-inpaint-wide.jpeg?v=20260930",
-  pudim18: "../doces/pudim 18,00$.jpeg?v=20260930",
-  pudim35: "../doces/pudim 35,00$.jpeg?v=20260930",
-  pudimIndividual: "../doces/pudim pequeno.jpeg?v=20260930",
-  chocolateUva: "../doces/surpresa de uva.jpeg?v=20260930",
-  chocolateMorango: "../doces/surpresa de morango.jpeg?v=20260930",
+  doceLeiteCoco: "../doces/doce-de-leite-com-coco-sem-risco-camera.jpeg?v=20260930-2",
+  doceLeiteGoiabada: "../doces/doce-de-leite-com-goiabada-sem-risco-camera.jpeg?v=20260930-2",
+  doceLeite: "../doces/doce-de-leite-sem-risco-camera-inpaint-wide.jpeg?v=20260930-2",
+  pudim18: "../doces/pudim%2018%2C00%24.jpeg?v=20260930-2",
+  pudim35: "../doces/pudim%2035%2C00%24.jpeg?v=20260930-2",
+  pudimIndividual: "../doces/pudim%20pequeno.jpeg?v=20260930-2",
+  chocolateUva: "../doces/surpresa%20de%20uva.jpeg?v=20260930-2",
+  chocolateMorango: "../doces/surpresa%20de%20morango.jpeg?v=20260930-2",
   boloSimples: "../bolos/bolo de leite.jpeg?v=20260930",
   boloMilhoPalha: "../bolos/Bolo de miho na palha.jpg?v=20260930",
   boloChocolate50: "../bolos/bolo de chocolate 50%.jpeg?v=20260930",
@@ -870,3 +870,4 @@ function mostrarToastSite(msg) {
     if (hero) { hero.style.setProperty("--px", "0"); hero.style.setProperty("--py", "0"); }
   });
 })();
+
