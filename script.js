@@ -17,21 +17,21 @@ let ultimoFoco = null;
 const carrinho = {};
 
 const IMAGENS_PRODUTOS = {
-  doceLeiteCoco: "../doces/doce-de-leite-com-coco-sem-risco-camera.jpeg",
-  doceLeiteGoiabada: "../doces/doce-de-leite-com-goiabada-sem-risco-camera.jpeg",
-  doceLeite: "../doces/doce-de-leite-sem-risco-camera-inpaint-wide.jpeg",
-  pudim18: "../doces/pudim 18,00$.jpeg",
-  pudim35: "../doces/pudim 35,00$.jpeg",
-  pudimIndividual: "../doces/pudim pequeno.jpeg",
-  chocolateUva: "../doces/surpresa de uva.jpeg",
-  chocolateMorango: "../doces/surpresa de morango.jpeg",
-  boloSimples: "../bolos/bolo de leite.jpeg",
-  boloMilhoPalha: "../bolos/Bolo de miho na palha.jpg",
-  boloChocolate50: "../bolos/bolo de chocolate 50%.jpeg",
-  boloLeiteCoco: "../bolos/bolo de leite com coco 2.0.jpeg",
-  boloOvos: "../bolos/bolo de ovos.jpeg",
-  boloFormigueiro: "../bolos/bolo formigueiro.jpeg",
-  boloMesclado: "../bolos/bolo mesclado.jpeg"
+  doceLeiteCoco: "../doces/doce-de-leite-com-coco-sem-risco-camera.jpeg?v=20260930",
+  doceLeiteGoiabada: "../doces/doce-de-leite-com-goiabada-sem-risco-camera.jpeg?v=20260930",
+  doceLeite: "../doces/doce-de-leite-sem-risco-camera-inpaint-wide.jpeg?v=20260930",
+  pudim18: "../doces/pudim 18,00$.jpeg?v=20260930",
+  pudim35: "../doces/pudim 35,00$.jpeg?v=20260930",
+  pudimIndividual: "../doces/pudim pequeno.jpeg?v=20260930",
+  chocolateUva: "../doces/surpresa de uva.jpeg?v=20260930",
+  chocolateMorango: "../doces/surpresa de morango.jpeg?v=20260930",
+  boloSimples: "../bolos/bolo de leite.jpeg?v=20260930",
+  boloMilhoPalha: "../bolos/Bolo de miho na palha.jpg?v=20260930",
+  boloChocolate50: "../bolos/bolo de chocolate 50%.jpeg?v=20260930",
+  boloLeiteCoco: "../bolos/bolo de leite com coco 2.0.jpeg?v=20260930",
+  boloOvos: "../bolos/bolo de ovos.jpeg?v=20260930",
+  boloFormigueiro: "../bolos/bolo formigueiro.jpeg?v=20260930",
+  boloMesclado: "../bolos/bolo mesclado.jpeg?v=20260930"
 };
 
 const PRODUTOS = {
